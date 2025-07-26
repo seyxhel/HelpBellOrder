@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-ARG RUBY_VERSION=3.3.8
+ARG RUBY_VERSION=3.3.9
 ARG NODE_VERSION=22
 
 FROM docker.io/library/ruby:$RUBY_VERSION-slim-bookworm AS base
@@ -65,7 +65,8 @@ RUN if [ -z "${COMMIT_SHA}" ]; then \
     exit 1; \
   fi; \
   COMMIT_SHA_SHORT=$(echo "${COMMIT_SHA}" | cut -c 1-8); \
-  echo "$(tr -d '\n' < VERSION)-${COMMIT_SHA_SHORT}.docker" > VERSION; \
+  BASE_VERSION=$(tr -d '\n' < VERSION | sed 's/\.x$/.0/'); \
+  echo "${BASE_VERSION}-${COMMIT_SHA_SHORT}.docker" > VERSION; \
   echo 'Updated build information in VERSION:'; \
   cat VERSION
 
@@ -73,13 +74,17 @@ RUN if [ -z "${COMMIT_SHA}" ]; then \
 RUN touch db/schema.rb && \
     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile
 
-RUN script/build/cleanup.sh
+RUN bash script/build/cleanup.sh
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
 # Final stage for app image
 FROM base
+
+# Copy Node.js from the node stage to the final image
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node /usr/local/bin /usr/local/bin
 
 # Application variables with defaults matching the Zammad docker stack.
 ENV POSTGRESQL_DB=zammad_production \

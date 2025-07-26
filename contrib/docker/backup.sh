@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 set -o errexit
 set -o pipefail
@@ -71,7 +71,7 @@ function perform_restore {
     echo "Error: no database backup found in ${RESTORE_DIR}."
     exit 1
   fi
-  echo "Restoring database from ${RESTORE_DB_FILE}…"
+  echo "Restoring database from ${RESTORE_DB_FILE}â€¦"
 
   # Clear the database before restoring.
   echo 'DROP SCHEMA PUBLIC CASCADE; CREATE SCHEMA PUBLIC;' | call_psql
@@ -81,7 +81,7 @@ function perform_restore {
   if [ -z "${RESTORE_STORAGE_FILE}" ]; then
     echo "No storage backup found in ${RESTORE_DIR}, skipping."
   else
-    echo "Restoring storage from ${RESTORE_STORAGE_FILE}…"
+    echo "Restoring storage from ${RESTORE_STORAGE_FILE}â€¦"
     tar -C / --overwrite -xzf "${RESTORE_STORAGE_FILE}" -v opt/zammad/storage
   fi
 
@@ -93,10 +93,10 @@ function perform_restore {
 }
 
 if [ -d "${RESTORE_DIR}" ] && [ -n "$(ls "${RESTORE_DIR}")" ]; then
-  echo "Restoring from backup directory ${RESTORE_DIR}…"
+  echo "Restoring from backup directory ${RESTORE_DIR}â€¦"
   perform_restore
 else
   check_zammad_ready
-  echo "Starting backup loop…"
+  echo "Starting backup loopâ€¦"
   zammad_backup_loop
 fi

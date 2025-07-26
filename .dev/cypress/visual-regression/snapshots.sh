@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 
 if [[ $(uname -m) == 'arm64' ]]; then
   # cannot run cypress while on arm, but in amd container

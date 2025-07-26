@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 set -e
 
@@ -16,7 +16,7 @@ function serialize_graphql_api() {
   cat $INTROSPECTION_FILE $TYPES_FILE $API_FILES > $TARGET_FILE
 }
 
-echo "Checking if auto-generated GraphQL API is up-to-date…"
+echo "Checking if auto-generated GraphQL API is up-to-dateâ€¦"
 serialize_graphql_api $TMP_FILE_BEFORE
 pnpm generate-graphql-api
 serialize_graphql_api $TMP_FILE_AFTER

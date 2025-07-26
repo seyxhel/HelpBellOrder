@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 LEVEL=$1
 
 set -ex

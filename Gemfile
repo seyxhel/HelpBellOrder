@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 # core - base
-ruby '3.3.8'
+ruby '3.3.9'
 gem 'rails', '~> 7.2.0'
 gem 'rake'
 
@@ -51,7 +51,7 @@ gem 'graphql-batch', require: 'graphql/batch'
 gem 'graphql-fragment_cache'
 
 # core - image processing
-gem 'rszr'
+# gem 'rszr'  # Temporarily disabled for Windows - requires imlib2 dev headers
 
 # core - use same timezone data on any host
 gem 'tzinfo-data'
@@ -204,7 +204,7 @@ gem 'macaddr'
 gem 'listen'
 
 # language detection
-gem 'cld'
+# gem 'cld'  # Temporarily disabled for Windows - requires dev headers
 
 # CLDR wrapper for i18n and l10n
 gem 'twitter_cldr'

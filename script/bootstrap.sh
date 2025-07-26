@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 bundle install --jobs 8
 

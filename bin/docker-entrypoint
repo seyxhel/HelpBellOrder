@@ -95,7 +95,7 @@ if [ "$1" = 'zammad-init' ]; then
     fi
 
     until (echo > /dev/tcp/"${ELASTICSEARCH_HOST}/${ELASTICSEARCH_PORT}") &> /dev/null; do
-      echo "zammad-init waiting for elasticsearch server to be ready…"
+      echo "zammad-init waiting for elasticsearch server to be readyâ€¦"
       sleep 1
     done
 
@@ -104,7 +104,7 @@ if [ "$1" = 'zammad-init' ]; then
       then
         echo "Elasticsearch index exists, no automatic reindexing is needed."
       else
-        echo "Elasticsearch index does not exist yet, create it now…"
+        echo "Elasticsearch index does not exist yet, create it nowâ€¦"
         bundle exec rake zammad:searchindex:rebuild
       fi
     fi

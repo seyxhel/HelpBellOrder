@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 date -u --rfc-3339=seconds
 echo

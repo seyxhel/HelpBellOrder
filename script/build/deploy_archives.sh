@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 set -e
 
@@ -32,7 +32,7 @@ script/build/cleanup.sh
   && find . -name ".gitkeep" \
   && find . -name ".gitmodules" ) | xargs rm -rf
 
-echo "Building archives…"
+echo "Building archivesâ€¦"
 tar -czf "${TEMPDIR}/zammad-latest.tar.gz" . > /dev/null
 tar -cjf "${TEMPDIR}/zammad-latest.tar.bz2" . > /dev/null
 zip -r "${TEMPDIR}/zammad-latest.zip" . > /dev/null
@@ -57,5 +57,5 @@ then
   echo "Error: the required environment variable FTP_ZAMMAD_COM_SCP_TARGET is missing."
   exit 1
 fi
-echo "Upload files to ${FTP_ZAMMAD_COM_SCP_TARGET}…"
+echo "Upload files to ${FTP_ZAMMAD_COM_SCP_TARGET}â€¦"
 scp "$TEMPDIR"/* "$FTP_ZAMMAD_COM_SCP_TARGET"

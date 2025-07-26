@@ -1,4 +1,4 @@
-#!/bin/sh
+﻿#!/bin/sh
 
 set -eu
 
@@ -9,7 +9,7 @@ set -eu
 
 export DISTRIBUTION DISTRIBUTION_VERSION CI_JOB_ID CI_COMMIT_REF_NAME
 
-echo "Running tests for ${CI_COMMIT_REF_NAME} on ${DISTRIBUTION}-${DISTRIBUTION_VERSION}…"
+echo "Running tests for ${CI_COMMIT_REF_NAME} on ${DISTRIBUTION}-${DISTRIBUTION_VERSION}â€¦"
 
 cd "$(dirname $0)"
 
