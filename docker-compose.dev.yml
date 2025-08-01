@@ -1,39 +1,41 @@
+version: "3.9"
+
 services:
   zammad:
-    build: .
+    build:
+      context: .
+      args:
+        COMMIT_SHA: 6f75c6f8e85c66e2117dfe978d4f4df2ab3a19c7
     ports:
       - "3000:3000"
     environment:
       - RAILS_ENV=development
-      - DATABASE_URL=postgresql://zammad:zammad@postgres:5432/zammad_development
       - REDIS_URL=redis://redis:6379
-      - POSTGRESQL_HOST=postgres
-      - POSTGRESQL_DB=zammad_development
-      - POSTGRESQL_USER=zammad
-      - POSTGRESQL_PASS=zammad
-      - POSTGRESQL_PORT=5432
+      - DATABASE_URL=postgresql://postgres:zammad_dev@postgres:5432/zammad_development
     volumes:
       - .:/opt/zammad
       - /opt/zammad/node_modules
     depends_on:
-      - postgres
       - redis
+      - postgres
     command: bundle exec rails server -b 0.0.0.0
-
-  postgres:
-    image: postgres:16
-    environment:
-      - POSTGRES_DB=zammad_development
-      - POSTGRES_USER=zammad
-      - POSTGRES_PASSWORD=zammad
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
 
   redis:
     image: redis:7
     volumes:
       - redis_data:/data
 
+  postgres:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=zammad_development
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=zammad_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
 volumes:
-  postgres_data:
   redis_data:
+  postgres_data:
