@@ -45,3 +45,24 @@ app/assets/stylesheets/bootstrap.css linguist-vendored
 app/assets/stylesheets/cropper.css linguist-vendored
 app/assets/stylesheets/codemirror.css linguist-vendored
 app/assets/stylesheets/fineuploader.css linguist-vendored
+
+# Line Ending Configuration - Force LF for shell scripts and executables
+*.sh text eol=lf
+bin/* text eol=lf
+contrib/* text eol=lf
+script/* text eol=lf
+docker-entrypoint text eol=lf
+cleanup text eol=lf
+
+# Ensure all text files use LF in the repository
+* text=auto eol=lf
+
+# Force binary files to be left alone
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
