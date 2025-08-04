@@ -1,0 +1,40 @@
+1. Getting Started & Setup
+"How do I install and set up this open-source software locally for development?"
+"What are the minimum system requirements to run this software?"
+"Are there pre-configured virtual machines or Docker containers available?"
+2. Understanding the Codebase
+"Where should I start reading the code if I want to modify [specific feature]?"
+"Is there documentation or an architecture diagram for the software?"
+"What programming languages/frameworks are used, and are there coding standards?"
+3. Customization & Extensibility
+"How can I add a new feature without breaking existing functionality?"
+"Does this software support plugins/modules? How do I create one?"
+"Can I change the UI (e.g., themes, layouts) without deep coding knowledge?"
+4. Debugging & Troubleshooting
+"Why does the software crash when I modify [X]? How do I debug it?"
+"Where are the log files stored, and how do I interpret errors?"
+"Are there unit tests I can run to check my changes?"
+5. Community & Collaboration
+"How do I contribute my changes back to the main project?"
+"Is there a forum, Discord, or Slack channel for developers?"
+"What’s the best way to ask for help without bothering maintainers?"
+6. Deployment & Distribution
+"How do I package my customized version for others to use?"
+"Can I deploy this on a cloud service (AWS, Heroku, etc.)?"
+"Will my customizations break during software updates?"
+7. Licensing & Legal Concerns
+"What license does this software use, and can I modify/distribute it freely?"
+"Do I need to open-source my modifications if I use this code?"
+"Can I use this software commercially after customization?"
+8. Learning Resources
+"Are there tutorials or YouTube walkthroughs for beginners?"
+"Which parts of the codebase are best for learning [concept]?"
+"Has anyone built something similar that I can reference?"
+9. Performance & Optimization
+"How can I make my customizations run faster?"
+"Are there known performance bottlenecks I should avoid?"
+"How do I test the impact of my changes on speed/memory usage?"
+10. Security Considerations
+"How do I ensure my custom code doesn’t introduce vulnerabilities?"
+"Are there security best practices for this project?"
+"How often does the software get security patches?"
