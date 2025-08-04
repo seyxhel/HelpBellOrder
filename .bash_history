@@ -24,3 +24,4 @@ ls /opt/zammad/i18n/*.po
 mv /opt/zammad/i18n/*.po /tmp/
 bundle exec rails db:seed
 exit
+bundle exec rails db:migrate

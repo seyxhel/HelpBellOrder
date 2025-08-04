@@ -8,16 +8,14 @@ services:
         COMMIT_SHA: 6f75c6f8e85c66e2117dfe978d4f4df2ab3a19c7
     ports:
       - "3000:3000"
-    environment:
-      - RAILS_ENV=development
-      - REDIS_URL=redis://redis:6379
-      - DATABASE_URL=postgresql://postgres:zammad_dev@postgres:5432/zammad_development
+    env_file:
+      - .env
     volumes:
       - .:/opt/zammad
       - /opt/zammad/node_modules
     depends_on:
       - redis
-      - postgres
+      # - postgres
     command: bundle exec rails server -b 0.0.0.0
 
   redis:
@@ -25,17 +23,5 @@ services:
     volumes:
       - redis_data:/data
 
-  postgres:
-    image: postgres:16
-    environment:
-      - POSTGRES_DB=zammad_development
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=zammad_dev
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
-
 volumes:
   redis_data:
-  postgres_data:

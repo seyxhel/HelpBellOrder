@@ -118,3 +118,6 @@ schema.graphql
 
 # Packages
 *.zpm
+
+# Ignore environment files
+.env

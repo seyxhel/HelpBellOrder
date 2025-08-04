@@ -1,3 +1,5 @@
+* text=auto eol=lf
+
 app/assets/javascripts/app/lib/animations/** linguist-vendored
 app/assets/javascripts/app/lib/base/bootstrap-tokenfield.js linguist-vendored
 app/assets/javascripts/app/lib/base/clipboard.js linguist-vendored
