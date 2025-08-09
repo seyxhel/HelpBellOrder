@@ -1,7 +1,6 @@
 <div class="login fullscreen">
   <div class="fullscreen-center">
     <div class="fullscreen-body">
-      <p><%- @T('Log in to %s', @C('fqdn')) %></p>
 
       <% if @C('maintenance_mode'): %>
         <div class="hero-unit alert alert--danger js-maintenanceMode"><%- @T('Zammad is currently in maintenance mode. Only administrators can log in. Please wait until the maintenance window is over.') %></div>
@@ -25,9 +24,9 @@
 
             <div class="form-group">
               <div class="formGroup-label">
-                <label for="username"><%- @Ti('Username / email') %></label>
+                <label for="username"><%- @Ti('email') %></label>
               </div>
-              <input id="username" name="username" type="text" class="form-control" value="<%= @item.formPayload?.username %>" autocapitalize="off" />
+              <input id="username" name="username" type="text" class="form-control" value="<%= @item.formPayload?.username %>"/>
             </div>
 
             <div class="form-group">
@@ -53,6 +52,20 @@
                 <a href="#password_reset" class="btn btn--text btn--secondary align-center"><%- @T('Forgot password?') %></a>
               <% end %>
             </div>
+
+             <% show_user_create_account = @C('user_create_account') %>
+      <% if show_user_create_account || !_.isEmpty(@public_links): %>
+        <hr>
+        <p>
+          <% if show_user_create_account: %>
+            <a href="#signup"><%- @T('Create New Customer Account') %></a>
+          <% end %>
+          <% for link, link_index in @public_links: %>
+            <% if link_index > 0 || show_user_create_account: %> | <% end %>
+            <a href="<%= link.link %>" title="<% if link.description: %><%= link.description %><% else: %><%= link.title %><% end %>"<% if link.new_tab: %> target="_blank"<% end %>><%= link.title %></a>
+          <% end %>
+        </p>
+      <% end %>
 
           </form>
         <% else if @item.showAdminPasswordLoginFailed: %>
@@ -91,35 +104,7 @@
 
       <div class="js-footer">
 
-      <% if user_show_password_login: %>
-        <p>
-          <%- @T("You're already registered with your email address if you've been in touch with our Support team.") %><br>
-          <% if @C('user_lost_password'): %>
-            <%- @T('You can request your password') %> <a href="#password_reset"><%- @T('here') %></a>.
-          <% end %>
-        </p>
-      <% end %>
 
-      <% if !user_show_password_login: %>
-        <p>
-          <%- @T('If you have problems with the third-party login you can request a one-time password login as an admin.') %><br>
-          <a class="text-muted" href="#admin_password_auth"><%- @T('Request the password login here.') %></a>
-        </p>
-      <% end %>
-
-      <% show_user_create_account = @C('user_create_account') && user_show_password_login %>
-      <% if show_user_create_account || !_.isEmpty(@public_links): %>
-        <hr>
-        <p>
-          <% if show_user_create_account: %>
-            <a href="#signup"><%- @T('Register as a new customer') %></a>
-          <% end %>
-          <% for link, link_index in @public_links: %>
-            <% if link_index > 0 || show_user_create_account: %> | <% end %>
-            <a href="<%= link.link %>" title="<% if link.description: %><%= link.description %><% else: %><%= link.title %><% end %>"<% if link.new_tab: %> target="_blank"<% end %>><%= link.title %></a>
-          <% end %>
-        </p>
-      <% end %>
       <% if @show_mobile_link: %>
         <p>
           <a href="#" class="align-center js-go-to-mobile"><%- @T('Continue to mobile') %></a>
@@ -133,6 +118,6 @@
   <div class="poweredBy">
     <a href="https://zammad.org" target="_blank"><%- @Icon('logo') %></a>
     <%- @T('Powered by') %>
-    <a href="https://zammad.org" target="_blank"><%- @Icon('logotype', 'logotype') %></a>
+    <a href="https://zammad.org" target="_blank"><%- @T(' PrimeDesk') %></a>
   </div>
 </div>
