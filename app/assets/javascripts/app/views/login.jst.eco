@@ -58,7 +58,7 @@
         <hr>
         <p>
           <% if show_user_create_account: %>
-            <a href="#signup"><%- @T('Register as a new customer') %></a>
+            <a href="#signup"><%- @T('Create New Customer Account') %></a>
           <% end %>
           <% for link, link_index in @public_links: %>
             <% if link_index > 0 || show_user_create_account: %> | <% end %>
