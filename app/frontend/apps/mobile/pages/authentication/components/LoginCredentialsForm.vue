@@ -39,7 +39,7 @@ const loginSchema = defineFormSchema([
         type: 'text',
         label: __('Username / Email'),
         placeholder: __('Username / Email'),
-        required: true,
+        // required: true, // Remove required to allow custom validation
       },
     ],
   },
@@ -52,7 +52,7 @@ const loginSchema = defineFormSchema([
         label: __('Password'),
         placeholder: __('Password'),
         type: 'password',
-        required: true,
+        // required: true, // Remove required to allow custom validation
       },
     ],
   },
