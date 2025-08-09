@@ -9255,7 +9255,7 @@ msgid "Login Screen"
 msgstr ""
 
 #: lib/auth/error/authentication_failed.rb:4
-msgid "Login failed. Have you double-checked your credentials and completed the email verification step?"
+msgid "Invalid credentials."
 msgstr ""
 
 #: lib/auth/error/two_factor_failed.rb:4

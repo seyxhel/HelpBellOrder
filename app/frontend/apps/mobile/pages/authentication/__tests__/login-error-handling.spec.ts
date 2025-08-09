@@ -27,6 +27,40 @@ describe('testing login error handling', () => {
     expect(view.getByLabelText('Password')).toBeDescribedBy('This field is required.')
   })
 
+  it('check partial field validation - only username filled', async () => {
+    const view = await visitView('/login')
+
+    const loginInput = view.getByPlaceholderText('Username / Email')
+    await view.events.type(loginInput, 'admin@example.com')
+
+    await view.events.click(view.getByText('Sign in'))
+
+    await view.findByTestId('notification')
+    expect(view.getByTestId('notification')).toHaveTextContent(
+      'Please fill in all the required fields.',
+    )
+    
+    // Fields should not be cleared
+    expect(loginInput).toHaveValue('admin@example.com')
+  })
+
+  it('check partial field validation - only password filled', async () => {
+    const view = await visitView('/login')
+
+    const passwordInput = view.getByPlaceholderText('Password')
+    await view.events.type(passwordInput, 'password123')
+
+    await view.events.click(view.getByText('Sign in'))
+
+    await view.findByTestId('notification')
+    expect(view.getByTestId('notification')).toHaveTextContent(
+      'Please fill in all the required fields.',
+    )
+    
+    // Fields should not be cleared
+    expect(passwordInput).toHaveValue('password123')
+  })
+
   it('check that login request error is visible', async () => {
     mockGraphQLApi(LoginDocument).willFailWithUserError({
       login: {
@@ -34,7 +68,7 @@ describe('testing login error handling', () => {
         errors: [
           {
             message:
-              'Login failed. Have you double-checked your credentials and completed the email verification step?',
+              'Invalid credentials.',
           },
         ],
         twoFactorRequired: null,
@@ -53,7 +87,7 @@ describe('testing login error handling', () => {
 
     expect(view.getByTestId('notification')).toBeInTheDocument()
     expect(view.getByTestId('notification')).toHaveTextContent(
-      'Login failed. Have you double-checked your credentials and completed the email verification step?',
+      'Invalid credentials.',
     )
   })
 

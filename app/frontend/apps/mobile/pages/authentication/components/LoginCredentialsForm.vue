@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
-import { useNotifications } from '#shared/components/CommonNotifications/index.ts'
+import { useNotifications, NotificationTypes } from '#shared/components/CommonNotifications/index.ts'
 import Form from '#shared/components/Form/Form.vue'
 import type { FormSubmitData } from '#shared/components/Form/types.ts'
 import { useForm } from '#shared/components/Form/useForm.ts'
@@ -118,6 +118,26 @@ const sendCredentials = (formData: FormSubmitData<LoginCredentials>) => {
       }
     })
 }
+
+// Intercept form submit to run custom validation
+const handleFormSubmit = (formData: FormSubmitData<LoginCredentials>, event?: Event) => {
+  const login = formData.login?.toString().trim() || ''
+  const password = formData.password?.toString().trim() || ''
+
+  // Check if only one field is filled (not both)
+  if ((login && !password) || (!login && password)) {
+    const { notify } = useNotifications()
+    notify({
+      message: __('Please fill in all the required fields.'),
+      type: NotificationTypes.Error,
+    })
+    if (event) event.preventDefault()
+    return // Prevent form submission
+  }
+
+  // Proceed with normal login
+  sendCredentials(formData)
+}
 </script>
 
 <template>
@@ -126,7 +146,7 @@ const sendCredentials = (formData: FormSubmitData<LoginCredentials>) => {
     ref="form"
     class="text-left"
     :schema="loginSchema"
-    @submit="sendCredentials($event as FormSubmitData<LoginCredentials>)"
+    @submit.prevent="handleFormSubmit($event as FormSubmitData<LoginCredentials>)"
   >
     <template #after-fields>
       <div v-if="$c.user_create_account" class="mt-4 flex grow items-center justify-center">
