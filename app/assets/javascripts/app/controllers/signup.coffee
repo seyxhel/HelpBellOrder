@@ -58,6 +58,13 @@ class Signup extends App.ControllerFullPage
     if !@params.login && @params.email
       @params.login = @params.email
 
+    # Custom required fields validation for signup
+    requiredFields = [@params.firstname, @params.lastname, @params.email, @params.password]
+    if requiredFields.some((field) -> !field or field.trim() is '')
+      @form.showAlert(App.i18n.translateContent('Please fill in all required fields.'))
+      @formEnable(e)
+      return false
+
     @params.signup = true
     @params.role_ids = []
     @log 'notice', 'updateAttributes', @params

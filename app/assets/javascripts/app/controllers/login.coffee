@@ -158,6 +158,12 @@ class Login extends App.ControllerFullPage
     # remember username
     @formPayload = _.pick params, ['username', 'password', 'remember_me']
 
+    # Validate required fields
+    if !params.username or !params.password
+      @render({ errorMessage: App.i18n.translateContent('Please fill in the required fields.') })
+      @formEnable(e)
+      return
+
     # session create with login/password
     App.Auth.login(
       data:    params

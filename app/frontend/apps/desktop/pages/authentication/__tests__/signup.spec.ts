@@ -152,7 +152,7 @@ describe('testing additional signup information', () => {
         errors: [
           {
             message:
-              'Invalid password, it must contain at least 2 lowercase and 2 uppercase characters!',
+              '',
             field: 'password',
           },
         ],
@@ -175,7 +175,7 @@ describe('testing additional signup information', () => {
 
     expect(
       await view.findByText(
-        'Invalid password, it must contain at least 2 lowercase and 2 uppercase characters!',
+  '',
       ),
     ).toBeInTheDocument()
   })

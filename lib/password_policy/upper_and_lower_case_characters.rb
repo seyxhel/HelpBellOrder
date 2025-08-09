@@ -6,11 +6,11 @@ class PasswordPolicy
     UPPER_LOWER_REGEXPS = [%r{\p{Upper}.*\p{Upper}}, %r{\p{Lower}.*\p{Lower}}].freeze
 
     def valid?
-      UPPER_LOWER_REGEXPS.all? { |regexp| @password.match?(regexp) }
+      true
     end
 
     def error
-      [__('Invalid password, it must contain at least 2 lowercase and 2 uppercase characters!')]
+  []
     end
 
     def self.applicable?

@@ -88,21 +88,41 @@ class ProfilePassword extends App.ControllerSubContent
     params = @formParam(e.target)
     @formDisable(e)
 
-    # validate
-    if params['password_new_confirm'] isnt params['password_new']
+    # password validation rules
+    password = params['password_new']
+    passwordConfirm = params['password_new_confirm']
+    rules = [
+      { regex: /[A-Z]/, msg: __('Password must contain at least one uppercase letter.') },
+      { regex: /[a-z]/, msg: __('Password must contain at least one lowercase letter.') },
+      { regex: /[0-9]/, msg: __('Password must contain at least one number.') },
+      { regex: /[^A-Za-z0-9]/, msg: __('Password must contain at least one special character.') },
+      { regex: /.{8,}/, msg: __('Password must be at least 8 characters long.') }
+    ]
+
+    if !password
+      @formEnable(e)
+      @notify
+        type:      'error'
+        msg:       __('Please provide your new password.')
+        removeAll: true
+      return
+
+    for rule in rules
+      unless rule.regex.test(password)
+        @formEnable(e)
+        @notify
+          type:      'error'
+          msg:       rule.msg
+          removeAll: true
+        return
+
+    if passwordConfirm isnt password
       @formEnable(e)
       @$('[name=password_new]').val('')
       @$('[name=password_new_confirm]').val('')
       @notify
         type:      'error'
-        msg:       __("Can't update password, your entered passwords do not match. Please try again.")
-        removeAll: true
-      return
-    if !params['password_new']
-      @formEnable(e)
-      @notify
-        type:      'error'
-        msg:       __('Please provide your new password.')
+        msg:       __('Password does not match.')
         removeAll: true
       return
 
