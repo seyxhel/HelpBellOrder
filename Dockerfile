@@ -61,8 +61,7 @@ COPY . .
 
 # Append build information to the Zammad VERSION.
 RUN if [ -z "${COMMIT_SHA}" ]; then \
-    echo "Error: the required build argument \$COMMIT_SHA is missing."; \
-    exit 1; \
+    COMMIT_SHA="unknown"; \
   fi; \
   COMMIT_SHA_SHORT=$(echo "${COMMIT_SHA}" | cut -c 1-8); \
   BASE_VERSION=$(tr -d '\n' < VERSION | sed 's/\.x$/.0/'); \
