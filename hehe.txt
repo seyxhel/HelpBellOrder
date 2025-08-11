@@ -1,40 +1,77 @@
-1. Getting Started & Setup
-"How do I install and set up this open-source software locally for development?"
-"What are the minimum system requirements to run this software?"
-"Are there pre-configured virtual machines or Docker containers available?"
-2. Understanding the Codebase
-"Where should I start reading the code if I want to modify [specific feature]?"
-"Is there documentation or an architecture diagram for the software?"
-"What programming languages/frameworks are used, and are there coding standards?"
-3. Customization & Extensibility
-"How can I add a new feature without breaking existing functionality?"
-"Does this software support plugins/modules? How do I create one?"
-"Can I change the UI (e.g., themes, layouts) without deep coding knowledge?"
-4. Debugging & Troubleshooting
-"Why does the software crash when I modify [X]? How do I debug it?"
-"Where are the log files stored, and how do I interpret errors?"
-"Are there unit tests I can run to check my changes?"
-5. Community & Collaboration
-"How do I contribute my changes back to the main project?"
-"Is there a forum, Discord, or Slack channel for developers?"
-"What’s the best way to ask for help without bothering maintainers?"
-6. Deployment & Distribution
-"How do I package my customized version for others to use?"
-"Can I deploy this on a cloud service (AWS, Heroku, etc.)?"
-"Will my customizations break during software updates?"
-7. Licensing & Legal Concerns
-"What license does this software use, and can I modify/distribute it freely?"
-"Do I need to open-source my modifications if I use this code?"
-"Can I use this software commercially after customization?"
-8. Learning Resources
-"Are there tutorials or YouTube walkthroughs for beginners?"
-"Which parts of the codebase are best for learning [concept]?"
-"Has anyone built something similar that I can reference?"
-9. Performance & Optimization
-"How can I make my customizations run faster?"
-"Are there known performance bottlenecks I should avoid?"
-"How do I test the impact of my changes on speed/memory usage?"
-10. Security Considerations
-"How do I ensure my custom code doesn’t introduce vulnerabilities?"
-"Are there security best practices for this project?"
-"How often does the software get security patches?"
+1. End User (Customer)
+Account Creation:
+
+Can sign up via web form or be created by an agent/admin.
+May receive a welcome email or password setup link.
+Authentication:
+
+Logs in with email/username and password.
+Can reset password via email link.
+Ticket Interaction:
+
+Can create new tickets (support requests).
+Can view, reply to, and close their own tickets.
+Can attach files and add notes to tickets.
+Profile Management:
+
+Can update personal info (name, email, phone, etc.).
+Can change password.
+2. Agent
+Authentication:
+
+Logs in with credentials (may use 2FA if enabled).
+Ticket Handling:
+
+Views tickets assigned to them or their group.
+Replies to, updates, and closes tickets.
+Assigns tickets to other agents or groups.
+Adds internal notes and attachments.
+Changes ticket status, priority, and tags.
+User Management:
+
+Can create and edit end user accounts.
+Can view user profiles and ticket history.
+Automation & Collaboration:
+
+Uses triggers, macros, and templates for faster ticket handling.
+Collaborates with other agents via internal notes.
+3. Admin
+Authentication:
+
+Logs in with credentials (may use 2FA if enabled).
+System Configuration:
+
+Manages system settings (branding, notifications, integrations).
+Configures channels (email, chat, phone, social media).
+Sets up organizations, departments, and groups.
+User & Role Management:
+
+Creates, edits, and deletes users (end users, agents, other admins).
+Assigns roles and permissions.
+Manages agent groups and access rights.
+Ticket Oversight:
+
+Views all tickets in the system.
+Reassigns tickets, sets SLAs, and manages escalations.
+Automation & Reporting:
+
+Configures triggers, schedulers, and SLAs.
+Generates reports and audits logs.
+Monitors system health and usage.
+Maintenance:
+
+Performs backups, restores, and system updates.
+Manages integrations and API access.
+4. Organization/Department Manager (if enabled)
+User Management:
+
+Manages users within their organization/department.
+Views tickets for their organization.
+Ticket Oversight:
+
+Assigns tickets to agents in their department.
+Monitors ticket status and performance.
+Note:
+
+Roles and permissions can be customized in Zammad, so some workflows may vary depending on your configuration.
+Some systems may have additional roles (e.g., reporting-only, read-only).
