@@ -217,7 +217,7 @@ RSpec.describe Gql::Mutations::Login, :aggregate_failures, type: :request do
 
     context 'without CSRF token', allow_forgery_protection: true do
       it 'fails with error message' do
-        expect(graphql_response['errors'][0]).to include('message' => 'Something went wrong. Please try again in a moment.')
+        expect(graphql_response['errors'][0]).to include('message' => 'Something went wrong. Please refresh to try again.')
       end
 
       it 'fails with error type' do
