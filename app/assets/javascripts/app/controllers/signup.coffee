@@ -65,6 +65,28 @@ class Signup extends App.ControllerFullPage
       @formEnable(e)
       return false
 
+    # Password validation (same as change password)
+    password = @params.password
+    passwordConfirm = @params.password_confirm
+    rules = [
+      { regex: /[A-Z]/, msg: __('Password must contain at least one uppercase letter.') },
+      { regex: /[a-z]/, msg: __('Password must contain at least one lowercase letter.') },
+      { regex: /[0-9]/, msg: __('Password must contain at least one number.') },
+      { regex: /[^A-Za-z0-9]/, msg: __('Password must contain at least one special character.') },
+      { regex: /.{8,}/, msg: __('Password must be at least 8 characters long.') }
+    ]
+
+    for rule in rules
+      unless rule.regex.test(password)
+        @formEnable(e)
+        @form.showAlert(rule.msg)
+        return false
+
+    if passwordConfirm isnt password
+      @formEnable(e)
+      @form.showAlert(__('Password does not match.'))
+      return false
+
     @params.signup = true
     @params.role_ids = []
     @log 'notice', 'updateAttributes', @params
@@ -76,8 +98,6 @@ class Signup extends App.ControllerFullPage
     )
 
     if errors
-      @log 'error new', errors
-
       # Only highlight, but don't add message. Error text breaks layout.
       Object.keys(errors).forEach (key) ->
         errors[key] = null
