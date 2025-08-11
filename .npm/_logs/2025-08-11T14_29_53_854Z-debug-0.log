@@ -1,0 +1,21 @@
+0 verbose cli /usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js
+1 info using npm@10.9.3
+2 info using node@v22.18.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/opt/zammad/.npmrc
+5 silly config load:file:/usr/local/etc/npmrc
+6 verbose title npm exec vite build --mode development
+7 verbose argv "exec" "--" "vite" "build" "--mode" "development"
+8 verbose logfile logs-max:10 dir:/opt/zammad/.npm/_logs/2025-08-11T14_29_53_854Z-
+9 verbose logfile /opt/zammad/.npm/_logs/2025-08-11T14_29_53_854Z-debug-0.log
+10 silly logfile done cleaning log files
+11 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+12 http fetch GET 200 https://registry.npmjs.org/vite 1237ms (cache revalidated)
+13 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+14 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+15 verbose cwd /opt/zammad
+16 verbose os Linux 6.8.0-60-generic
+17 verbose node v22.18.0
+18 verbose npm  v10.9.3
+19 verbose exit 1
+20 verbose code 1
