@@ -52,7 +52,7 @@ gem 'graphql-batch', require: 'graphql/batch'
 gem 'graphql-fragment_cache'
 
 # core - image processing
-# gem 'rszr'  # Temporarily disabled for Windows - requires imlib2 dev headers
+gem 'rszr', require: false  # Enable image processing for production
 
 # core - use same timezone data on any host
 gem 'tzinfo-data'

@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# This script is used to bootstrap and configure Zammad for deployment
+
+require_relative '../config/environment'
+
+puts "Starting Zammad deployment setup..."
+
+# Ensure directories exist
+FileUtils.mkdir_p('/opt/zammad/tmp/pids')
+FileUtils.mkdir_p('/opt/zammad/log')
+FileUtils.mkdir_p('/opt/zammad/storage')
+
+# Clean up any existing PID files
+Dir.glob('/opt/zammad/tmp/pids/*.pid').each { |f| File.delete(f) }
+
+puts "Zammad deployment setup complete."
