@@ -56,9 +56,9 @@ COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=node /usr/local/bin /usr/local/bin
 
 # Install node modules
-COPY package.json pnpm-lock.yaml ./
+COPY package.json package-lock.json ./
 COPY .eslint-plugin-zammad/package.json .eslint-plugin-zammad/pnpm-lock.yaml .eslint-plugin-zammad/lib/ .eslint-plugin-zammad/
-RUN pnpm install --frozen-lockfile
+RUN npm ci
 
 # Copy application code
 COPY . .
@@ -75,7 +75,7 @@ RUN if [ -z "${COMMIT_SHA}" ]; then \
 
 # Build Vite assets first, then Rails assets
 RUN touch db/schema.rb && \
-    pnpm run build && \
+    npm run build && \
     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile
 
 RUN bash script/build/cleanup.sh
