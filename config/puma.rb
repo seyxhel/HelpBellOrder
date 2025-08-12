@@ -10,6 +10,7 @@ threads_count_max = Integer(ENV['MAX_THREADS'] || 30)
 threads threads_count_min, threads_count_max
 
 port ENV.fetch("PORT") { 3000 }
+bind "0.0.0.0:#{ENV.fetch("PORT") { 3000 }}"
 environment ENV.fetch('RAILS_ENV', 'production')
 
 preload_app!

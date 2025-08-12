@@ -1,54 +1,50 @@
-Application logs:
-(loading on site)
-
-Build logs:
-2025-08-12T16:51:56.869652417Z #29 1.870 npm error   dev stylelint-config-standard@"^38.0.0" from the root project
-2025-08-12T16:51:56.869654137Z #29 1.870 npm error   stylelint-config-standard@"^38.0.0" from stylelint-config-standard-scss@15.0.1
-2025-08-12T16:51:56.869655787Z #29 1.870 npm error   node_modules/stylelint-config-standard-scss
-2025-08-12T16:51:56.869657497Z #29 1.870 npm error     dev stylelint-config-standard-scss@"^15.0.1" from the root project
-2025-08-12T16:51:56.869659157Z #29 1.870 npm error
-2025-08-12T16:51:56.869660807Z #29 1.870 npm error Conflicting peer dependency: stylelint@16.23.1
-2025-08-12T16:51:56.869662727Z #29 1.870 npm error node_modules/stylelint
-2025-08-12T16:51:56.869664447Z #29 1.870 npm error   peer stylelint@"^16.18.0" from stylelint-config-standard@38.0.0
-2025-08-12T16:51:56.869666117Z #29 1.870 npm error   node_modules/stylelint-config-standard
-2025-08-12T16:51:56.869674108Z #29 1.870 npm error     dev stylelint-config-standard@"^38.0.0" from the root project
-2025-08-12T16:51:56.869676158Z #29 1.870 npm error     stylelint-config-standard@"^38.0.0" from stylelint-config-standard-scss@15.0.1
-2025-08-12T16:51:56.869677828Z #29 1.870 npm error     node_modules/stylelint-config-standard-scss
-2025-08-12T16:51:56.869679658Z #29 1.870 npm error       dev stylelint-config-standard-scss@"^15.0.1" from the root project
-2025-08-12T16:51:56.869681368Z #29 1.870 npm error
-2025-08-12T16:51:56.869683018Z #29 1.870 npm error Fix the upstream dependency conflict, or retry
-2025-08-12T16:51:56.869684728Z #29 1.870 npm error this command with --force or --legacy-peer-deps
-2025-08-12T16:51:56.869686438Z #29 1.870 npm error to accept an incorrect (and potentially broken) dependency resolution.
-2025-08-12T16:51:56.869691518Z #29 1.870 npm error
-2025-08-12T16:51:56.869693278Z #29 1.870 npm error
-2025-08-12T16:51:56.869694988Z #29 1.870 npm error For a full report see:
-2025-08-12T16:51:56.869696718Z #29 1.870 npm error /root/.npm/_logs/2025-08-12T16_51_55_027Z-eresolve-report.txt
-2025-08-12T16:51:56.869698358Z #29 1.871 npm notice
-2025-08-12T16:51:56.869700138Z #29 1.871 npm notice New major version of npm available! 10.9.3 -> 11.5.2
-2025-08-12T16:51:56.869701838Z #29 1.871 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.5.2
-2025-08-12T16:51:56.869703489Z #29 1.871 npm notice To update run: npm install -g npm@11.5.2
-2025-08-12T16:51:56.869705158Z #29 1.871 npm notice
-2025-08-12T16:51:56.869707478Z #29 1.872 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-08-12T16_51_55_027Z-debug-0.log
-2025-08-12T16:51:57.901151217Z #29 ERROR: process "/bin/bash -o errexit -o pipefail -c npm ci" did not complete successfully: exit code: 1
-2025-08-12T16:51:57.901172617Z ------
-2025-08-12T16:51:57.901177558Z  > [build  8/13] RUN npm ci:
-2025-08-12T16:51:57.901181658Z 1.870 npm error
-2025-08-12T16:51:57.901185718Z 1.870 npm error
-2025-08-12T16:51:57.901190128Z 1.870 npm error For a full report see:
-2025-08-12T16:51:57.901194308Z 1.870 npm error /root/.npm/_logs/2025-08-12T16_51_55_027Z-eresolve-report.txt
-2025-08-12T16:51:57.901198368Z 1.871 npm notice
-2025-08-12T16:51:57.901202258Z 1.871 npm notice New major version of npm available! 10.9.3 -> 11.5.2
-2025-08-12T16:51:57.901205989Z 1.871 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.5.2
-2025-08-12T16:51:57.901209869Z 1.871 npm notice To update run: npm install -g npm@11.5.2
-2025-08-12T16:51:57.901213689Z 1.871 npm notice
-2025-08-12T16:51:57.901217769Z 1.872 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-08-12T16_51_55_027Z-debug-0.log
-2025-08-12T16:51:57.901221609Z ------
-2025-08-12T16:51:57.901225469Z Dockerfile:61
-2025-08-12T16:51:57.901229439Z --------------------
-2025-08-12T16:51:57.901233369Z   59 |     COPY package.json package-lock.json ./
-2025-08-12T16:51:57.901237649Z   60 |     COPY .eslint-plugin-zammad/package.json .eslint-plugin-zammad/pnpm-lock.yaml .eslint-plugin-zammad/lib/ .eslint-plugin-zammad/
-2025-08-12T16:51:57.90124139Z   61 | >>> RUN npm ci
-2025-08-12T16:51:57.90124513Z   62 |     
-2025-08-12T16:51:57.90124902Z   63 |     # Copy application code
-2025-08-12T16:51:57.9012528Z --------------------
-2025-08-12T16:51:57.90125681Z error: failed to solve: process "/bin/bash -o errexit -o pipefail -c npm ci" did not complete successfully: exit code: 1
+2025-08-12T17:00:03.042873771Z #32 183.2     <stdin>:376:16:
+2025-08-12T17:00:03.042875601Z #32 183.2       376 │       .Customer & {
+2025-08-12T17:00:03.042877381Z #32 183.2           ╵                 ^
+2025-08-12T17:00:03.042879061Z #32 183.2 
+2025-08-12T17:00:03.042880811Z #32 183.2   The nesting transform for this case must generate an ":is(...)" but the configured target environment does not support the ":is" pseudo-class.
+2025-08-12T17:00:03.042882491Z #32 183.2 
+2025-08-12T17:00:03.042884171Z #32 183.2 
+2025-08-12T17:00:03.042885801Z #32 183.2 
+2025-08-12T17:00:03.344874224Z #32 DONE 183.5s
+2025-08-12T17:00:03.344895984Z 
+2025-08-12T17:00:03.344911465Z #33 [build 12/13] RUN bash script/build/cleanup.sh
+2025-08-12T17:00:39.870292056Z #33 DONE 36.6s
+2025-08-12T17:00:39.870314877Z 
+2025-08-12T17:00:39.870320247Z #34 [build 13/13] RUN bundle exec bootsnap precompile --gemfile app/ lib/
+2025-08-12T17:00:57.660286897Z #34 DONE 17.7s
+2025-08-12T17:00:59.764120353Z 
+2025-08-12T17:00:59.764144243Z #35 [stage-3 6/8] COPY --chown=1000:1000 --from=build /usr/local/bundle /usr/local/bundle
+2025-08-12T17:01:05.487941737Z #35 DONE 5.7s
+2025-08-12T17:01:05.487969538Z 
+2025-08-12T17:01:05.487975658Z #36 [stage-3 7/8] COPY --chown=1000:1000 --from=build /opt/zammad /opt/zammad
+2025-08-12T17:01:10.420172305Z #36 DONE 5.0s
+2025-08-12T17:01:10.575081871Z 
+2025-08-12T17:01:10.575102331Z #37 [stage-3 8/8] RUN ln -s "/opt/zammad/bin/docker-entrypoint" /docker-entrypoint.sh
+2025-08-12T17:01:11.287404364Z #37 DONE 0.9s
+2025-08-12T17:01:11.437993686Z 
+2025-08-12T17:01:11.475008306Z #38 exporting to docker image format
+2025-08-12T17:01:11.475019976Z #38 exporting layers
+2025-08-12T17:01:30.164684337Z #38 exporting layers 18.8s done
+2025-08-12T17:01:30.164700877Z #38 exporting manifest sha256:7e45aa6c159629c91c6380553d75af17857713fc5599e3264b7c81641f82e046 0.0s done
+2025-08-12T17:01:30.164705227Z #38 exporting config sha256:985d4e1f06c360ecf67ca608911b9d1ed95b5dc14a54abcb1869cc89200d0e87 0.0s done
+2025-08-12T17:01:34.108173885Z #38 DONE 22.8s
+2025-08-12T17:01:34.108192185Z 
+2025-08-12T17:01:34.108196205Z #39 exporting cache to client directory
+2025-08-12T17:01:34.108199175Z #39 preparing build cache for export
+2025-08-12T17:02:32.452840318Z #39 writing cache manifest sha256:daad9414be6fb06165ba3def93212d5ebcc03ad33162985719b3a66ea6f93ce6 done
+2025-08-12T17:02:32.452861378Z #39 DONE 58.2s
+2025-08-12T17:02:33.161041468Z Pushing image to registry...
+2025-08-12T17:02:41.098131053Z Upload succeeded
+2025-08-12T17:02:49.500833244Z ==> Deploying...
+2025-08-12T17:03:30.495243456Z I, [2025-08-12T17:03:30.495064#7-7640]  INFO -- : Using Zammad's file store as Rails cache store.
+2025-08-12T17:03:30.496999915Z I, [2025-08-12T17:03:30.496913#7-7640]  INFO -- : Using the Redis back end for Zammad's web socket session store.
+2025-08-12T17:03:31.146773426Z I, [2025-08-12T17:03:31.146598#7-7640]  INFO -- : ActionCable is using the redis instance at redis://default:LhpmljSeZEJPqzIqXhliHCHUAXuYyEku@mainline.proxy.rlwy.net:44140.
+2025-08-12T17:03:55.809488477Z ==> No open ports detected, continuing to scan...
+2025-08-12T17:03:55.888041605Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+2025-08-12T17:04:17.333063808Z I, [2025-08-12T17:04:17.332931#7-7640]  INFO -- : ActionCable is configured to accept requests from (?-mix:https?:\/\/localhost:\d+), http://localhost:3000.
+2025-08-12T17:04:26.793751888Z ==> Application exited early
+2025-08-12T17:04:26.809530796Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+2025-08-12T17:04:48.816713201Z I, [2025-08-12T17:04:48.816516#7-7640]  INFO -- : Using Zammad's file store as Rails cache store.
+2025-08-12T17:04:48.817999127Z I, [2025-08-12T17:04:48.817913#7-7640]  INFO -- : Using the Redis back end for Zammad's web socket session store.
+2025-08-12T17:04:49.437012784Z I, [2025-08-12T17:04:49.436827#7-7640]  INFO -- : ActionCable is using the redis instance at redis://default:LhpmljSeZEJPqzIqXhliHCHUAXuYyEku@mainline.proxy.rlwy.net:44140.
