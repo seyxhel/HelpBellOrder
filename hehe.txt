@@ -1,1 +1,15 @@
-https://1d64488c289c.ngrok-free.app/
+==> Deploying...
+I, [2025-08-12T06:29:39.238835#7-7480]  INFO -- : Using Zammad's file store as Rails cache store.
+I, [2025-08-12T06:29:39.241888#7-7480]  INFO -- : Using the Redis back end for Zammad's web socket session store.
+I, [2025-08-12T06:29:39.331949#7-7480]  INFO -- : Rszr gem not available, skipping image processing features
+I, [2025-08-12T06:29:39.913542#7-7480]  INFO -- : ActionCable is using the redis instance at redis://default:LhpmljSeZEJPqzIqXhliHCHUAXuYyEku@mainline.proxy.rlwy.net:44140.
+==> No open ports detected, continuing to scan...
+==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+I, [2025-08-12T06:30:26.119277#7-7480]  INFO -- : ActionCable is configured to accept requests from (?-mix:https?:\/\/localhost:\d+), http://localhost:3000.
+==> Application exited early
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+I, [2025-08-12T06:30:54.880569#7-7480]  INFO -- : Using Zammad's file store as Rails cache store.
+I, [2025-08-12T06:30:54.883565#7-7480]  INFO -- : Using the Redis back end for Zammad's web socket session store.
+I, [2025-08-12T06:30:54.907484#7-7480]  INFO -- : Rszr gem not available, skipping image processing features
+I, [2025-08-12T06:30:55.494768#7-7480]  INFO -- : ActionCable is using the redis instance at redis://default:LhpmljSeZEJPqzIqXhliHCHUAXuYyEku@mainline.proxy.rlwy.net:44140.
+I, [2025-08-12T06:31:42.043171#7-7480]  INFO -- : ActionCable is configured to accept requests from (?-mix:https?:\/\/localhost:\d+), http://localhost:3000.
