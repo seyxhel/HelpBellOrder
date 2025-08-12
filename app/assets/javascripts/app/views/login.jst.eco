@@ -24,7 +24,7 @@
 
             <div class="form-group">
               <div class="formGroup-label">
-                <label for="username"><%- @Ti('email') %></label>
+                <label for="username"><%- @Ti('Email Address') %></label>
               </div>
               <input id="username" name="username" type="text" class="form-control" value="<%= @item.formPayload?.username %>"/>
             </div>
@@ -33,7 +33,13 @@
               <div class="formGroup-label">
                 <label for="password"><%- @Ti('Password') %></label>
               </div>
-              <input id="password" name="password" type="password" class="form-control" autocomplete="off"/>
+              <div class="password-wrapper" style="position:relative;">
+                <input id="password" name="password" type="password" class="form-control" autocomplete="off"/>
+                <span id="togglePassword" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                  <span id="showText" style="display:inline; color:#9F9F9F; font-size:12px;">Show Password</span>
+                  <span id="hideText" style="display:none; color:#9F9F9F; font-size:12px;">Hide Password</span>
+                </span>
+              </div>
             </div>
 
             <div class="form-group">
@@ -121,3 +127,29 @@
     <a href="https://zammad.org" target="_blank"><%- @T(' PrimeDesk') %></a>
   </div>
 </div>
+
+
+<%# For password open and close %>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var passwordInput = document.getElementById('password');
+  var togglePassword = document.getElementById('togglePassword');
+  var showText = document.getElementById('showText');
+  var hideText = document.getElementById('hideText');
+
+  if (togglePassword) {
+    togglePassword.addEventListener('click', function() {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        showText.style.display = 'none';
+        hideText.style.display = 'inline';
+      } else {
+        passwordInput.type = 'password';
+        showText.style.display = 'inline';
+        hideText.style.display = 'none';
+      }
+    });
+  }
+});
+</script>
+
