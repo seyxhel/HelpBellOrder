@@ -1,27 +1,26 @@
 services:
   - type: web
     name: helpbellorder
-    runtime: ruby
+    runtime: docker
     plan: starter
-    buildCommand: bundle install && bundle exec rake assets:precompile
-    startCommand: bundle exec puma -C config/puma.rb
+    dockerCommand: zammad-railsserver
     envVars:
       - key: RAILS_ENV
         value: production
       - key: RAILS_LOG_TO_STDOUT
         value: true
-      - key: RAILS_SERVE_STATIC_FILES
-        value: true
-      - key: WEB_CONCURRENCY
-        value: 2
-      - key: MIN_THREADS
-        value: 5
-      - key: MAX_THREADS
-        value: 30
-      - key: FORCE_SSL
-        value: true
       - key: SECRET_KEY_BASE
         generateValue: true
+      - key: ZAMMAD_RAILSSERVER_PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: helpbellorder-db
+          property: connectionString
+      - key: REDIS_URL
+        fromDatabase:
+          name: helpbellorder-redis
+          property: connectionString
 
 databases:
   - name: helpbellorder-db
