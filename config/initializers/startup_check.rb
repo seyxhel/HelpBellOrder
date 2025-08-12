@@ -9,10 +9,9 @@ Rails.application.config.after_initialize do
     begin
       db_connected = ActiveRecord::Base.connection.active?
       Rails.logger.info "Database connection: #{db_connected}"
-      if db_connected
-        Rails.logger.info "Database adapter: #{ActiveRecord::Base.connection.adapter_name}"
-        Rails.logger.info "Database name: #{ActiveRecord::Base.connection.current_database}"
-      else
+      Rails.logger.info "Database adapter: #{ActiveRecord::Base.connection.adapter_name}"
+      Rails.logger.info "Database name: #{ActiveRecord::Base.connection.current_database}"
+      unless db_connected
         raise "Database connection returned false"
       end
     rescue => db_error
