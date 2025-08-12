@@ -44,7 +44,11 @@ RUN apt-get update -qq && \
 # Install application gems
 COPY Gemfile Gemfile.lock vendor ./
 
-RUN bundle install && \
+# Allow lockfile updates in build stage despite base ENV BUNDLE_DEPLOYMENT=1
+# so Docker builds don't fail when Gemfile changes without a committed lockfile.
+RUN bundle config set deployment false && \
+    bundle config set frozen false && \
+    bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
 # Install JavaScript dependencies
