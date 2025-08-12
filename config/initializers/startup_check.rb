@@ -2,8 +2,30 @@
 Rails.application.config.after_initialize do
   begin
     Rails.logger.info "=== STARTUP CHECK BEGIN ==="
-    Rails.logger.info "Database connection: #{ActiveRecord::Base.connection.active?}"
-    Rails.logger.info "Redis connection: #{Redis.new(url: ENV['REDIS_URL'] || 'redis://localhost:6379').ping}"
+    Rails.logger.info "DATABASE_URL: #{ENV['DATABASE_URL']&.gsub(/:[^:@]*@/, ':***@')}"
+    Rails.logger.info "REDIS_URL: #{ENV['REDIS_URL']&.gsub(/:[^:@]*@/, ':***@')}"
+    
+    # Test database connection with more details
+    begin
+      db_connected = ActiveRecord::Base.connection.active?
+      Rails.logger.info "Database connection: #{db_connected}"
+      if db_connected
+        Rails.logger.info "Database adapter: #{ActiveRecord::Base.connection.adapter_name}"
+        Rails.logger.info "Database name: #{ActiveRecord::Base.connection.current_database}"
+      end
+    rescue => db_error
+      Rails.logger.error "Database connection error: #{db_error.message}"
+      Rails.logger.error "Database error class: #{db_error.class}"
+    end
+    
+    # Test Redis connection
+    begin
+      redis_response = Redis.new(url: ENV['REDIS_URL'] || 'redis://localhost:6379').ping
+      Rails.logger.info "Redis connection: #{redis_response}"
+    rescue => redis_error
+      Rails.logger.error "Redis connection error: #{redis_error.message}"
+    end
+    
     Rails.logger.info "Environment: #{Rails.env}"
     Rails.logger.info "=== STARTUP CHECK END ==="
   rescue => e
