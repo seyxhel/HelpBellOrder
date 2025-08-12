@@ -1,0 +1,156 @@
+PS C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder> npm run build
+
+> build
+> vite build
+
+vite v6.3.5 building for production...
+✓ 5 modules transformed.
+
+PWA v1.0.2
+Building apps/mobile/sw/sw.ts service worker ("es" format)...
+vite v6.3.5 building for production...
+✓ 65 modules transformed.
+../../public/assets/frontend/vite/sw.mjs  16.37 kB │ gzip: 5.52 kB │ map: 141.67 kB    
+✓ built in 8.05s
+transforming (3699) ..\.
+PWA v1.0.2
+mode      injectManifest     
+format:   es
+precache  0 entries (0.00 KiB)
+files generated
+  ../../public/assets/frontend/vite/sw.js
+  ../../public/assets/frontend/vite/sw.js.map
+warnings
+  One of the glob patterns doesn't match any files. Please remove or fix the following: {
+  "globDirectory": "C:\\Users\\sethp\\Desktop\\HelpBellOrder\\HelpBellOrder\\public\\assets\\frontend\\vite",       
+  "globPattern": "**/*.{js,wasm,css,html}",
+  "globIgnores": [
+    "**/node_modules/**/*",  
+    "sw.js",
+    "sw.js"
+  ]
+}
+
+✗ Build failed in 9.54s      
+error during build:
+[vite-plugin-pwa:build] [plugin vite-plugin-pwa:build] app/frontend/apps/desktop/styles/main.css: There was an error during the build:
+  Failed to load PostCSS config (searchPath: C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/app/frontend): [Error] Cannot find module 'autoprefixer'
+Require stack:
+- C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder\postcss.config.js
+Error: Cannot find module 'autoprefixer'
+Require stack:
+- C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder\postcss.config.js
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    at Function._load (node:internal/modules/cjs/loader:1211:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1487:12)
+    at require (node:internal/modules/helpers:135:16)     
+    at Object.<anonymous> (C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder\postcss.config.js:4:5)
+    at Module._compile (node:internal/modules/cjs/loader:1730:14)
+    at Object..js (node:internal/modules/cjs/loader:1895:10)
+    at Module.load (node:internal/modules/cjs/loader:1465:32)
+    at Function._load (node:internal/modules/cjs/loader:1282:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at cjsLoader (node:internal/modules/esm/translators:266:5)
+Additionally, handling the error in the 'buildEnd' hook caused the following error:    
+  Failed to load PostCSS config (searchPath: C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/app/frontend): [Error] Cannot find module 'autoprefixer'
+Require stack:
+- C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder\postcss.config.js
+Error: Cannot find module 'autoprefixer'
+Require stack:
+- C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder\postcss.config.js
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+    at Function._load (node:internal/modules/cjs/loader:1211:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1487:12)
+    at require (node:internal/modules/helpers:135:16)     
+    at Object.<anonymous> (C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder\postcss.config.js:4:5)
+    at Module._compile (node:internal/modules/cjs/loader:1730:14)
+    at Object..js (node:internal/modules/cjs/loader:1895:10)
+    at Module.load (node:internal/modules/cjs/loader:1465:32)
+    at Function._load (node:internal/modules/cjs/loader:1282:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at cjsLoader (node:internal/modules/esm/translators:266:5)
+file: C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/app/frontend/apps/desktop/styles/main.css
+    at getRollupError (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/rollup/dist/es/shared/node-entry.js:23246:39
+    at async catchUnfinishedHookActions (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/rollup/dist/es/shared/node-entry.js:22705:16)
+    at async rollupInternal (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/rollup/dist/es/shared/node-entry.js:23229:5)    at async buildEnvironment (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:46206:14)
+ildApp [as buildApp] (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:46684:5)     
+    at async CAC.<anonymous> 
+(file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/vite/dist/node/cli.js:863:7)
+PS C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder> npm install autoprefixer --save-dev --legacy-peer-deps       
+
+added 3 packages, changed 3 packages, and audited 1514 packages in 5s
+
+333 packages are looking for 
+funding
+  run `npm fund` for details 
+oderate, 2 high)
+
+To address issues that do not require attention, run:     
+  npm audit fix
+
+To address all issues (including breaking changes), run:  
+  npm audit fix --force      
+
+Run `npm audit` for details. 
+PS C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder> npm run build
+
+> build
+> vite build
+
+vite v6.3.5 building for production...
+transforming (820) ..\..
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.    
+warn - Configure your content sources or your generated CSS will be missing styles.    
+warn - https://tailwindcss.com/docs/content-configuration 
+✓ 1097 modules transformed.
+transforming (1139) ..\.
+PWA v1.0.2
+Building apps/mobile/sw/sw.ts service worker ("es" format)...
+vite v6.3.5 building for production...
+✓ 65 modules transformed.
+../../public/assets/frontend/vite/sw.mjs  16.37 kB │ gzip: 5.52 kB │ map: 141.67 kB    
+✓ built in 7.85s
+transforming (3883) apps
+PWA v1.0.2
+mode      injectManifest     
+format:   es
+precache  0 entries (0.00 KiB)
+files generated
+  ../../public/assets/frontend/vite/sw.js
+  ../../public/assets/frontend/vite/sw.js.map
+warnings
+  One of the glob patterns doesn't match any files. Please remove or fix the following: {
+  "globDirectory": "C:\\Users\\sethp\\Desktop\\HelpBellOrder\\HelpBellOrder\\public\\assets\\frontend\\vite",       
+  "globPattern": "**/*.{js,wasm,css,html}",
+  "globIgnores": [
+    "**/node_modules/**/*",  
+    "sw.js",
+    "sw.js"
+  ]
+}
+
+✗ Build failed in 11.89s     
+error during build:
+[vite-plugin-pwa:build] [plugin vite-plugin-pwa:build] app/frontend/apps/desktop/styles/main.css (1:0): There was an error during the build:     
+  [postcss] postcss-import: C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder\node_modules\tailwindcss\lib\index.js:1:1: Unknown word "use strict"
+Additionally, handling the error in the 'buildEnd' hook caused the following error:    
+  [postcss] postcss-import: C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder\node_modules\tailwindcss\lib\index.js:1:1: Unknown word "use strict"
+file: C:\Users\sethp\Desktop\HelpBellOrder\HelpBellOrder\node_modules\tailwindcss\lib\index.js:1:0 (C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/app/frontend/apps/desktop/styles/main.css)
+    at getRollupError (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/rollup/dist/es/shared/node-entry.js:23246:39
+    at async catchUnfinishedHookActions (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/rollup/dist/es/shared/node-entry.js:22705:16)
+    at async rollupInternal (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/rollup/dist/es/shared/node-entry.js:23229:5)    at async buildEnvironment (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:46206:14)
+    at async Object.defaultBuildApp [as buildApp] (file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:46684:5)     
+    at async CAC.<anonymous> 
+(file:///C:/Users/sethp/Desktop/HelpBellOrder/HelpBellOrder/node_modules/vite/dist/node/cli.js:863:7)

@@ -6,7 +6,6 @@ import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { homedir } from 'os'
 
-import tailwindcss from '@tailwindcss/vite'
 import VuePlugin from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -28,7 +27,6 @@ export default defineConfig(({ mode, command }) => {
   const require = createRequire(import.meta.url)
 
   const plugins = [
-    tailwindcss(),
     VuePlugin({
       template: {
         compilerOptions: {

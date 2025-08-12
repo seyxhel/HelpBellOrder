@@ -26,7 +26,7 @@ GIT
       delayed_job (>= 3.0, < 5)
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     PoParser (3.2.8)
       simple_po_parser (~> 1.1.6)
@@ -209,6 +209,10 @@ GEM
     domain_name (0.6.20240107)
     doorkeeper (5.8.2)
       railties (>= 5)
+    dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     drb (2.2.3)
     dry-cli (1.2.0)
     dry-core (1.1.0)
@@ -348,6 +352,9 @@ GEM
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
+    json-schema (5.2.2)
+      addressable (~> 2.8)
+      bigdecimal (~> 3.1)
     jwt (2.10.2)
       base64
     koala (3.6.0)
@@ -636,6 +643,22 @@ GEM
     rspec-retry (0.6.2)
       rspec-core (> 3.3)
     rspec-support (3.13.4)
+    rswag (2.16.0)
+      rswag-api (= 2.16.0)
+      rswag-specs (= 2.16.0)
+      rswag-ui (= 2.16.0)
+    rswag-api (2.16.0)
+      activesupport (>= 5.2, < 8.1)
+      railties (>= 5.2, < 8.1)
+    rswag-specs (2.16.0)
+      activesupport (>= 5.2, < 8.1)
+      json-schema (>= 2.2, < 6.0)
+      railties (>= 5.2, < 8.1)
+      rspec-core (>= 2.14)
+    rswag-ui (2.16.0)
+      actionpack (>= 5.2, < 8.1)
+      railties (>= 5.2, < 8.1)
+    rszr (1.5.0)
     rubocop (1.79.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -892,6 +915,7 @@ DEPENDENCIES
   deprecation_toolkit
   diffy
   doorkeeper
+  dotenv-rails
   eco
   elasticsearch (>= 8.11, < 10.0)
   em-websocket
@@ -955,6 +979,8 @@ DEPENDENCIES
   rotp
   rspec-rails
   rspec-retry
+  rswag
+  rszr
   rubocop
   rubocop-capybara
   rubocop-factory_bot

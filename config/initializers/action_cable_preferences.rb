@@ -1,7 +1,7 @@
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
 Rails.application.configure do
-  config.action_cable.adapter = :redis
+  # config.action_cable.adapter = :redis # Removed: not supported in Rails 7+
   config.action_cable.url = ENV['REDIS_URL'] || 'redis://localhost:6379/0'
   
   # Allow requests from production domains

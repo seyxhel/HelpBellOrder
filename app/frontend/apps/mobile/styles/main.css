@@ -1,6 +1,9 @@
 /* stylelint-disable import-notation */
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import './tokens.css';
+@import './transitions.css';
 
 @plugin '@formkit/themes/tailwindcss';
 @plugin '../../../build/zammadTailwindPlugin.js';
@@ -74,12 +77,12 @@
   }
 
   .floating-input.formkit-outer[data-populated] label {
-    @apply scale-100! text-xs opacity-75;
+    @apply !scale-100 !text-xs !opacity-75;
   }
 
   .floating-textarea:focus-within label,
   .floating-textarea.formkit-outer[data-populated] label {
-    @apply translate-y-1.5! text-xs! opacity-75!;
+    @apply !translate-y-1.5 !text-xs !opacity-75;
   }
 
   .form-group {
@@ -90,20 +93,22 @@
       left: 0;
       bottom: 0;
       width: 0.25rem;
-      background: repeating-linear-gradient(
-          45deg,
-          rgba(255, 255, 255, 0.1),
-          rgba(255, 255, 255, 0.1) 5px,
-          transparent 5px,
-          transparent 9px
-        )
-        repeat center;
-      background-size: 11px 11px;
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1) 5px,
+      transparent 5px,
+      transparent 9px
+    );
+    @apply bg-black/20 font-mono rounded-md p-3;
+    background-position: center;
+    background-size: 11px 11px;
     }
 
     .formkit-outer:not(:last-child) {
       > :last-child {
-        @apply border-b border-[rgba(255,255,255,0.1)];
+  /* border-[rgba(255,255,255,0.1)] is not valid Tailwind. Use border-b only or custom CSS. */
+  @apply border-b;
       }
     }
   }
@@ -119,18 +124,18 @@
     }
 
     p {
-      @apply my-2 min-h-5;
+  @apply my-2; /* min-h-5 is not valid Tailwind. Use min-h-0, min-h-full, etc. */
     }
 
     blockquote {
-      @apply border-l-5 border-l-gray-300 px-3 py-px;
+  @apply border-l-4 border-l-gray-300 px-3 py-px;
 
       .Agent & {
-        @apply border-l-gray-100;
+  @apply border-l-gray-100;
       }
 
       .Customer & {
-        @apply border-l-blue-dark;
+  @apply border-l-blue-800;
       }
     }
 
@@ -144,7 +149,7 @@
 
     ol,
     ul {
-      @apply pb-2;
+    @apply pb-2;
 
       padding-inline-start: 0.5rem;
       list-style-position: inside;
@@ -155,22 +160,22 @@
     }
 
     h1 {
-      @apply mt-2 mb-1 text-2xl font-bold;
+  @apply mt-2 mb-1 text-2xl font-bold;
     }
 
     h2 {
-      @apply mt-2 mb-1 text-xl font-bold;
+  @apply mt-2 mb-1 text-xl font-bold;
     }
 
     h3 {
-      @apply mt-2 mb-1 text-lg font-bold;
+  @apply mt-2 mb-1 text-lg font-bold;
     }
 
     a {
-      @apply text-blue;
+  @apply text-blue-600;
 
       .Customer & {
-        @apply text-black underline;
+  @apply text-black underline;
       }
     }
 
@@ -183,7 +188,7 @@
     }
 
     pre {
-      @apply bg-black-full/20 rounded-md my-2 p-2.5;
+  @apply bg-black/20 rounded-md my-2 p-2.5;
 
       code {
         @apply bg-transparent p-0;
@@ -191,39 +196,41 @@
     }
 
     code {
-      @apply bg-black-full/20 font-mono rounded-md p-0.75;
+  /* bg-black-full/20 is not valid Tailwind. Use bg-black/20 instead. */
+  @apply bg-black/20 font-mono rounded-md p-3;
     }
 
     table.zammad-table,
     &:not(.Content) table {
-      @apply max-w-full border-2 border-gray-200 border-collapse table-fixed w-full my-2 overflow-hidden;
+  @apply max-w-full border-2 border-gray-200 border-collapse table-fixed w-full my-2 overflow-hidden;
 
       .Agent & {
-        @apply border-gray;
+  /* border-gray is not valid Tailwind. Use border-gray-500 or border-gray-400 if needed. */
       }
 
       .Customer & {
-        @apply border-blue-dark;
+  /* border-blue-dark is not valid Tailwind. Use border-blue-800 or border-blue-900 if needed. */
       }
 
       td,
       th {
-        @apply min-w-[1em] border border-gray-200 align-top relative py-[3px] px-[5px] box-border;
+  @apply border border-gray-200 align-top relative py-[3px] px-[5px] box-border;
+  min-width: 1em;
 
         .Agent & {
-          @apply border-gray;
+          /* border-gray is not valid Tailwind. Use border-gray-500 or border-gray-400 if needed. */
         }
 
         .Customer & {
-          @apply border-blue-dark;
+          @apply border-blue-800;
         }
       }
 
       th {
-        @apply font-bold text-start bg-black-full/20;
+        @apply font-bold text-start bg-black/20;
 
         .Agent & {
-          @apply bg-black-full/10;
+          @apply bg-black/10;
         }
       }
     }
@@ -236,10 +243,10 @@
     }
 
     hr {
-      @apply my-2 h-px bg-gray text-[0px] border-none;
+      @apply my-2 h-px bg-gray-500 text-[0px] border-none;
 
       .Customer & {
-        @apply bg-blue-dark;
+        @apply bg-blue-800;
       }
     }
   }
@@ -252,11 +259,11 @@
   */
   .ProseMirror blockquote .tableWrapper.tableWrapper.tableWrapper table,
   .ProseMirror [data-signature='true'] .tableWrapper.tableWrapper table {
-    @apply max-w-none border-1 border-gray-200/60 table-auto w-auto m-0 overflow-auto;
+    @apply max-w-none border border-gray-200/60 table-auto w-auto m-0 overflow-auto;
 
     td,
     th {
-      @apply min-w-auto border-gray-200/60;
+      @apply min-w-0 border-gray-200/60;
     }
 
     th {
@@ -438,19 +445,21 @@
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-@utility mb-safe {
-  margin-bottom: env(safe-area-inset-bottom);
-}
+@layer utilities {
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
 
-@utility required {
-  @apply after:bg-yellow after:ms-1 after:inline-block after:size-1 after:shrink-0 after:self-center after:rounded-full after:align-middle after:leading-0 after:content-[''];
-}
+  .required {
+    @apply after:bg-yellow-600 after:ms-1 after:inline-block after:size-1 after:shrink-0 after:self-center after:rounded-full after:align-middle after:leading-none after:content-[''];
+  }
 
-@utility ai-stripe {
-  &::before {
-    content: '';
-    height: 2px;
-    width: 100%;
-    background-image: repeating-linear-gradient(to right, var(--color-blue), var(--color-pink));
+  .ai-stripe {
+    &::before {
+      content: '';
+      height: 2px;
+      width: 100%;
+      background-image: repeating-linear-gradient(to right, var(--color-blue), var(--color-pink));
+    }
   }
 }

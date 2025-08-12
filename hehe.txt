@@ -2,53 +2,53 @@ Application logs:
 (loading on site)
 
 Build logs:
-2025-08-12T12:34:24.931336152Z #19 29.10 Setting up libfreetype6-dev:amd64 (2.12.1+dfsg-5+deb12u4) ...
-2025-08-12T12:34:25.033120823Z #19 29.10 Setting up libglib2.0-dev:amd64 (2.74.6-2+deb12u6) ...
-2025-08-12T12:34:25.033138503Z #19 29.11 Processing triggers for libgdk-pixbuf-2.0-0:amd64 (2.42.10+dfsg-1+deb12u2) ...
-2025-08-12T12:34:25.033142114Z #19 29.14 Processing triggers for libglib2.0-0:amd64 (2.74.6-2+deb12u6) ...
-2025-08-12T12:34:25.033145354Z #19 29.14 No schema files found: doing nothing.
-2025-08-12T12:34:25.033147894Z #19 29.15 Processing triggers for libc-bin (2.36-9+deb12u10) ...
-2025-08-12T12:34:25.033150254Z #19 29.18 Setting up libcairo2-dev:amd64 (1.16.0-7) ...
-2025-08-12T12:34:25.033152654Z #19 29.18 Setting up libgdk-pixbuf-2.0-dev:amd64 (2.42.10+dfsg-1+deb12u2) ...
-2025-08-12T12:34:25.033155194Z #19 29.19 Setting up librsvg2-dev:amd64 (2.54.7+dfsg-1~deb12u1) ...
-2025-08-12T12:34:25.033157934Z #19 29.20 Setting up libimlib2-dev (1.10.0-4+deb12u1) ...
-2025-08-12T12:34:25.159910103Z #19 DONE 29.3s
-2025-08-12T12:34:25.3103312Z 
-2025-08-12T12:34:25.31035445Z #23 [build  2/13] COPY Gemfile Gemfile.lock vendor ./
-2025-08-12T12:34:25.310358301Z #23 DONE 0.1s
-2025-08-12T12:34:25.310361221Z 
-2025-08-12T12:34:25.310364741Z #24 [build  3/13] RUN bundle install &&     rm -rf ~/.bundle/ "/usr/local/bundle"/ruby/*/cache "/usr/local/bundle"/ruby/*/bundler/gems/*/.git
-2025-08-12T12:34:25.588431541Z #24 0.338 The list of sources changed, the dependencies in your gemfile changed, but the
-2025-08-12T12:34:25.588450941Z #24 0.338 lockfile can't be updated because frozen mode is set
-2025-08-12T12:34:25.588454691Z #24 0.338 
-2025-08-12T12:34:25.588458191Z #24 0.338 You have added to the Gemfile:
-2025-08-12T12:34:25.588462431Z #24 0.338 * rszr
-2025-08-12T12:34:25.588468071Z #24 0.338 * rswag
-2025-08-12T12:34:25.588472742Z #24 0.338 * dotenv-rails
-2025-08-12T12:34:25.588477422Z #24 0.338 
-2025-08-12T12:34:25.588481972Z #24 0.338 Run `bundle install` elsewhere and add the updated Gemfile to version control.
-2025-08-12T12:34:25.588486562Z #24 0.338 If this is a development machine, remove the Gemfile.lock freeze by running
-2025-08-12T12:34:25.588491572Z #24 0.338 `bundle config set frozen false`.
-2025-08-12T12:34:25.642345749Z #24 ERROR: process "/bin/bash -o errexit -o pipefail -c bundle install &&     rm -rf ~/.bundle/ \"${BUNDLE_PATH}\"/ruby/*/cache \"${BUNDLE_PATH}\"/ruby/*/bundler/gems/*/.git" did not complete successfully: exit code: 16
-2025-08-12T12:34:25.642367329Z ------
-2025-08-12T12:34:25.642371559Z  > [build  3/13] RUN bundle install &&     rm -rf ~/.bundle/ "/usr/local/bundle"/ruby/*/cache "/usr/local/bundle"/ruby/*/bundler/gems/*/.git:
-2025-08-12T12:34:25.642375169Z 0.338 lockfile can't be updated because frozen mode is set
-2025-08-12T12:34:25.642378089Z 0.338 
-2025-08-12T12:34:25.642381639Z 0.338 You have added to the Gemfile:
-2025-08-12T12:34:25.642384729Z 0.338 * rszr
-2025-08-12T12:34:25.642387579Z 0.338 * rswag
-2025-08-12T12:34:25.642391279Z 0.338 * dotenv-rails
-2025-08-12T12:34:25.642394719Z 0.338 
-2025-08-12T12:34:25.642406409Z 0.338 Run `bundle install` elsewhere and add the updated Gemfile to version control.
-2025-08-12T12:34:25.64241396Z 0.338 If this is a development machine, remove the Gemfile.lock freeze by running
-2025-08-12T12:34:25.64241724Z 0.338 `bundle config set frozen false`.
-2025-08-12T12:34:25.64241998Z ------
-2025-08-12T12:34:25.643917013Z Dockerfile:47
-2025-08-12T12:34:25.643926543Z --------------------
-2025-08-12T12:34:25.643929553Z   46 |     
-2025-08-12T12:34:25.643932143Z   47 | >>> RUN bundle install && \
-2025-08-12T12:34:25.643935033Z   48 | >>>     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
-2025-08-12T12:34:25.643937393Z   49 |     
-2025-08-12T12:34:25.643939773Z --------------------
-2025-08-12T12:34:25.643944393Z error: failed to solve: process "/bin/bash -o errexit -o pipefail -c bundle install &&     rm -rf ~/.bundle/ \"${BUNDLE_PATH}\"/ruby/*/cache \"${BUNDLE_PATH}\"/ruby/*/bundler/gems/*/.git" did not complete successfully: exit code: 16
-2025-08-12T12:34:25.661912392Z error: exit status 1
+2025-08-12T14:47:50.226036492Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/definition.rb:552:in `resolver'
+2025-08-12T14:47:50.226040522Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/definition.rb:633:in `start_resolution'
+2025-08-12T14:47:50.226044532Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/definition.rb:306:in `resolve'
+2025-08-12T14:47:50.226070663Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/definition.rb:582:in `materialize'
+2025-08-12T14:47:50.226075823Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/definition.rb:193:in `specs'
+2025-08-12T14:47:50.226078613Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/definition.rb:260:in `specs_for'
+2025-08-12T14:47:50.226081363Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/runtime.rb:18:in `setup'
+2025-08-12T14:47:50.226083853Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler.rb:164:in `setup'
+2025-08-12T14:47:50.226086573Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/setup.rb:32:in `block in <top (required)>'
+2025-08-12T14:47:50.226089753Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/ui/shell.rb:173:in `with_level'
+2025-08-12T14:47:50.226092373Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/ui/shell.rb:119:in `silence'
+2025-08-12T14:47:50.226095023Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/setup.rb:32:in `<top (required)>'
+2025-08-12T14:47:50.226097533Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/cli/exec.rb:56:in `require_relative'
+2025-08-12T14:47:50.226100123Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/cli/exec.rb:56:in `kernel_load'
+2025-08-12T14:47:50.226102753Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/cli/exec.rb:23:in `run'
+2025-08-12T14:47:50.226105363Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/cli.rb:455:in `exec'
+2025-08-12T14:47:50.226107803Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/vendor/thor/lib/thor/command.rb:28:in `run'
+2025-08-12T14:47:50.226348089Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command'
+2025-08-12T14:47:50.226352818Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/vendor/thor/lib/thor.rb:527:in `dispatch'
+2025-08-12T14:47:50.226356879Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/cli.rb:35:in `dispatch'
+2025-08-12T14:47:50.226359869Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/vendor/thor/lib/thor/base.rb:584:in `start'
+2025-08-12T14:47:50.226362339Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/cli.rb:29:in `start'
+2025-08-12T14:47:50.22640778Z #32 0.846 	from /usr/local/lib/ruby/gems/3.3.0/gems/bundler-2.5.22/exe/bundle:28:in `block in <top (required)>'
+2025-08-12T14:47:50.22641131Z #32 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/friendly_errors.rb:117:in `with_friendly_errors'
+2025-08-12T14:47:50.22641425Z #32 0.846 	from /usr/local/lib/ruby/gems/3.3.0/gems/bundler-2.5.22/exe/bundle:20:in `<top (required)>'
+2025-08-12T14:47:50.22641783Z #32 0.846 	from /usr/local/bin/bundle:25:in `load'
+2025-08-12T14:47:50.22642095Z #32 0.846 	from /usr/local/bin/bundle:25:in `<main>'
+2025-08-12T14:47:50.22642438Z #32 ERROR: process "/bin/bash -o errexit -o pipefail -c touch db/schema.rb &&     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile" did not complete successfully: exit code: 1
+2025-08-12T14:47:50.22642748Z ------
+2025-08-12T14:47:50.22643082Z  > [build 11/13] RUN touch db/schema.rb &&     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile:
+2025-08-12T14:47:50.22643331Z 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command'
+2025-08-12T14:47:50.22643605Z 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/vendor/thor/lib/thor.rb:527:in `dispatch'
+2025-08-12T14:47:50.22643853Z 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/cli.rb:35:in `dispatch'
+2025-08-12T14:47:50.22644136Z 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/vendor/thor/lib/thor/base.rb:584:in `start'
+2025-08-12T14:47:50.226444Z 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/cli.rb:29:in `start'
+2025-08-12T14:47:50.2264467Z 0.846 	from /usr/local/lib/ruby/gems/3.3.0/gems/bundler-2.5.22/exe/bundle:28:in `block in <top (required)>'
+2025-08-12T14:47:50.226453181Z 0.846 	from /usr/local/lib/ruby/3.3.0/bundler/friendly_errors.rb:117:in `with_friendly_errors'
+2025-08-12T14:47:50.226455951Z 0.846 	from /usr/local/lib/ruby/gems/3.3.0/gems/bundler-2.5.22/exe/bundle:20:in `<top (required)>'
+2025-08-12T14:47:50.226459081Z 0.846 	from /usr/local/bin/bundle:25:in `load'
+2025-08-12T14:47:50.226461791Z 0.846 	from /usr/local/bin/bundle:25:in `<main>'
+2025-08-12T14:47:50.226464341Z ------
+2025-08-12T14:47:50.22782392Z Dockerfile:77
+2025-08-12T14:47:50.22783635Z --------------------
+2025-08-12T14:47:50.22784064Z   76 |     # Don't require Redis or Postgres.
+2025-08-12T14:47:50.22784362Z   77 | >>> RUN touch db/schema.rb && \
+2025-08-12T14:47:50.2278472Z   78 | >>>     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile
+2025-08-12T14:47:50.2278501Z   79 |     
+2025-08-12T14:47:50.22785303Z --------------------
+2025-08-12T14:47:50.22785697Z error: failed to solve: process "/bin/bash -o errexit -o pipefail -c touch db/schema.rb &&     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile" did not complete successfully: exit code: 1
+2025-08-12T14:47:50.252599237Z error: exit status 1

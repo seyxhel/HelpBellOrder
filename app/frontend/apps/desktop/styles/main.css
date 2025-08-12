@@ -1,5 +1,7 @@
 /* stylelint-disable import-notation */
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import './tokens.css';
 @import './transitions.css';
 
@@ -41,7 +43,7 @@
   }
 
   a {
-    @apply text-blue-800 focus-visible:rounded-xs focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800;
+    @apply text-blue-800 focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800;
   }
 
   @keyframes onAutoFillStart {
@@ -59,7 +61,6 @@
     to {
     }
   }
-}
 
 @layer components {
   .grid-cols-2-uneven > *:nth-last-child(1):nth-child(odd) {
@@ -78,14 +79,14 @@
   */
   .form-group .formkit-outer {
     /* stylelint-disable-next-line scss/operator-no-unspaced */
-    @apply col-span-2 @lg/form-group:col-span-1;
+    @apply col-span-2;
 
     /* Optional full-width style for specific fields. */
     &[data-type='editor'],
     &[data-type='file'],
     &:last-of-type:nth-of-type(odd) {
       /* stylelint-disable-next-line scss/operator-no-unspaced */
-      @apply @lg/form-group:col-span-2;
+      @apply col-span-2;
     }
 
     &.form-group-single-column {
@@ -168,10 +169,10 @@
     }
 
     blockquote {
-      @apply border-s-5 border-s-neutral-100 dark:border-s-gray-500 px-3 py-px;
+      @apply border-l-4 border-l-neutral-100 dark:border-l-gray-500 px-3 py-px;
 
       .Content--customer & {
-        @apply border-s-blue-300 dark:border-s-stone-700;
+        @apply border-l-blue-300 dark:border-l-stone-700;
       }
     }
 
@@ -228,7 +229,7 @@
     }
 
     code {
-      @apply bg-black/10 font-mono dark:bg-black/20 rounded-md p-0.75;
+      @apply bg-black/10 font-mono dark:bg-black/20 rounded-md p-1;
     }
 
     table.zammad-table,
@@ -401,11 +402,11 @@
   */
   .ProseMirror blockquote .tableWrapper.tableWrapper.tableWrapper table,
   .ProseMirror [data-signature='true'] .tableWrapper.tableWrapper table {
-    @apply max-w-none border-1 dark:border-neutral-500/60 border-neutral-700/60 table-auto w-auto m-0 overflow-auto;
+    @apply max-w-none border dark:border-neutral-500/60 border-neutral-700/60 table-auto w-auto m-0 overflow-auto;
 
     td,
     th {
-      @apply min-w-auto dark:border-neutral-500/60 border-neutral-700/60;
+      @apply min-w-0 dark:border-neutral-500/60 border-neutral-700/60;
     }
 
     th {
@@ -441,50 +442,56 @@
   );
 }
 
-@utility group-block {
-  @apply rounded-3xl bg-neutral-50 p-5 text-black dark:bg-gray-500 dark:text-white;
-}
+@layer utilities {
+  .group-block {
+    @apply rounded-3xl bg-neutral-50 p-5 text-black dark:bg-gray-500 dark:text-white;
+  }
 
-@utility backface-hidden {
-  backface-visibility: hidden;
-}
-
-@utility required {
-  @apply after:ms-1.5 after:inline-block after:size-1.5 after:rounded-full after:bg-yellow-600 after:align-middle after:content-[''];
-}
-
-@utility ai-stripe {
-  &::before {
-    content: '';
-    height: 2px;
-    width: 100%;
-    background-image: repeating-linear-gradient(
-      to right,
-      var(--color-blue-800),
-      var(--color-pink-200)
-    );
+  .backface-hidden {
+    backface-visibility: hidden;
   }
 }
 
-/* https://developer.mozilla.org/en-US/docs/Web/CSS/word-break#break-word */
-@utility break-word {
-  overflow-wrap: anywhere !important;
-  word-wrap: normal;
-}
+  .required {
+    @apply after:ms-1.5 after:inline-block after:size-1.5 after:rounded-full after:bg-yellow-600 after:align-middle after:content-[''];
+  }
 
-/* Uses to be in the @layer utilities */
-@media print {
-  [data-print-mode='true'] body {
-    @apply invisible;
-
-    & .print-area {
-      @apply visible fixed inset-0;
+  .ai-stripe {
+    &::before {
+      content: '';
+      height: 2px;
+      width: 100%;
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--color-blue-800),
+        var(--color-pink-200)
+      );
     }
   }
-}
 
-@utility focus-visible-app-default {
-  @apply focus:outline-transparent focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800;
+  /* https://developer.mozilla.org/en-US/docs/Web/CSS/word-break#break-word */
+  .break-word {
+    overflow-wrap: anywhere !important;
+    word-wrap: normal;
+  }
+
+  .focus-visible-app-default {
+    @apply focus:outline-transparent focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800;
+  }
+
+  /* Uses to be in the @layer utilities */
+  @media print {
+    [data-print-mode='true'] body {
+      visibility: hidden;
+      position: static;
+
+      & .print-area {
+        visibility: visible;
+        position: fixed;
+        inset: 0;
+      }
+    }
+  }
 }
 
 button,

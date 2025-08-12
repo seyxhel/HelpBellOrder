@@ -73,8 +73,9 @@ RUN if [ -z "${COMMIT_SHA}" ]; then \
   echo 'Updated build information in VERSION:'; \
   cat VERSION
 
-# Don't require Redis or Postgres.
+# Build Vite assets first, then Rails assets
 RUN touch db/schema.rb && \
+    pnpm run build && \
     ZAMMAD_SAFE_MODE=1 DATABASE_URL=postgresql://zammad:/zammad bundle exec rake assets:precompile
 
 RUN bash script/build/cleanup.sh
