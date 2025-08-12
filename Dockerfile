@@ -120,8 +120,8 @@ RUN ln -s "/opt/zammad/bin/docker-entrypoint" /docker-entrypoint.sh
 # Run and own only the runtime files as a non-root user for security
 USER 1000:1000
 
-# Custom entrypoint: run migrations, then start Zammad
-ENTRYPOINT ["/bin/bash", "-c", "bundle exec rails db:migrate && exec /opt/zammad/bin/docker-entrypoint"]
+# Default command (can be overridden by Procfile)
+CMD ["bundle", "exec", "puma", "-t", "5:30", "-p", "3000", "-e", "production"]
 
 # Set labels to help portainer.io admins to access rails console.
 LABEL io.portainer.commands.rails-console="bundle exec rails c"
