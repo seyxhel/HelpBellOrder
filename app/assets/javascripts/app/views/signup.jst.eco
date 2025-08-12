@@ -1,7 +1,7 @@
 <div class="signup fullscreen">
   <div class="fullscreen-center">
     <div class="hero-unit fullscreen-body">
-      <h1><%- @T('Join %s', @C('product_name')) %></h1>
+      <h1><%- @T('Create New Customer Account') %></h1>
       <form>
         <div class="form-controls">
           <a class="btn btn--text btn--subtle js-cancel" href="#login"><%- @T('Cancel & Go Back') %></a>
