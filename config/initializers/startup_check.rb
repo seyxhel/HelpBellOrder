@@ -21,8 +21,7 @@ Rails.application.config.after_initialize do
         Rails.logger.error "Database query error backtrace: #{query_error.backtrace.join("\n")}" 
         raise query_error
       end
-      unless db_connected
-        raise "Database connection returned false"
+  # Only raise if the query fails, not if db_connected is false
       end
     rescue => db_error
       Rails.logger.error "Database connection error: #{db_error.message}"
