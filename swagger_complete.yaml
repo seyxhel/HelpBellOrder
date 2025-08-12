@@ -1,0 +1,1674 @@
+openapi: 3.0.3
+info:
+  title: HelpBellOrder API - Complete Helpdesk System
+  description: |
+    Complete API specification for HelpBellOrder - A comprehensive helpdesk and ticketing system.
+    This system provides ticket management, user management, knowledge base, communication channels,
+    integrations, automation workflows, and extensive administrative capabilities.
+    
+    ## Key Features:
+    - **Ticket Management**: Full CRUD operations for tickets, articles, time tracking
+    - **User & Organization Management**: Complete user lifecycle and organizational structure
+    - **Communication Channels**: Email, SMS, WhatsApp, Telegram, Twitter, Facebook integration
+    - **Knowledge Base**: Multi-language knowledge base with categories and answers
+    - **Automation**: Triggers, macros, and core workflows
+    - **Integrations**: LDAP, OAuth, GitHub, GitLab, Exchange, Microsoft Graph
+    - **Monitoring & Reports**: System health, usage statistics, and custom reports
+    - **Multi-channel Support**: Web, mobile, API, and webhook interfaces
+  version: "1.0.0"
+  contact:
+    name: HelpBellOrder Support
+    email: support@helpbellorder.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.helpbellorder.com
+    description: Production server
+  - url: https://staging-api.helpbellorder.com
+    description: Staging server
+  - url: http://localhost:3000
+    description: Development server
+
+security:
+  - BearerAuth: []
+  - OAuth2: []
+  - ApiKeyAuth: []
+
+paths:
+  # Core Ticket Management
+  /api/v1/tickets:
+    get:
+      tags: [Tickets]
+      summary: List tickets
+      description: Retrieve a list of tickets with filtering and pagination
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 25
+        - name: expand
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: List of tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+    post:
+      tags: [Tickets]
+      summary: Create ticket
+      description: Create a new ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketCreate'
+      responses:
+        '201':
+          description: Created ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+
+  /api/v1/tickets/{id}:
+    get:
+      tags: [Tickets]
+      summary: Get ticket
+      description: Retrieve a specific ticket by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ticket details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+    put:
+      tags: [Tickets]
+      summary: Update ticket
+      description: Update an existing ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketUpdate'
+      responses:
+        '200':
+          description: Updated ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+    delete:
+      tags: [Tickets]
+      summary: Delete ticket
+      description: Delete a ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Ticket deleted
+
+  /api/v1/tickets/search:
+    get:
+      tags: [Tickets]
+      summary: Search tickets
+      description: Search tickets with advanced filtering
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+    post:
+      tags: [Tickets]
+      summary: Advanced search tickets
+      description: Perform advanced search with complex criteria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketSearchCriteria'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+
+  # Ticket Articles (Messages/Responses)
+  /api/v1/ticket_articles:
+    get:
+      tags: [Ticket Articles]
+      summary: List ticket articles
+      description: Get all ticket articles
+      responses:
+        '200':
+          description: List of ticket articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketArticle'
+    post:
+      tags: [Ticket Articles]
+      summary: Create ticket article
+      description: Add a new article/message to a ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketArticleCreate'
+      responses:
+        '201':
+          description: Created article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketArticle'
+
+  /api/v1/ticket_articles/{id}:
+    get:
+      tags: [Ticket Articles]
+      summary: Get ticket article
+      description: Retrieve a specific ticket article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ticket article details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketArticle'
+    put:
+      tags: [Ticket Articles]
+      summary: Update ticket article
+      description: Update an existing ticket article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketArticleUpdate'
+      responses:
+        '200':
+          description: Updated article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketArticle'
+
+  # Users Management
+  /api/v1/users:
+    get:
+      tags: [Users]
+      summary: List users
+      description: Retrieve a list of users
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 25
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags: [Users]
+      summary: Create user
+      description: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /api/v1/users/{id}:
+    get:
+      tags: [Users]
+      summary: Get user
+      description: Retrieve a specific user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags: [Users]
+      summary: Update user
+      description: Update an existing user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      tags: [Users]
+      summary: Delete user
+      description: Delete a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: User deleted
+
+  /api/v1/users/search:
+    get:
+      tags: [Users]
+      summary: Search users
+      description: Search users with query parameters
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags: [Users]
+      summary: Advanced user search
+      description: Perform advanced user search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSearchCriteria'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  # Organizations Management
+  /api/v1/organizations:
+    get:
+      tags: [Organizations]
+      summary: List organizations
+      description: Retrieve a list of organizations
+      responses:
+        '200':
+          description: List of organizations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+    post:
+      tags: [Organizations]
+      summary: Create organization
+      description: Create a new organization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationCreate'
+      responses:
+        '201':
+          description: Created organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+
+  /api/v1/organizations/{id}:
+    get:
+      tags: [Organizations]
+      summary: Get organization
+      description: Retrieve a specific organization
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Organization details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+    put:
+      tags: [Organizations]
+      summary: Update organization
+      description: Update an existing organization
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationUpdate'
+      responses:
+        '200':
+          description: Updated organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+
+  # Groups Management
+  /api/v1/groups:
+    get:
+      tags: [Groups]
+      summary: List groups
+      description: Retrieve a list of groups
+      responses:
+        '200':
+          description: List of groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+    post:
+      tags: [Groups]
+      summary: Create group
+      description: Create a new group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupCreate'
+      responses:
+        '201':
+          description: Created group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+
+  /api/v1/groups/{id}:
+    get:
+      tags: [Groups]
+      summary: Get group
+      description: Retrieve a specific group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Group details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+
+  # Authentication & Sessions
+  /api/v1/signin:
+    post:
+      tags: [Authentication]
+      summary: Sign in
+      description: Authenticate user and create session
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+
+  /api/v1/signout:
+    get:
+      tags: [Authentication]
+      summary: Sign out (GET)
+      description: End user session via GET request
+      responses:
+        '200':
+          description: Successfully signed out
+    delete:
+      tags: [Authentication]
+      summary: Sign out (DELETE)
+      description: End user session via DELETE request
+      responses:
+        '200':
+          description: Successfully signed out
+
+  /api/v1/signshow:
+    get:
+      tags: [Authentication]
+      summary: Show current session
+      description: Get current user session information
+      responses:
+        '200':
+          description: Current session info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionInfo'
+    post:
+      tags: [Authentication]
+      summary: Validate session
+      description: Validate current session
+      responses:
+        '200':
+          description: Session valid
+
+  # Knowledge Base
+  /api/v1/knowledge_bases:
+    get:
+      tags: [Knowledge Base]
+      summary: List knowledge bases
+      description: Retrieve all knowledge bases
+      responses:
+        '200':
+          description: List of knowledge bases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KnowledgeBase'
+
+  /api/v1/knowledge_bases/{knowledge_base_id}/categories:
+    get:
+      tags: [Knowledge Base]
+      summary: List categories
+      description: Get categories for a knowledge base
+      parameters:
+        - name: knowledge_base_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KnowledgeBaseCategory'
+    post:
+      tags: [Knowledge Base]
+      summary: Create category
+      description: Create a new knowledge base category
+      parameters:
+        - name: knowledge_base_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KnowledgeBaseCategoryCreate'
+      responses:
+        '201':
+          description: Created category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeBaseCategory'
+
+  /api/v1/knowledge_bases/{knowledge_base_id}/answers:
+    post:
+      tags: [Knowledge Base]
+      summary: Create answer
+      description: Create a new knowledge base answer
+      parameters:
+        - name: knowledge_base_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KnowledgeBaseAnswerCreate'
+      responses:
+        '201':
+          description: Created answer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeBaseAnswer'
+
+  # Communication Channels
+  /api/v1/channels_email:
+    get:
+      tags: [Channels]
+      summary: List email channels
+      description: Get all email communication channels
+      responses:
+        '200':
+          description: List of email channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmailChannel'
+
+  /api/v1/channels_sms:
+    get:
+      tags: [Channels]
+      summary: List SMS channels
+      description: Get all SMS communication channels
+      responses:
+        '200':
+          description: List of SMS channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SmsChannel'
+    post:
+      tags: [Channels]
+      summary: Create SMS channel
+      description: Create a new SMS channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmsChannelCreate'
+      responses:
+        '201':
+          description: Created SMS channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmsChannel'
+
+  # Automation - Triggers
+  /api/v1/triggers:
+    get:
+      tags: [Automation]
+      summary: List triggers
+      description: Get all automation triggers
+      responses:
+        '200':
+          description: List of triggers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trigger'
+    post:
+      tags: [Automation]
+      summary: Create trigger
+      description: Create a new automation trigger
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerCreate'
+      responses:
+        '201':
+          description: Created trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trigger'
+
+  /api/v1/triggers/{id}:
+    get:
+      tags: [Automation]
+      summary: Get trigger
+      description: Retrieve a specific trigger
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Trigger details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trigger'
+    put:
+      tags: [Automation]
+      summary: Update trigger
+      description: Update an automation trigger
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerUpdate'
+      responses:
+        '200':
+          description: Updated trigger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trigger'
+
+  # Automation - Macros
+  /api/v1/macros:
+    get:
+      tags: [Automation]
+      summary: List macros
+      description: Get all macros
+      responses:
+        '200':
+          description: List of macros
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Macro'
+    post:
+      tags: [Automation]
+      summary: Create macro
+      description: Create a new macro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MacroCreate'
+      responses:
+        '201':
+          description: Created macro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Macro'
+
+  # Monitoring & Health
+  /api/v1/monitoring/health_check:
+    get:
+      tags: [Monitoring]
+      summary: Health check
+      description: Check system health status
+      security: []
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheck'
+
+  /api/v1/monitoring/status:
+    get:
+      tags: [Monitoring]
+      summary: System status
+      description: Get detailed system status
+      responses:
+        '200':
+          description: System status information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemStatus'
+
+  # Settings & Configuration
+  /api/v1/settings:
+    get:
+      tags: [Settings]
+      summary: List settings
+      description: Get all system settings
+      responses:
+        '200':
+          description: List of settings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Setting'
+    post:
+      tags: [Settings]
+      summary: Create setting
+      description: Create a new system setting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingCreate'
+      responses:
+        '201':
+          description: Created setting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Setting'
+
+  /api/v1/settings/{id}:
+    get:
+      tags: [Settings]
+      summary: Get setting
+      description: Retrieve a specific setting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Setting details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Setting'
+    put:
+      tags: [Settings]
+      summary: Update setting
+      description: Update a system setting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingUpdate'
+      responses:
+        '200':
+          description: Updated setting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Setting'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            read: Read access
+            write: Write access
+            admin: Administrative access
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    # Core Ticket Schema
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        number:
+          type: string
+          example: "2024081200001"
+        title:
+          type: string
+          example: "Unable to access email"
+        state_id:
+          type: integer
+          example: 1
+        state:
+          type: string
+          example: "new"
+        priority_id:
+          type: integer
+          example: 2
+        priority:
+          type: string
+          example: "normal"
+        group_id:
+          type: integer
+          example: 1
+        customer_id:
+          type: integer
+          example: 456
+        owner_id:
+          type: integer
+          example: 789
+        organization_id:
+          type: integer
+          example: 101
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+
+    TicketCreate:
+      type: object
+      required:
+        - title
+        - group_id
+        - customer_id
+      properties:
+        title:
+          type: string
+          example: "Email access issue"
+        group_id:
+          type: integer
+          example: 1
+        customer_id:
+          type: integer
+          example: 456
+        priority_id:
+          type: integer
+          example: 2
+        state_id:
+          type: integer
+          example: 1
+        article:
+          $ref: '#/components/schemas/TicketArticleCreate'
+        tags:
+          type: array
+          items:
+            type: string
+
+    TicketUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        state_id:
+          type: integer
+        priority_id:
+          type: integer
+        group_id:
+          type: integer
+        owner_id:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+
+    TicketSearchCriteria:
+      type: object
+      properties:
+        query:
+          type: string
+          example: "email"
+        condition:
+          type: object
+          properties:
+            state_id:
+              type: array
+              items:
+                type: integer
+            priority_id:
+              type: array
+              items:
+                type: integer
+            group_id:
+              type: array
+              items:
+                type: integer
+        limit:
+          type: integer
+          default: 10
+
+    # Ticket Article Schema
+    TicketArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+        ticket_id:
+          type: integer
+        type_id:
+          type: integer
+        sender_id:
+          type: integer
+        from:
+          type: string
+        to:
+          type: string
+        cc:
+          type: string
+        subject:
+          type: string
+        body:
+          type: string
+        content_type:
+          type: string
+          example: "text/html"
+        internal:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+
+    TicketArticleCreate:
+      type: object
+      required:
+        - ticket_id
+        - body
+      properties:
+        ticket_id:
+          type: integer
+        subject:
+          type: string
+        body:
+          type: string
+        content_type:
+          type: string
+          default: "text/html"
+        type:
+          type: string
+          enum: [note, email, phone, web]
+          default: "note"
+        internal:
+          type: boolean
+          default: false
+
+    TicketArticleUpdate:
+      type: object
+      properties:
+        subject:
+          type: string
+        body:
+          type: string
+        internal:
+          type: boolean
+
+    # User Schema
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        login:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+          format: email
+        web:
+          type: string
+        phone:
+          type: string
+        mobile:
+          type: string
+        organization_id:
+          type: integer
+        role_ids:
+          type: array
+          items:
+            type: integer
+        group_ids:
+          type: array
+          items:
+            type: integer
+        active:
+          type: boolean
+        verified:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    UserCreate:
+      type: object
+      required:
+        - login
+        - firstname
+        - lastname
+        - email
+        - role_ids
+      properties:
+        login:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        web:
+          type: string
+        phone:
+          type: string
+        mobile:
+          type: string
+        organization_id:
+          type: integer
+        role_ids:
+          type: array
+          items:
+            type: integer
+        group_ids:
+          type: array
+          items:
+            type: integer
+
+    UserUpdate:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+          format: email
+        web:
+          type: string
+        phone:
+          type: string
+        mobile:
+          type: string
+        organization_id:
+          type: integer
+        role_ids:
+          type: array
+          items:
+            type: integer
+        group_ids:
+          type: array
+          items:
+            type: integer
+        active:
+          type: boolean
+
+    UserSearchCriteria:
+      type: object
+      properties:
+        query:
+          type: string
+        condition:
+          type: object
+        limit:
+          type: integer
+
+    # Organization Schema
+    Organization:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        note:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    OrganizationCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        note:
+          type: string
+
+    OrganizationUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        note:
+          type: string
+        active:
+          type: boolean
+
+    # Group Schema
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        note:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    GroupCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        note:
+          type: string
+
+    # Authentication Schemas
+    SignInRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        remember_me:
+          type: boolean
+
+    AuthResponse:
+      type: object
+      properties:
+        session:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        config:
+          type: object
+
+    SessionInfo:
+      type: object
+      properties:
+        session:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/User'
+
+    # Knowledge Base Schemas
+    KnowledgeBase:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        iconset:
+          type: string
+        color_highlight:
+          type: string
+        color_header:
+          type: string
+        homepage_layout:
+          type: string
+        category_layout:
+          type: string
+        active:
+          type: boolean
+
+    KnowledgeBaseCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+        knowledge_base_id:
+          type: integer
+        category_icon:
+          type: string
+        position:
+          type: integer
+        translations:
+          type: object
+
+    KnowledgeBaseCategoryCreate:
+      type: object
+      required:
+        - category_icon
+        - translations
+      properties:
+        category_icon:
+          type: string
+        translations:
+          type: object
+
+    KnowledgeBaseAnswer:
+      type: object
+      properties:
+        id:
+          type: integer
+        category_id:
+          type: integer
+        position:
+          type: integer
+        promoted:
+          type: boolean
+        translations:
+          type: object
+
+    KnowledgeBaseAnswerCreate:
+      type: object
+      required:
+        - category_id
+        - translations
+      properties:
+        category_id:
+          type: integer
+        promoted:
+          type: boolean
+        translations:
+          type: object
+
+    # Channel Schemas
+    EmailChannel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    SmsChannel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    SmsChannelCreate:
+      type: object
+      required:
+        - area
+        - group_id
+        - options
+      properties:
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+
+    # Automation Schemas
+    Trigger:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        condition:
+          type: object
+        perform:
+          type: object
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    TriggerCreate:
+      type: object
+      required:
+        - name
+        - condition
+        - perform
+      properties:
+        name:
+          type: string
+        condition:
+          type: object
+        perform:
+          type: object
+
+    TriggerUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        condition:
+          type: object
+        perform:
+          type: object
+        active:
+          type: boolean
+
+    Macro:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        perform:
+          type: object
+        active:
+          type: boolean
+
+    MacroCreate:
+      type: object
+      required:
+        - name
+        - perform
+      properties:
+        name:
+          type: string
+        perform:
+          type: object
+
+    # Monitoring Schemas
+    HealthCheck:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, error]
+        message:
+          type: string
+        checks:
+          type: object
+
+    SystemStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        version:
+          type: string
+        app:
+          type: object
+        storage:
+          type: object
+        facade:
+          type: object
+        channels:
+          type: object
+
+    # Settings Schema
+    Setting:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        value:
+          oneOf:
+            - type: string
+            - type: number
+            - type: boolean
+            - type: object
+        frontend:
+          type: boolean
+
+    SettingCreate:
+      type: object
+      required:
+        - name
+        - title
+        - value
+      properties:
+        name:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        value:
+          oneOf:
+            - type: string
+            - type: number
+            - type: boolean
+            - type: object
+
+    SettingUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        value:
+          oneOf:
+            - type: string
+            - type: number
+            - type: boolean
+            - type: object
+
+    # Common Schemas
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: integer
+        filename:
+          type: string
+        size:
+          type: integer
+        content_type:
+          type: string
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        details:
+          type: object
+
+tags:
+  - name: Tickets
+    description: Ticket management operations
+  - name: Ticket Articles
+    description: Ticket article/message operations
+  - name: Users
+    description: User management operations
+  - name: Organizations
+    description: Organization management operations
+  - name: Groups
+    description: Group management operations
+  - name: Authentication
+    description: Authentication and session management
+  - name: Knowledge Base
+    description: Knowledge base management
+  - name: Channels
+    description: Communication channel management
+  - name: Automation
+    description: Automation triggers and macros
+  - name: Monitoring
+    description: System monitoring and health checks
+  - name: Settings
+    description: System settings and configuration
