@@ -1,15 +1,68 @@
-==> Deploying...
-I, [2025-08-12T06:29:39.238835#7-7480]  INFO -- : Using Zammad's file store as Rails cache store.
-I, [2025-08-12T06:29:39.241888#7-7480]  INFO -- : Using the Redis back end for Zammad's web socket session store.
-I, [2025-08-12T06:29:39.331949#7-7480]  INFO -- : Rszr gem not available, skipping image processing features
-I, [2025-08-12T06:29:39.913542#7-7480]  INFO -- : ActionCable is using the redis instance at redis://default:LhpmljSeZEJPqzIqXhliHCHUAXuYyEku@mainline.proxy.rlwy.net:44140.
-==> No open ports detected, continuing to scan...
-==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
-I, [2025-08-12T06:30:26.119277#7-7480]  INFO -- : ActionCable is configured to accept requests from (?-mix:https?:\/\/localhost:\d+), http://localhost:3000.
-==> Application exited early
-==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
-I, [2025-08-12T06:30:54.880569#7-7480]  INFO -- : Using Zammad's file store as Rails cache store.
-I, [2025-08-12T06:30:54.883565#7-7480]  INFO -- : Using the Redis back end for Zammad's web socket session store.
-I, [2025-08-12T06:30:54.907484#7-7480]  INFO -- : Rszr gem not available, skipping image processing features
-I, [2025-08-12T06:30:55.494768#7-7480]  INFO -- : ActionCable is using the redis instance at redis://default:LhpmljSeZEJPqzIqXhliHCHUAXuYyEku@mainline.proxy.rlwy.net:44140.
-I, [2025-08-12T06:31:42.043171#7-7480]  INFO -- : ActionCable is configured to accept requests from (?-mix:https?:\/\/localhost:\d+), http://localhost:3000.
+Application logs:
+2025-08-12T06:57:12.610822289Z ==> Deploying...
+2025-08-12T06:57:52.98122049Z I, [2025-08-12T06:57:52.981010#7-7480]  INFO -- : Using Zammad's file store as Rails cache store.
+2025-08-12T06:57:52.983690118Z I, [2025-08-12T06:57:52.982978#7-7480]  INFO -- : Using the Redis back end for Zammad's web socket session store.
+2025-08-12T06:57:53.076630042Z I, [2025-08-12T06:57:53.076428#7-7480]  INFO -- : Rszr gem not available, skipping image processing features
+2025-08-12T06:57:53.649711603Z I, [2025-08-12T06:57:53.649522#7-7480]  INFO -- : ActionCable is using the redis instance at redis://default:LhpmljSeZEJPqzIqXhliHCHUAXuYyEku@mainline.proxy.rlwy.net:44140.
+2025-08-12T06:58:18.265458776Z ==> No open ports detected, continuing to scan...
+2025-08-12T06:58:18.364757934Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+2025-08-12T06:58:39.746619851Z I, [2025-08-12T06:58:39.746468#7-7480]  INFO -- : ActionCable is configured to accept requests from (?-mix:https?:\/\/localhost:\d+), http://localhost:3000.
+2025-08-12T06:58:49.429014247Z ==> Application exited early
+2025-08-12T06:58:49.443229716Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+2025-08-12T06:59:10.712593596Z I, [2025-08-12T06:59:10.712427#7-7480]  INFO -- : Using Zammad's file store as Rails cache store.
+2025-08-12T06:59:10.71532239Z I, [2025-08-12T06:59:10.715215#7-7480]  INFO -- : Using the Redis back end for Zammad's web socket session store.
+2025-08-12T06:59:10.806533473Z I, [2025-08-12T06:59:10.806357#7-7480]  INFO -- : Rszr gem not available, skipping image processing features
+2025-08-12T06:59:11.332555109Z I, [2025-08-12T06:59:11.332388#7-7480]  INFO -- : ActionCable is using the redis instance at redis://default:LhpmljSeZEJPqzIqXhliHCHUAXuYyEku@mainline.proxy.rlwy.net:44140.
+2025-08-12T06:59:57.980710194Z I, [2025-08-12T06:59:57.980543#7-7480]  INFO -- : ActionCable is configured to accept requests from (?-mix:https?:\/\/localhost:\d+), http://localhost:3000.
+
+Build logs:
+2025-08-12T06:54:29.418416765Z #32 170.1 ✓ built in 21.43s
+2025-08-12T06:54:29.418418475Z #32 170.1 
+2025-08-12T06:54:29.418420705Z #32 170.1 PWA v1.0.1
+2025-08-12T06:54:29.418422995Z #32 170.1 Building apps/mobile/sw/sw.ts service worker ("es" format)...
+2025-08-12T06:54:29.418425285Z #32 170.2 vite v6.3.5 building for production...
+2025-08-12T06:54:29.988830641Z #32 170.7 transforming...
+2025-08-12T06:54:29.988851372Z #32 170.8 ✓ 65 modules transformed.
+2025-08-12T06:54:30.138281537Z #32 170.9 rendering chunks...
+2025-08-12T06:54:30.138297737Z #32 170.9 computing gzip size...
+2025-08-12T06:54:30.138302387Z #32 170.9 ../../public/assets/frontend/vite/sw.mjs  16.40 kB │ gzip: 5.54 kB │ map: 143.34 kB
+2025-08-12T06:54:30.138304317Z #32 170.9 ✓ built in 135ms
+2025-08-12T06:54:30.138306047Z #32 171.0 
+2025-08-12T06:54:30.138308967Z #32 171.0 PWA v1.0.1
+2025-08-12T06:54:30.138311778Z #32 171.0 mode      injectManifest
+2025-08-12T06:54:30.138314058Z #32 171.0 format:   es
+2025-08-12T06:54:30.138315827Z #32 171.0 precache  275 entries (3853.14 KiB)
+2025-08-12T06:54:30.138317598Z #32 171.0 files generated
+2025-08-12T06:54:30.138320868Z #32 171.0   ../../public/assets/frontend/vite/sw.js
+2025-08-12T06:54:30.138322638Z #32 171.0   ../../public/assets/frontend/vite/sw.js.map
+2025-08-12T06:54:30.739780293Z #32 171.5 Build with Vite complete: /opt/zammad/public/assets/frontend/vite
+2025-08-12T06:54:33.595539336Z #32 DONE 174.4s
+2025-08-12T06:54:33.595558477Z 
+2025-08-12T06:54:33.595562927Z #33 [build 12/13] RUN bash script/build/cleanup.sh
+2025-08-12T06:55:27.060420928Z #33 DONE 53.6s
+2025-08-12T06:55:27.210956825Z 
+2025-08-12T06:55:27.210982315Z #34 [build 13/13] RUN bundle exec bootsnap precompile --gemfile app/ lib/
+2025-08-12T06:55:43.132522196Z #34 DONE 16.1s
+2025-08-12T06:55:47.159426556Z 
+2025-08-12T06:55:47.159454227Z #35 [stage-3 6/8] COPY --chown=1000:1000 --from=build /usr/local/bundle /usr/local/bundle
+2025-08-12T06:55:52.700217285Z #35 DONE 5.5s
+2025-08-12T06:55:52.850531735Z 
+2025-08-12T06:55:52.850556186Z #36 [stage-3 7/8] COPY --chown=1000:1000 --from=build /opt/zammad /opt/zammad
+2025-08-12T06:55:57.510934553Z #36 DONE 4.7s
+2025-08-12T06:55:57.510952124Z 
+2025-08-12T06:55:57.510956204Z #37 [stage-3 8/8] RUN ln -s "/opt/zammad/bin/docker-entrypoint" /docker-entrypoint.sh
+2025-08-12T06:55:57.81213756Z #37 DONE 0.3s
+2025-08-12T06:55:57.812158361Z 
+2025-08-12T06:55:57.812163251Z #38 exporting to docker image format
+2025-08-12T06:55:57.812167471Z #38 exporting layers
+2025-08-12T06:56:13.581597327Z #38 exporting layers 15.9s done
+2025-08-12T06:56:13.762997919Z #38 exporting manifest sha256:329a57a7664461210a3891af4a64171673cb3cdd531cefb61e06ef06b968015b done
+2025-08-12T06:56:13.76305503Z #38 exporting config sha256:0de8c3207d7850fdcc7d18d0cd0ca6738cd8e73b8130bfe8b28d614b22005822 done
+2025-08-12T06:56:17.367188435Z #38 DONE 19.6s
+2025-08-12T06:56:17.5180057Z 
+2025-08-12T06:56:17.518025081Z #39 exporting cache to client directory
+2025-08-12T06:56:17.51802937Z #39 preparing build cache for export
+2025-08-12T06:57:01.919689Z #39 writing cache manifest sha256:edf846a2986e1fc0a0823b26a8a1bd190042dfc2ec9f5cb3156164aaa91b5669 done
+2025-08-12T06:57:01.919714041Z #39 DONE 44.5s
+2025-08-12T06:57:03.676927031Z Pushing image to registry...
+2025-08-12T06:57:10.418917904Z Upload succeeded

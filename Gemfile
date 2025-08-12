@@ -1,6 +1,7 @@
+
 # Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
 
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 # core - base
 ruby '3.3.9'
@@ -212,10 +213,12 @@ gem 'twitter_cldr'
 # AI integration
 gem 'elasticsearch', '>=8.11', '<10.0', require: false
 
+gem 'rswag'
 # Gems used only for develop/test and not required
 # in production environments by default.
 group :development, :test do
 
+  gem 'dotenv-rails'
   # test frameworks
   gem 'rails-controller-testing'
   gem 'rspec-rails'
