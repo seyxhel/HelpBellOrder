@@ -1,4 +1,9 @@
 
+// 1. Add font imports at the top (if not already imported)
+@import url('https://fonts.googleapis.com/css?family=Montserrat:700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap');
+
 $high-priority-color: hsl(360, 71%, 60%);
 $low-priority-color: hsl(200, 68%, 73%);
 $minWidth: 1024px;
@@ -259,7 +264,8 @@ html {
 }
 
 body {
-  font-family: 'Fira Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-size: 15px;
   font-weight: normal;
   font-variant-ligatures: none;
   line-height: 1.45;
@@ -676,7 +682,12 @@ pre code {
 .form-control::placeholder,
 .token-input::placeholder,
 .u-placeholder {
-  color: var(--ghost-color);
+  color: #333333;
+}
+
+.btn, .buttonDropdown, .form-control, input, select, textarea {
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  font-size: 12px;
 }
 
 .btn {
@@ -1964,8 +1975,10 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: normal;
-  color: var(--header-primary);
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #0057B8;
 }
 
 h1 {
@@ -2003,10 +2016,11 @@ h5 {
   font-weight: bold;
 }
 
+/* label */
 label,
 .checkbox.form-group label,
 .label {
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--text-muted);
   display: block;
   font-size: 13px;
@@ -2464,8 +2478,8 @@ textarea,
   font-size: 14px;
   font-weight: normal;
   line-height: 25px;
-  color: var(--text-normal);
-  background: var(--background-secondary);
+  color:#555454;
+  background: white;
   border: 0px solid;
   border-radius: 12px;
   box-shadow: none;
@@ -2482,12 +2496,12 @@ textarea,
   .hero-unit &,
   .form-field-group &,
   .popover & {
-    background: var(--background-primary);
+    background: white;
   }
 
   .modal-body .form-field-group &,
   .formset-inset & {
-    background: var(--background-secondary);
+    background: white;
   }
 
   &.form-control--small {
@@ -3433,8 +3447,8 @@ kbd {
   padding: 23px 25px;
   border: 1px solid;
   color: var(--text-normal);
-  background-color: var(--background-secondary); 
-  border-radius: 6px;
+  background-color: #E9E9E9; 
+  border-radius: 15px;
   box-shadow: var(--fullscreen-drop-shadow);
 
   @include phone {
@@ -3476,10 +3490,10 @@ kbd {
 .request_admin_password_auth,
 .signup {
   padding: 24px;
-  color: var(--fullscreen-text);
+  color: #333333;
 
   a {
-    color: var(--fullscreen-text-link);
+    color: #333333;
 
     &.text-muted {
       color: inherit;
@@ -3506,7 +3520,7 @@ kbd {
       margin-top: 3px;
       margin-bottom: 10px;
       text-align: center;
-      background-color: var(--background-secondary);
+      background-color: transparent;
     }
 
     .btn + .btn:not(.align-right) {
@@ -10125,7 +10139,7 @@ li.dropdown-header {
 
   .label-text {
     display: block;
-    margin-left: 5px;
+    margin-left: 100px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
