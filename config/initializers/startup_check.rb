@@ -11,6 +11,16 @@ Rails.application.config.after_initialize do
       Rails.logger.info "Database connection: #{db_connected}"
       Rails.logger.info "Database adapter: #{ActiveRecord::Base.connection.adapter_name}"
       Rails.logger.info "Database name: #{ActiveRecord::Base.connection.current_database}"
+      # Try a direct query to force a real error
+      begin
+        result = ActiveRecord::Base.connection.execute('SELECT 1')
+        Rails.logger.info "Database SELECT 1 result: #{result.inspect}"
+      rescue => query_error
+        Rails.logger.error "Database query error: #{query_error.message}"
+        Rails.logger.error "Database query error class: #{query_error.class}"
+        Rails.logger.error "Database query error backtrace: #{query_error.backtrace.join("\n")}" 
+        raise query_error
+      end
       unless db_connected
         raise "Database connection returned false"
       end
