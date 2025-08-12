@@ -31,66 +31,79 @@ servers:
   - url: http://localhost:3000
     description: Development server
 
-security:
-  - BearerAuth: []
-  - OAuth2: []
-  - ApiKeyAuth: []
-
 paths:
-  # Core Ticket Management
-  /api/v1/tickets:
-    get:
-      tags: [Tickets]
-      summary: List tickets
-      description: Retrieve a list of tickets with filtering and pagination
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            default: 1
-        - name: per_page
-          in: query
-          schema:
-            type: integer
-            default: 25
-        - name: expand
-          in: query
-          schema:
-            type: boolean
-            default: false
+  # User Import/Export
+  /api/v1/users/import:
+    post:
+      tags: [Users]
+      summary: Import users
+      description: Import users from CSV
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
       responses:
         '200':
-          description: List of tickets
+          description: Import initiated
+
+  /api/v1/users/export:
+    post:
+      tags: [Users]
+      summary: Export users
+      description: Export users to CSV
+      responses:
+        '200':
+          description: Users exported
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+
+  # User Access Token Management
+  /api/v1/user_access_tokens:
+    get:
+      tags: [Users]
+      summary: List user access tokens
+      description: Get all user access tokens for current user
+      responses:
+        '200':
+          description: List of access tokens
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Ticket'
+                  $ref: '#/components/schemas/UserAccessToken'
     post:
-      tags: [Tickets]
-      summary: Create ticket
-      description: Create a new ticket
+      tags: [Users]
+      summary: Create access token
+      description: Create a new user access token
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TicketCreate'
+              $ref: '#/components/schemas/UserAccessTokenCreate'
       responses:
         '201':
-          description: Created ticket
+          description: Created access token
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ticket'
+                $ref: '#/components/schemas/UserAccessToken'
 
-  /api/v1/tickets/{id}:
+  /api/v1/user_access_tokens/{id}:
     get:
-      tags: [Tickets]
-      summary: Get ticket
-      description: Retrieve a specific ticket by ID
+      tags: [Users]
+      summary: Get access token
+      description: Retrieve a specific access token
       parameters:
         - name: id
           in: path
@@ -99,15 +112,15 @@ paths:
             type: integer
       responses:
         '200':
-          description: Ticket details
+          description: Access token details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ticket'
+                $ref: '#/components/schemas/UserAccessToken'
     put:
-      tags: [Tickets]
-      summary: Update ticket
-      description: Update an existing ticket
+      tags: [Users]
+      summary: Update access token
+      description: Update an access token
       parameters:
         - name: id
           in: path
@@ -119,18 +132,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TicketUpdate'
+              $ref: '#/components/schemas/UserAccessTokenUpdate'
       responses:
         '200':
-          description: Updated ticket
+          description: Updated access token
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ticket'
+                $ref: '#/components/schemas/UserAccessToken'
     delete:
-      tags: [Tickets]
-      summary: Delete ticket
-      description: Delete a ticket
+      tags: [Users]
+      summary: Delete access token
+      description: Delete an access token
       parameters:
         - name: id
           in: path
@@ -139,91 +152,46 @@ paths:
             type: integer
       responses:
         '204':
-          description: Ticket deleted
+          description: Access token deleted
 
-  /api/v1/tickets/search:
+  # User Device Management
+  /api/v1/user_devices:
     get:
-      tags: [Tickets]
-      summary: Search tickets
-      description: Search tickets with advanced filtering
-      parameters:
-        - name: query
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 10
+      tags: [Users]
+      summary: List user devices
+      description: Get all devices for current user
       responses:
         '200':
-          description: Search results
+          description: List of user devices
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Ticket'
+                  $ref: '#/components/schemas/UserDevice'
     post:
-      tags: [Tickets]
-      summary: Advanced search tickets
-      description: Perform advanced search with complex criteria
+      tags: [Users]
+      summary: Register device
+      description: Register a new device
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TicketSearchCriteria'
-      responses:
-        '200':
-          description: Search results
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Ticket'
-
-  # Ticket Articles (Messages/Responses)
-  /api/v1/ticket_articles:
-    get:
-      tags: [Ticket Articles]
-      summary: List ticket articles
-      description: Get all ticket articles
-      responses:
-        '200':
-          description: List of ticket articles
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TicketArticle'
-    post:
-      tags: [Ticket Articles]
-      summary: Create ticket article
-      description: Add a new article/message to a ticket
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TicketArticleCreate'
+              $ref: '#/components/schemas/UserDeviceCreate'
       responses:
         '201':
-          description: Created article
+          description: Device registered
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TicketArticle'
+                $ref: '#/components/schemas/UserDevice'
 
-  /api/v1/ticket_articles/{id}:
+  /api/v1/user_devices/{id}:
     get:
-      tags: [Ticket Articles]
-      summary: Get ticket article
-      description: Retrieve a specific ticket article
+      tags: [Users]
+      summary: Get device
+      description: Retrieve a specific device
       parameters:
         - name: id
           in: path
@@ -232,101 +200,15 @@ paths:
             type: integer
       responses:
         '200':
-          description: Ticket article details
+          description: Device details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TicketArticle'
-    put:
-      tags: [Ticket Articles]
-      summary: Update ticket article
-      description: Update an existing ticket article
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TicketArticleUpdate'
-      responses:
-        '200':
-          description: Updated article
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TicketArticle'
-
-  # Users Management
-  /api/v1/users:
-    get:
-      tags: [Users]
-      summary: List users
-      description: Retrieve a list of users
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            default: 1
-        - name: per_page
-          in: query
-          schema:
-            type: integer
-            default: 25
-      responses:
-        '200':
-          description: List of users
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-    post:
-      tags: [Users]
-      summary: Create user
-      description: Create a new user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserCreate'
-      responses:
-        '201':
-          description: Created user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-
-  /api/v1/users/{id}:
-    get:
-      tags: [Users]
-      summary: Get user
-      description: Retrieve a specific user
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: User details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserDevice'
     put:
       tags: [Users]
-      summary: Update user
-      description: Update an existing user
+      summary: Update device
+      description: Update a device
       parameters:
         - name: id
           in: path
@@ -338,18 +220,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserUpdate'
+              $ref: '#/components/schemas/UserDeviceUpdate'
       responses:
         '200':
-          description: Updated user
+          description: Updated device
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserDevice'
     delete:
       tags: [Users]
-      summary: Delete user
-      description: Delete a user
+      summary: Delete device
+      description: Delete a device
       parameters:
         - name: id
           in: path
@@ -358,52 +240,7 @@ paths:
             type: integer
       responses:
         '204':
-          description: User deleted
-
-  /api/v1/users/search:
-    get:
-      tags: [Users]
-      summary: Search users
-      description: Search users with query parameters
-      parameters:
-        - name: query
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 10
-      responses:
-        '200':
-          description: Search results
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-    post:
-      tags: [Users]
-      summary: Advanced user search
-      description: Perform advanced user search
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserSearchCriteria'
-      responses:
-        '200':
-          description: Search results
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+          description: Device deleted
 
   # Organizations Management
   /api/v1/organizations:
@@ -532,6 +369,293 @@ paths:
               schema:
                 $ref: '#/components/schemas/Group'
 
+  # AI Agents
+  /api/v1/ai_agents:
+    get:
+      tags: [AI Agents]
+      summary: List AI agents
+      description: Retrieve a list of AI agents
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 25
+      responses:
+        '200':
+          description: List of AI agents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AIAgent'
+    post:
+      tags: [AI Agents]
+      summary: Create AI agent
+      description: Create a new AI agent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AIAgentCreate'
+      responses:
+        '201':
+          description: Created AI agent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIAgent'
+
+  /api/v1/ai_agents/search:
+    get:
+      tags: [AI Agents]
+      summary: Search AI agents
+      description: Search AI agents with query parameters
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AIAgent'
+    post:
+      tags: [AI Agents]
+      summary: Advanced AI agent search
+      description: Perform advanced AI agent search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AIAgentSearchCriteria'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AIAgent'
+
+  /api/v1/ai_agents/types:
+    get:
+      tags: [AI Agents]
+      summary: List AI agent types
+      description: Get available AI agent types
+      responses:
+        '200':
+          description: List of agent types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AIAgentType'
+
+  /api/v1/ai_agents/{id}:
+    get:
+      tags: [AI Agents]
+      summary: Get AI agent
+      description: Retrieve a specific AI agent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: AI agent details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIAgent'
+    put:
+      tags: [AI Agents]
+      summary: Update AI agent
+      description: Update an existing AI agent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AIAgentUpdate'
+      responses:
+        '200':
+          description: Updated AI agent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIAgent'
+    delete:
+      tags: [AI Agents]
+      summary: Delete AI agent
+      description: Delete an AI agent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: AI agent deleted
+
+  # Applications
+  /api/v1/applications:
+    get:
+      tags: [Applications]
+      summary: List applications
+      description: Retrieve a list of applications
+      responses:
+        '200':
+          description: List of applications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+    post:
+      tags: [Applications]
+      summary: Create application
+      description: Create a new application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationCreate'
+      responses:
+        '201':
+          description: Created application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+
+  /api/v1/applications/{id}:
+    get:
+      tags: [Applications]
+      summary: Get application
+      description: Retrieve a specific application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Application details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    put:
+      tags: [Applications]
+      summary: Update application
+      description: Update an existing application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationUpdate'
+      responses:
+        '200':
+          description: Updated application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    delete:
+      tags: [Applications]
+      summary: Delete application
+      description: Delete an application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Application deleted
+
+  /api/v1/applications/token:
+    post:
+      tags: [Applications]
+      summary: Generate application token
+      description: Generate a new token for an application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                application_id:
+                  type: integer
+      responses:
+        '200':
+          description: Generated token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+
+  # Activity Stream
+  /api/v1/activity_stream:
+    get:
+      tags: [Activity Stream]
+      summary: Show activity stream
+      description: Get activity stream entries
+      responses:
+        '200':
+          description: Activity stream entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityStreamEntry'
+
   # Authentication & Sessions
   /api/v1/signin:
     post:
@@ -590,6 +714,1175 @@ paths:
       responses:
         '200':
           description: Session valid
+
+  /api/v1/available:
+    get:
+      tags: [Authentication]
+      summary: Check availability
+      description: Check system availability
+      security: []
+      responses:
+        '200':
+          description: System available
+
+  /api/v1/auth/two_factor_initiate_authentication/{method}:
+    post:
+      tags: [Authentication]
+      summary: Initiate 2FA
+      description: Initiate two-factor authentication
+      parameters:
+        - name: method
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [sms, authenticator_app, security_keys]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+      responses:
+        '200':
+          description: 2FA initiated
+
+  /api/v1/sessions:
+    get:
+      tags: [Authentication]
+      summary: List sessions
+      description: List active user sessions
+      responses:
+        '200':
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'
+
+  /api/v1/sessions/{id}:
+    delete:
+      tags: [Authentication]
+      summary: Delete session
+      description: Delete a specific session
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Session deleted
+
+  /api/v1/sessions/switch/{id}:
+    get:
+      tags: [Authentication]
+      summary: Switch to user
+      description: Switch to another user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Switched to user
+
+  /api/v1/sessions/switch_back:
+    get:
+      tags: [Authentication]
+      summary: Switch back
+      description: Switch back to original user
+      responses:
+        '200':
+          description: Switched back
+
+  # Calendars
+  /api/v1/calendars:
+    get:
+      tags: [Calendars]
+      summary: List calendars
+      description: Retrieve all calendars
+      responses:
+        '200':
+          description: List of calendars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Calendar'
+    post:
+      tags: [Calendars]
+      summary: Create calendar
+      description: Create a new calendar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarCreate'
+      responses:
+        '201':
+          description: Created calendar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Calendar'
+
+  /api/v1/calendars/{id}:
+    get:
+      tags: [Calendars]
+      summary: Get calendar
+      description: Retrieve a specific calendar
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Calendar details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Calendar'
+    put:
+      tags: [Calendars]
+      summary: Update calendar
+      description: Update an existing calendar
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarUpdate'
+      responses:
+        '200':
+          description: Updated calendar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Calendar'
+    delete:
+      tags: [Calendars]
+      summary: Delete calendar
+      description: Delete a calendar
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Calendar deleted
+
+  /api/v1/calendars/{calendar_id}/timeslots:
+    get:
+      tags: [Calendars]
+      summary: List calendar timeslots
+      description: Get timeslots for a calendar
+      parameters:
+        - name: calendar_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of timeslots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CalendarTimeslot'
+
+  # Communication Channels
+  /api/v1/channels_admin:
+    get:
+      tags: [Channels]
+      summary: List admin channels
+      description: Get all admin communication channels
+      responses:
+        '200':
+          description: List of admin channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Channel'
+
+  /api/v1/channels_email:
+    get:
+      tags: [Channels]
+      summary: List email channels
+      description: Get all email communication channels
+      responses:
+        '200':
+          description: List of email channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmailChannel'
+    post:
+      tags: [Channels]
+      summary: Create email channel
+      description: Create a new email channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailChannelCreate'
+      responses:
+        '201':
+          description: Created email channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailChannel'
+
+  /api/v1/channels_email/{id}:
+    get:
+      tags: [Channels]
+      summary: Get email channel
+      description: Retrieve a specific email channel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Email channel details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailChannel'
+    put:
+      tags: [Channels]
+      summary: Update email channel
+      description: Update an email channel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailChannelUpdate'
+      responses:
+        '200':
+          description: Updated email channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailChannel'
+    delete:
+      tags: [Channels]
+      summary: Delete email channel
+      description: Delete an email channel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Email channel deleted
+
+  /api/v1/channels_email/{id}/inbound:
+    get:
+      tags: [Channels]
+      summary: Test email inbound
+      description: Test email channel inbound configuration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Inbound test results
+
+  /api/v1/channels_email/{id}/outbound:
+    get:
+      tags: [Channels]
+      summary: Test email outbound
+      description: Test email channel outbound configuration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Outbound test results
+
+  /api/v1/channels_email/{id}/notification:
+    post:
+      tags: [Channels]
+      summary: Send email notification
+      description: Send notification via email channel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                body:
+                  type: string
+                recipients:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Notification sent
+
+  /api/v1/channels_facebook:
+    get:
+      tags: [Channels]
+      summary: List Facebook channels
+      description: Get all Facebook communication channels
+      responses:
+        '200':
+          description: List of Facebook channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FacebookChannel'
+    post:
+      tags: [Channels]
+      summary: Create Facebook channel
+      description: Create a new Facebook channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacebookChannelCreate'
+      responses:
+        '201':
+          description: Created Facebook channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacebookChannel'
+
+  /api/v1/channels_facebook/{id}:
+    get:
+      tags: [Channels]
+      summary: Get Facebook channel
+      description: Retrieve a specific Facebook channel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Facebook channel details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacebookChannel'
+    put:
+      tags: [Channels]
+      summary: Update Facebook channel
+      description: Update a Facebook channel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacebookChannelUpdate'
+      responses:
+        '200':
+          description: Updated Facebook channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacebookChannel'
+    delete:
+      tags: [Channels]
+      summary: Delete Facebook channel
+      description: Delete a Facebook channel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Facebook channel deleted
+
+  /api/v1/channels_google:
+    get:
+      tags: [Channels]
+      summary: List Google channels
+      description: Get all Google communication channels
+      responses:
+        '200':
+          description: List of Google channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GoogleChannel'
+
+  /api/v1/channels_microsoft365:
+    get:
+      tags: [Channels]
+      summary: List Microsoft 365 channels
+      description: Get all Microsoft 365 communication channels
+      responses:
+        '200':
+          description: List of Microsoft 365 channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Microsoft365Channel'
+
+  /api/v1/channels_sms:
+    get:
+      tags: [Channels]
+      summary: List SMS channels
+      description: Get all SMS communication channels
+      responses:
+        '200':
+          description: List of SMS channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SmsChannel'
+    post:
+      tags: [Channels]
+      summary: Create SMS channel
+      description: Create a new SMS channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmsChannelCreate'
+      responses:
+        '201':
+          description: Created SMS channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmsChannel'
+
+  /api/v1/channels_telegram:
+    get:
+      tags: [Channels]
+      summary: List Telegram channels
+      description: Get all Telegram communication channels
+      responses:
+        '200':
+          description: List of Telegram channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TelegramChannel'
+    post:
+      tags: [Channels]
+      summary: Create Telegram channel
+      description: Create a new Telegram channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelegramChannelCreate'
+      responses:
+        '201':
+          description: Created Telegram channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelegramChannel'
+
+  /api/v1/channels_twitter:
+    get:
+      tags: [Channels]
+      summary: List Twitter channels
+      description: Get all Twitter communication channels
+      responses:
+        '200':
+          description: List of Twitter channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TwitterChannel'
+    post:
+      tags: [Channels]
+      summary: Create Twitter channel
+      description: Create a new Twitter channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TwitterChannelCreate'
+      responses:
+        '201':
+          description: Created Twitter channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwitterChannel'
+
+  /api/v1/channels_web:
+    get:
+      tags: [Channels]
+      summary: List web channels
+      description: Get all web communication channels
+      responses:
+        '200':
+          description: List of web channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebChannel'
+
+  /api/v1/channels_whatsapp:
+    get:
+      tags: [Channels]
+      summary: List WhatsApp channels
+      description: Get all WhatsApp communication channels
+      responses:
+        '200':
+          description: List of WhatsApp channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WhatsAppChannel'
+    post:
+      tags: [Channels]
+      summary: Create WhatsApp channel
+      description: Create a new WhatsApp channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppChannelCreate'
+      responses:
+        '201':
+          description: Created WhatsApp channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatsAppChannel'
+
+  # Chats
+  /api/v1/chats:
+    get:
+      tags: [Chats]
+      summary: List chats
+      description: Retrieve all chats
+      responses:
+        '200':
+          description: List of chats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chat'
+    post:
+      tags: [Chats]
+      summary: Create chat
+      description: Create a new chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCreate'
+      responses:
+        '201':
+          description: Created chat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+
+  /api/v1/chats/{id}:
+    get:
+      tags: [Chats]
+      summary: Get chat
+      description: Retrieve a specific chat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Chat details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+    put:
+      tags: [Chats]
+      summary: Update chat
+      description: Update an existing chat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatUpdate'
+      responses:
+        '200':
+          description: Updated chat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+    delete:
+      tags: [Chats]
+      summary: Delete chat
+      description: Delete a chat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Chat deleted
+
+  # Chat Sessions
+  /api/v1/chat_sessions:
+    get:
+      tags: [Chats]
+      summary: List chat sessions
+      description: Retrieve all chat sessions
+      responses:
+        '200':
+          description: List of chat sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatSession'
+    post:
+      tags: [Chats]
+      summary: Create chat session
+      description: Create a new chat session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatSessionCreate'
+      responses:
+        '201':
+          description: Created chat session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatSession'
+
+  /api/v1/chat_sessions/{id}:
+    get:
+      tags: [Chats]
+      summary: Get chat session
+      description: Retrieve a specific chat session
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Chat session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatSession'
+    put:
+      tags: [Chats]
+      summary: Update chat session
+      description: Update a chat session
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatSessionUpdate'
+      responses:
+        '200':
+          description: Updated chat session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatSession'
+    delete:
+      tags: [Chats]
+      summary: Delete chat session
+      description: Delete a chat session
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Chat session deleted
+
+  # Core Workflow Management
+  /api/v1/core_workflows:
+    get:
+      tags: [Core Workflows]
+      summary: List core workflows
+      description: Retrieve all core workflows
+      responses:
+        '200':
+          description: List of core workflows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CoreWorkflow'
+    post:
+      tags: [Core Workflows]
+      summary: Create core workflow
+      description: Create a new core workflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoreWorkflowCreate'
+      responses:
+        '201':
+          description: Created core workflow
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoreWorkflow'
+
+  /api/v1/core_workflows/{id}:
+    get:
+      tags: [Core Workflows]
+      summary: Get core workflow
+      description: Retrieve a specific core workflow
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Core workflow details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoreWorkflow'
+    put:
+      tags: [Core Workflows]
+      summary: Update core workflow
+      description: Update a core workflow
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoreWorkflowUpdate'
+      responses:
+        '200':
+          description: Updated core workflow
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoreWorkflow'
+    delete:
+      tags: [Core Workflows]
+      summary: Delete core workflow
+      description: Delete a core workflow
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Core workflow deleted
+
+  /api/v1/core_workflows/perform:
+    post:
+      tags: [Core Workflows]
+      summary: Perform core workflow
+      description: Execute a core workflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workflow_id:
+                  type: integer
+                params:
+                  type: object
+      responses:
+        '200':
+          description: Workflow executed
+
+  # Checklists Management
+  /api/v1/checklists:
+    get:
+      tags: [Checklists]
+      summary: List checklists
+      description: Retrieve all checklists
+      responses:
+        '200':
+          description: List of checklists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Checklist'
+    post:
+      tags: [Checklists]
+      summary: Create checklist
+      description: Create a new checklist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChecklistCreate'
+      responses:
+        '201':
+          description: Created checklist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checklist'
+
+  /api/v1/checklists/{id}:
+    get:
+      tags: [Checklists]
+      summary: Get checklist
+      description: Retrieve a specific checklist
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Checklist details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checklist'
+    put:
+      tags: [Checklists]
+      summary: Update checklist
+      description: Update a checklist
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChecklistUpdate'
+      responses:
+        '200':
+          description: Updated checklist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checklist'
+    delete:
+      tags: [Checklists]
+      summary: Delete checklist
+      description: Delete a checklist
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Checklist deleted
+
+  # Checklist Templates
+  /api/v1/checklist_templates:
+    get:
+      tags: [Checklists]
+      summary: List checklist templates
+      description: Retrieve all checklist templates
+      responses:
+        '200':
+          description: List of checklist templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChecklistTemplate'
+    post:
+      tags: [Checklists]
+      summary: Create checklist template
+      description: Create a new checklist template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChecklistTemplateCreate'
+      responses:
+        '201':
+          description: Created checklist template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChecklistTemplate'
+
+  /api/v1/checklist_templates/{id}:
+    get:
+      tags: [Checklists]
+      summary: Get checklist template
+      description: Retrieve a specific checklist template
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Checklist template details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChecklistTemplate'
+    put:
+      tags: [Checklists]
+      summary: Update checklist template
+      description: Update a checklist template
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChecklistTemplateUpdate'
+      responses:
+        '200':
+          description: Updated checklist template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChecklistTemplate'
+    delete:
+      tags: [Checklists]
+      summary: Delete checklist template
+      description: Delete a checklist template
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Checklist template deleted
+
+  # Data Privacy Tasks
+  /api/v1/data_privacy_tasks:
+    get:
+      tags: [Data Privacy]
+      summary: List data privacy tasks
+      description: Retrieve all data privacy tasks
+      responses:
+        '200':
+          description: List of data privacy tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataPrivacyTask'
+    post:
+      tags: [Data Privacy]
+      summary: Create data privacy task
+      description: Create a new data privacy task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataPrivacyTaskCreate'
+      responses:
+        '201':
+          description: Created data privacy task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPrivacyTask'
+
+  /api/v1/data_privacy_tasks/{id}:
+    get:
+      tags: [Data Privacy]
+      summary: Get data privacy task
+      description: Retrieve a specific data privacy task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Data privacy task details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPrivacyTask'
+    put:
+      tags: [Data Privacy]
+      summary: Update data privacy task
+      description: Update a data privacy task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataPrivacyTaskUpdate'
+      responses:
+        '200':
+          description: Updated data privacy task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPrivacyTask'
+    delete:
+      tags: [Data Privacy]
+      summary: Delete data privacy task
+      description: Delete a data privacy task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Data privacy task deleted
 
   # Knowledge Base
   /api/v1/knowledge_bases:
@@ -676,53 +1969,903 @@ paths:
               schema:
                 $ref: '#/components/schemas/KnowledgeBaseAnswer'
 
-  # Communication Channels
-  /api/v1/channels_email:
+  # Data Streams
+  /api/v1/data_streams:
     get:
-      tags: [Channels]
-      summary: List email channels
-      description: Get all email communication channels
+      tags: [Data Streams]
+      summary: List data streams
+      description: Retrieve all data streams
       responses:
         '200':
-          description: List of email channels
+          description: List of data streams
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EmailChannel'
+                  $ref: '#/components/schemas/DataStream'
 
-  /api/v1/channels_sms:
-    get:
-      tags: [Channels]
-      summary: List SMS channels
-      description: Get all SMS communication channels
-      responses:
-        '200':
-          description: List of SMS channels
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SmsChannel'
+  # CTI (Computer Telephony Integration)
+  /api/v1/cti/{token}/push:
     post:
-      tags: [Channels]
-      summary: Create SMS channel
-      description: Create a new SMS channel
+      tags: [CTI]
+      summary: Push CTI data
+      description: Push CTI data for telephony integration
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SmsChannelCreate'
+              type: object
+              properties:
+                event:
+                  type: string
+                direction:
+                  type: string
+                from:
+                  type: string
+                to:
+                  type: string
+                call_id:
+                  type: string
       responses:
-        '201':
-          description: Created SMS channel
+        '200':
+          description: CTI data pushed
+
+  # Jobs Management
+  /api/v1/jobs:
+    get:
+      tags: [Jobs]
+      summary: List jobs
+      description: Retrieve all background jobs
+      responses:
+        '200':
+          description: List of jobs
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SmsChannel'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+    post:
+      tags: [Jobs]
+      summary: Create job
+      description: Create a new background job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobCreate'
+      responses:
+        '201':
+          description: Created job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+
+  /api/v1/jobs/{id}:
+    get:
+      tags: [Jobs]
+      summary: Get job
+      description: Retrieve a specific job
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Job details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+    put:
+      tags: [Jobs]
+      summary: Update job
+      description: Update a job
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobUpdate'
+      responses:
+        '200':
+          description: Updated job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+    delete:
+      tags: [Jobs]
+      summary: Delete job
+      description: Delete a job
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Job deleted
+
+  /api/v1/jobs/{id}/restart:
+    post:
+      tags: [Jobs]
+      summary: Restart job
+      description: Restart a failed or stopped job
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Job restarted
+
+  # Links Management
+  /api/v1/links:
+    get:
+      tags: [Links]
+      summary: List links
+      description: Retrieve all object links
+      responses:
+        '200':
+          description: List of links
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Link'
+    post:
+      tags: [Links]
+      summary: Create link
+      description: Create a new object link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinkCreate'
+      responses:
+        '201':
+          description: Created link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Link'
+
+  /api/v1/links/{id}:
+    get:
+      tags: [Links]
+      summary: Get link
+      description: Retrieve a specific link
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Link details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Link'
+    put:
+      tags: [Links]
+      summary: Update link
+      description: Update a link
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinkUpdate'
+      responses:
+        '200':
+          description: Updated link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Link'
+    delete:
+      tags: [Links]
+      summary: Delete link
+      description: Delete a link
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Link deleted
+
+  # Locales
+  /api/v1/locales:
+    get:
+      tags: [Locales]
+      summary: List locales
+      description: Retrieve all available locales
+      responses:
+        '200':
+          description: List of locales
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Locale'
+
+  /api/v1/locales/{id}:
+    get:
+      tags: [Locales]
+      summary: Get locale
+      description: Retrieve a specific locale
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Locale details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Locale'
+
+  # Network Management
+  /api/v1/networks:
+    get:
+      tags: [Networks]
+      summary: List networks
+      description: Retrieve all networks
+      responses:
+        '200':
+          description: List of networks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Network'
+    post:
+      tags: [Networks]
+      summary: Create network
+      description: Create a new network
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkCreate'
+      responses:
+        '201':
+          description: Created network
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Network'
+
+  /api/v1/networks/{id}:
+    get:
+      tags: [Networks]
+      summary: Get network
+      description: Retrieve a specific network
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Network details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Network'
+    put:
+      tags: [Networks]
+      summary: Update network
+      description: Update a network
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkUpdate'
+      responses:
+        '200':
+          description: Updated network
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Network'
+    delete:
+      tags: [Networks]
+      summary: Delete network
+      description: Delete a network
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Network deleted
+
+  # Object Attributes
+  /api/v1/object_manager_attributes:
+    get:
+      tags: [Object Manager]
+      summary: List object attributes
+      description: Retrieve all object manager attributes
+      responses:
+        '200':
+          description: List of object attributes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ObjectManagerAttribute'
+    post:
+      tags: [Object Manager]
+      summary: Create object attribute
+      description: Create a new object manager attribute
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectManagerAttributeCreate'
+      responses:
+        '201':
+          description: Created object attribute
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectManagerAttribute'
+
+  /api/v1/object_manager_attributes/{id}:
+    get:
+      tags: [Object Manager]
+      summary: Get object attribute
+      description: Retrieve a specific object attribute
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Object attribute details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectManagerAttribute'
+    put:
+      tags: [Object Manager]
+      summary: Update object attribute
+      description: Update an object attribute
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectManagerAttributeUpdate'
+      responses:
+        '200':
+          description: Updated object attribute
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectManagerAttribute'
+    delete:
+      tags: [Object Manager]
+      summary: Delete object attribute
+      description: Delete an object attribute
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Object attribute deleted
+
+  /api/v1/object_manager_attributes_execute_migrations:
+    post:
+      tags: [Object Manager]
+      summary: Execute attribute migrations
+      description: Execute pending object manager attribute migrations
+      responses:
+        '200':
+          description: Migrations executed
+
+  # Online Notifications
+  /api/v1/online_notifications:
+    get:
+      tags: [Notifications]
+      summary: List online notifications
+      description: Retrieve all online notifications for current user
+      responses:
+        '200':
+          description: List of online notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OnlineNotification'
+    post:
+      tags: [Notifications]
+      summary: Create online notification
+      description: Create a new online notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnlineNotificationCreate'
+      responses:
+        '201':
+          description: Created online notification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnlineNotification'
+
+  /api/v1/online_notifications/{id}:
+    get:
+      tags: [Notifications]
+      summary: Get online notification
+      description: Retrieve a specific online notification
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Online notification details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnlineNotification'
+    put:
+      tags: [Notifications]
+      summary: Update online notification
+      description: Update an online notification
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnlineNotificationUpdate'
+      responses:
+        '200':
+          description: Updated online notification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnlineNotification'
+    delete:
+      tags: [Notifications]
+      summary: Delete online notification
+      description: Delete an online notification
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Online notification deleted
+
+  /api/v1/online_notifications/mark_all_as_read:
+    post:
+      tags: [Notifications]
+      summary: Mark all as read
+      description: Mark all online notifications as read
+      responses:
+        '200':
+          description: All notifications marked as read
+
+  # Package Management
+  /api/v1/packages:
+    get:
+      tags: [Packages]
+      summary: List packages
+      description: Retrieve all packages
+      responses:
+        '200':
+          description: List of packages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Package'
+    post:
+      tags: [Packages]
+      summary: Install package
+      description: Install a new package
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Package installed
+
+  /api/v1/packages/{id}:
+    get:
+      tags: [Packages]
+      summary: Get package
+      description: Retrieve a specific package
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Package details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+    delete:
+      tags: [Packages]
+      summary: Uninstall package
+      description: Uninstall a package
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Package uninstalled
+
+  # Planner
+  /api/v1/planner:
+    get:
+      tags: [Planner]
+      summary: Get planner data
+      description: Retrieve planner data
+      responses:
+        '200':
+          description: Planner data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tickets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ticket'
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+
+  # PostMaster Filters
+  /api/v1/postmaster_filters:
+    get:
+      tags: [PostMaster]
+      summary: List postmaster filters
+      description: Retrieve all postmaster filters
+      responses:
+        '200':
+          description: List of postmaster filters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostmasterFilter'
+    post:
+      tags: [PostMaster]
+      summary: Create postmaster filter
+      description: Create a new postmaster filter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostmasterFilterCreate'
+      responses:
+        '201':
+          description: Created postmaster filter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostmasterFilter'
+
+  /api/v1/postmaster_filters/{id}:
+    get:
+      tags: [PostMaster]
+      summary: Get postmaster filter
+      description: Retrieve a specific postmaster filter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Postmaster filter details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostmasterFilter'
+    put:
+      tags: [PostMaster]
+      summary: Update postmaster filter
+      description: Update a postmaster filter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostmasterFilterUpdate'
+      responses:
+        '200':
+          description: Updated postmaster filter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostmasterFilter'
+    delete:
+      tags: [PostMaster]
+      summary: Delete postmaster filter
+      description: Delete a postmaster filter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Postmaster filter deleted
+
+  # Public Links
+  /api/v1/public_links:
+    get:
+      tags: [Public Links]
+      summary: List public links
+      description: Retrieve all public links
+      responses:
+        '200':
+          description: List of public links
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicLink'
+    post:
+      tags: [Public Links]
+      summary: Create public link
+      description: Create a new public link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicLinkCreate'
+      responses:
+        '201':
+          description: Created public link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicLink'
+
+  /api/v1/public_links/{id}:
+    get:
+      tags: [Public Links]
+      summary: Get public link
+      description: Retrieve a specific public link
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Public link details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicLink'
+    put:
+      tags: [Public Links]
+      summary: Update public link
+      description: Update a public link
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicLinkUpdate'
+      responses:
+        '200':
+          description: Updated public link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicLink'
+    delete:
+      tags: [Public Links]
+      summary: Delete public link
+      description: Delete a public link
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Public link deleted
+
+  # Recent Views
+  /api/v1/recent_views:
+    get:
+      tags: [Recent Views]
+      summary: List recent views
+      description: Retrieve recent views for current user
+      responses:
+        '200':
+          description: List of recent views
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecentView'
+    post:
+      tags: [Recent Views]
+      summary: Create recent view
+      description: Add item to recent views
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecentViewCreate'
+      responses:
+        '201':
+          description: Created recent view
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecentView'
+
+  /api/v1/recent_views/{id}:
+    delete:
+      tags: [Recent Views]
+      summary: Delete recent view
+      description: Delete a recent view
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Recent view deleted
+
+  # Reports
+  /api/v1/reports:
+    get:
+      tags: [Reports]
+      summary: List reports
+      description: Retrieve all reports
+      responses:
+        '200':
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+
+  /api/v1/reports/config:
+    get:
+      tags: [Reports]
+      summary: Get report config
+      description: Get report configuration
+      responses:
+        '200':
+          description: Report configuration
+          content:
+            application/json:
+              schema:
+                type: object
 
   # Automation - Triggers
   /api/v1/triggers:
@@ -798,6 +2941,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Trigger'
+    delete:
+      tags: [Automation]
+      summary: Delete trigger
+      description: Delete a trigger
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Trigger deleted
 
   # Automation - Macros
   /api/v1/macros:
@@ -832,33 +2988,1804 @@ paths:
               schema:
                 $ref: '#/components/schemas/Macro'
 
-  # Monitoring & Health
-  /api/v1/monitoring/health_check:
+  /api/v1/macros/{id}:
     get:
-      tags: [Monitoring]
-      summary: Health check
-      description: Check system health status
+      tags: [Automation]
+      summary: Get macro
+      description: Retrieve a specific macro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Macro details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Macro'
+    put:
+      tags: [Automation]
+      summary: Update macro
+      description: Update a macro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MacroUpdate'
+      responses:
+        '200':
+          description: Updated macro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Macro'
+    delete:
+      tags: [Automation]
+      summary: Delete macro
+      description: Delete a macro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Macro deleted
+
+  # Roles Management
+  /api/v1/roles:
+    get:
+      tags: [Roles]
+      summary: List roles
+      description: Retrieve all roles
+      responses:
+        '200':
+          description: List of roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+    post:
+      tags: [Roles]
+      summary: Create role
+      description: Create a new role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleCreate'
+      responses:
+        '201':
+          description: Created role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+
+  /api/v1/roles/{id}:
+    get:
+      tags: [Roles]
+      summary: Get role
+      description: Retrieve a specific role
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Role details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+    put:
+      tags: [Roles]
+      summary: Update role
+      description: Update a role
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleUpdate'
+      responses:
+        '200':
+          description: Updated role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+    delete:
+      tags: [Roles]
+      summary: Delete role
+      description: Delete a role
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Role deleted
+
+  # Schedulers
+  /api/v1/schedulers:
+    get:
+      tags: [Schedulers]
+      summary: List schedulers
+      description: Retrieve all schedulers
+      responses:
+        '200':
+          description: List of schedulers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Scheduler'
+    post:
+      tags: [Schedulers]
+      summary: Create scheduler
+      description: Create a new scheduler
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SchedulerCreate'
+      responses:
+        '201':
+          description: Created scheduler
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scheduler'
+
+  /api/v1/schedulers/{id}:
+    get:
+      tags: [Schedulers]
+      summary: Get scheduler
+      description: Retrieve a specific scheduler
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Scheduler details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scheduler'
+    put:
+      tags: [Schedulers]
+      summary: Update scheduler
+      description: Update a scheduler
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SchedulerUpdate'
+      responses:
+        '200':
+          description: Updated scheduler
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scheduler'
+    delete:
+      tags: [Schedulers]
+      summary: Delete scheduler
+      description: Delete a scheduler
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Scheduler deleted
+
+  # Signatures
+  /api/v1/signatures:
+    get:
+      tags: [Signatures]
+      summary: List signatures
+      description: Retrieve all signatures
+      responses:
+        '200':
+          description: List of signatures
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Signature'
+    post:
+      tags: [Signatures]
+      summary: Create signature
+      description: Create a new signature
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignatureCreate'
+      responses:
+        '201':
+          description: Created signature
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Signature'
+
+  /api/v1/signatures/{id}:
+    get:
+      tags: [Signatures]
+      summary: Get signature
+      description: Retrieve a specific signature
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Signature details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Signature'
+    put:
+      tags: [Signatures]
+      summary: Update signature
+      description: Update a signature
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignatureUpdate'
+      responses:
+        '200':
+          description: Updated signature
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Signature'
+    delete:
+      tags: [Signatures]
+      summary: Delete signature
+      description: Delete a signature
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Signature deleted
+
+  # SLA Management
+  /api/v1/slas:
+    get:
+      tags: [SLA]
+      summary: List SLAs
+      description: Retrieve all SLAs
+      responses:
+        '200':
+          description: List of SLAs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SLA'
+    post:
+      tags: [SLA]
+      summary: Create SLA
+      description: Create a new SLA
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SLACreate'
+      responses:
+        '201':
+          description: Created SLA
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SLA'
+
+  /api/v1/slas/{id}:
+    get:
+      tags: [SLA]
+      summary: Get SLA
+      description: Retrieve a specific SLA
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: SLA details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SLA'
+    put:
+      tags: [SLA]
+      summary: Update SLA
+      description: Update an SLA
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SLAUpdate'
+      responses:
+        '200':
+          description: Updated SLA
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SLA'
+    delete:
+      tags: [SLA]
+      summary: Delete SLA
+      description: Delete an SLA
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: SLA deleted
+
+  # Standards Management
+  /api/v1/ticket_article_types:
+    get:
+      tags: [Standards]
+      summary: List ticket article types
+      description: Retrieve all ticket article types
+      responses:
+        '200':
+          description: List of ticket article types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketArticleType'
+
+  /api/v1/ticket_priorities:
+    get:
+      tags: [Standards]
+      summary: List ticket priorities
+      description: Retrieve all ticket priorities
+      responses:
+        '200':
+          description: List of ticket priorities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketPriority'
+
+  /api/v1/ticket_states:
+    get:
+      tags: [Standards]
+      summary: List ticket states
+      description: Retrieve all ticket states
+      responses:
+        '200':
+          description: List of ticket states
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketState'
+
+  /api/v1/ticket_state_types:
+    get:
+      tags: [Standards]
+      summary: List ticket state types
+      description: Retrieve all ticket state types
+      responses:
+        '200':
+          description: List of ticket state types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketStateType'
+
+  # System Statistics
+  /api/v1/system/stats:
+    get:
+      tags: [System]
+      summary: Get system statistics
+      description: Retrieve system usage statistics
+      responses:
+        '200':
+          description: System statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemStats'
+
+  # Tags Management
+  /api/v1/tags:
+    get:
+      tags: [Tags]
+      summary: List tags
+      description: Retrieve all tags
+      responses:
+        '200':
+          description: List of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+    post:
+      tags: [Tags]
+      summary: Create tag
+      description: Create a new tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreate'
+      responses:
+        '201':
+          description: Created tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+
+  /api/v1/tags/{id}:
+    get:
+      tags: [Tags]
+      summary: Get tag
+      description: Retrieve a specific tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Tag details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+    put:
+      tags: [Tags]
+      summary: Update tag
+      description: Update a tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagUpdate'
+      responses:
+        '200':
+          description: Updated tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+    delete:
+      tags: [Tags]
+      summary: Delete tag
+      description: Delete a tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Tag deleted
+
+  /api/v1/tag_search:
+    get:
+      tags: [Tags]
+      summary: Search tags
+      description: Search for tags
+      parameters:
+        - name: term
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+
+  /api/v1/tags_by_object:
+    get:
+      tags: [Tags]
+      summary: Get tags by object
+      description: Get tags for a specific object
+      parameters:
+        - name: object
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: o_id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Object tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+
+  # Task Management
+  /api/v1/taskbars:
+    get:
+      tags: [Tasks]
+      summary: List taskbars
+      description: Retrieve all taskbars for current user
+      responses:
+        '200':
+          description: List of taskbars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Taskbar'
+    post:
+      tags: [Tasks]
+      summary: Create taskbar
+      description: Create a new taskbar entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskbarCreate'
+      responses:
+        '201':
+          description: Created taskbar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taskbar'
+
+  /api/v1/taskbars/{id}:
+    get:
+      tags: [Tasks]
+      summary: Get taskbar
+      description: Retrieve a specific taskbar
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Taskbar details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taskbar'
+    put:
+      tags: [Tasks]
+      summary: Update taskbar
+      description: Update a taskbar
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskbarUpdate'
+      responses:
+        '200':
+          description: Updated taskbar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taskbar'
+    delete:
+      tags: [Tasks]
+      summary: Delete taskbar
+      description: Delete a taskbar
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Taskbar deleted
+
+  # Templates Management
+  /api/v1/templates:
+    get:
+      tags: [Templates]
+      summary: List templates
+      description: Retrieve all templates
+      responses:
+        '200':
+          description: List of templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+    post:
+      tags: [Templates]
+      summary: Create template
+      description: Create a new template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCreate'
+      responses:
+        '201':
+          description: Created template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+
+  /api/v1/templates/{id}:
+    get:
+      tags: [Templates]
+      summary: Get template
+      description: Retrieve a specific template
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Template details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+    put:
+      tags: [Templates]
+      summary: Update template
+      description: Update a template
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateUpdate'
+      responses:
+        '200':
+          description: Updated template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+    delete:
+      tags: [Templates]
+      summary: Delete template
+      description: Delete a template
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Template deleted
+
+  # Text Modules
+  /api/v1/text_modules:
+    get:
+      tags: [Text Modules]
+      summary: List text modules
+      description: Retrieve all text modules
+      responses:
+        '200':
+          description: List of text modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TextModule'
+    post:
+      tags: [Text Modules]
+      summary: Create text module
+      description: Create a new text module
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextModuleCreate'
+      responses:
+        '201':
+          description: Created text module
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextModule'
+
+  /api/v1/text_modules/{id}:
+    get:
+      tags: [Text Modules]
+      summary: Get text module
+      description: Retrieve a specific text module
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Text module details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextModule'
+    put:
+      tags: [Text Modules]
+      summary: Update text module
+      description: Update a text module
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextModuleUpdate'
+      responses:
+        '200':
+          description: Updated text module
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextModule'
+    delete:
+      tags: [Text Modules]
+      summary: Delete text module
+      description: Delete a text module
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Text module deleted
+
+  # Time Accounting
+  /api/v1/time_accountings:
+    get:
+      tags: [Time Accounting]
+      summary: List time accountings
+      description: Retrieve all time accounting entries
+      responses:
+        '200':
+          description: List of time accounting entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeAccounting'
+    post:
+      tags: [Time Accounting]
+      summary: Create time accounting
+      description: Create a new time accounting entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeAccountingCreate'
+      responses:
+        '201':
+          description: Created time accounting entry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeAccounting'
+
+  /api/v1/time_accountings/{id}:
+    get:
+      tags: [Time Accounting]
+      summary: Get time accounting
+      description: Retrieve a specific time accounting entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Time accounting details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeAccounting'
+    put:
+      tags: [Time Accounting]
+      summary: Update time accounting
+      description: Update a time accounting entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeAccountingUpdate'
+      responses:
+        '200':
+          description: Updated time accounting entry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeAccounting'
+    delete:
+      tags: [Time Accounting]
+      summary: Delete time accounting
+      description: Delete a time accounting entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Time accounting entry deleted
+
+  # Token Management
+  /api/v1/tokens:
+    get:
+      tags: [Tokens]
+      summary: List tokens
+      description: Retrieve all tokens
+      responses:
+        '200':
+          description: List of tokens
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Token'
+    post:
+      tags: [Tokens]
+      summary: Create token
+      description: Create a new token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenCreate'
+      responses:
+        '201':
+          description: Created token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+
+  /api/v1/tokens/{id}:
+    get:
+      tags: [Tokens]
+      summary: Get token
+      description: Retrieve a specific token
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Token details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+    put:
+      tags: [Tokens]
+      summary: Update token
+      description: Update a token
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenUpdate'
+      responses:
+        '200':
+          description: Updated token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+    delete:
+      tags: [Tokens]
+      summary: Delete token
+      description: Delete a token
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Token deleted
+
+  # Translation Management
+  /api/v1/translations:
+    get:
+      tags: [Translations]
+      summary: List translations
+      description: Retrieve all translations
+      responses:
+        '200':
+          description: List of translations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Translation'
+    post:
+      tags: [Translations]
+      summary: Create translation
+      description: Create a new translation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TranslationCreate'
+      responses:
+        '201':
+          description: Created translation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Translation'
+
+  /api/v1/translations/{id}:
+    get:
+      tags: [Translations]
+      summary: Get translation
+      description: Retrieve a specific translation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Translation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Translation'
+    put:
+      tags: [Translations]
+      summary: Update translation
+      description: Update a translation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TranslationUpdate'
+      responses:
+        '200':
+          description: Updated translation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Translation'
+    delete:
+      tags: [Translations]
+      summary: Delete translation
+      description: Delete a translation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Translation deleted
+
+  /api/v1/translations/{locale}:
+    get:
+      tags: [Translations]
+      summary: Get translations by locale
+      description: Get all translations for a specific locale
+      parameters:
+        - name: locale
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Translations for locale
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/v1/translations/push:
+    post:
+      tags: [Translations]
+      summary: Push translations
+      description: Push translation updates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Translations pushed
+
+  /api/v1/translations/admin/sync:
+    post:
+      tags: [Translations]
+      summary: Sync translations
+      description: Synchronize translations from external source
+      responses:
+        '200':
+          description: Translations synchronized
+
+  /api/v1/translations/admin/reset:
+    post:
+      tags: [Translations]
+      summary: Reset translations
+      description: Reset translations to defaults
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                locale:
+                  type: string
+      responses:
+        '200':
+          description: Translations reset
+
+  # Version Information
+  /api/v1/version:
+    get:
+      tags: [System]
+      summary: Get version
+      description: Get system version information
       security: []
       responses:
         '200':
-          description: System is healthy
+          description: Version information
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthCheck'
+                type: object
+                properties:
+                  version:
+                    type: string
+                  build:
+                    type: string
 
-  /api/v1/monitoring/status:
+  # Working Hours
+  /api/v1/working_hours:
     get:
-      tags: [Monitoring]
-      summary: System status
-      description: Get detailed system status
+      tags: [Working Hours]
+      summary: List working hours
+      description: Retrieve all working hours configurations
       responses:
         '200':
-          description: System status information
+          description: List of working hours
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SystemStatus'
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkingHours'
+    post:
+      tags: [Working Hours]
+      summary: Create working hours
+      description: Create a new working hours configuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkingHoursCreate'
+      responses:
+        '201':
+          description: Created working hours
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkingHours'
+
+  /api/v1/working_hours/{id}:
+    get:
+      tags: [Working Hours]
+      summary: Get working hours
+      description: Retrieve specific working hours configuration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Working hours details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkingHours'
+    put:
+      tags: [Working Hours]
+      summary: Update working hours
+      description: Update working hours configuration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkingHoursUpdate'
+      responses:
+        '200':
+          description: Updated working hours
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkingHours'
+    delete:
+      tags: [Working Hours]
+      summary: Delete working hours
+      description: Delete working hours configuration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Working hours deleted
+
+  # Monitoring & Health (duplicate removed)
+
+  # External Data Sources (GitHub, GitLab, etc.)
+  /api/v1/external_data_source:
+    get:
+      tags: [External Data Sources]
+      summary: List external data sources
+      description: Retrieve all external data sources
+      responses:
+        '200':
+          description: List of external data sources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExternalDataSource'
+    post:
+      tags: [External Data Sources]
+      summary: Create external data source
+      description: Create a new external data source
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalDataSourceCreate'
+      responses:
+        '201':
+          description: Created external data source
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalDataSource'
+
+  /api/v1/external_data_source/{id}:
+    get:
+      tags: [External Data Sources]
+      summary: Get external data source
+      description: Retrieve a specific external data source
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: External data source details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalDataSource'
+    put:
+      tags: [External Data Sources]
+      summary: Update external data source
+      description: Update an external data source
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalDataSourceUpdate'
+      responses:
+        '200':
+          description: Updated external data source
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalDataSource'
+    delete:
+      tags: [External Data Sources]
+      summary: Delete external data source
+      description: Delete an external data source
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: External data source deleted
+
+  /api/v1/external_data_source/fetch:
+    post:
+      tags: [External Data Sources]
+      summary: Fetch external data
+      description: Fetch data from external sources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source_id:
+                  type: integer
+                params:
+                  type: object
+      responses:
+        '200':
+          description: Data fetched
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/v1/external_data_source/preview:
+    post:
+      tags: [External Data Sources]
+      summary: Preview external data
+      description: Preview external data source
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source:
+                  type: object
+                params:
+                  type: object
+      responses:
+        '200':
+          description: Preview data
+          content:
+            application/json:
+              schema:
+                type: object
+
+  # Integration with GitHub/GitLab
+  /api/v1/integration/github:
+    get:
+      tags: [Integrations]
+      summary: List GitHub integrations
+      description: Get all GitHub integrations
+      responses:
+        '200':
+          description: List of GitHub integrations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GitHubIntegration'
+    post:
+      tags: [Integrations]
+      summary: Create GitHub integration
+      description: Create a new GitHub integration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GitHubIntegrationCreate'
+      responses:
+        '201':
+          description: Created GitHub integration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GitHubIntegration'
+
+  /api/v1/integration/gitlab:
+    get:
+      tags: [Integrations]
+      summary: List GitLab integrations
+      description: Get all GitLab integrations
+      responses:
+        '200':
+          description: List of GitLab integrations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GitLabIntegration'
+    post:
+      tags: [Integrations]
+      summary: Create GitLab integration
+      description: Create a new GitLab integration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GitLabIntegrationCreate'
+      responses:
+        '201':
+          description: Created GitLab integration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GitLabIntegration'
+
+  # OAuth Management
+  /api/v1/oauth/applications:
+    get:
+      tags: [OAuth]
+      summary: List OAuth applications
+      description: Retrieve all OAuth applications
+      responses:
+        '200':
+          description: List of OAuth applications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OAuthApplication'
+    post:
+      tags: [OAuth]
+      summary: Create OAuth application
+      description: Create a new OAuth application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthApplicationCreate'
+      responses:
+        '201':
+          description: Created OAuth application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthApplication'
+
+  /api/v1/oauth/applications/{id}:
+    get:
+      tags: [OAuth]
+      summary: Get OAuth application
+      description: Retrieve a specific OAuth application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OAuth application details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthApplication'
+    put:
+      tags: [OAuth]
+      summary: Update OAuth application
+      description: Update an OAuth application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthApplicationUpdate'
+      responses:
+        '200':
+          description: Updated OAuth application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthApplication'
+    delete:
+      tags: [OAuth]
+      summary: Delete OAuth application
+      description: Delete an OAuth application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: OAuth application deleted
+
+  /api/v1/oauth/authorize:
+    get:
+      tags: [OAuth]
+      summary: OAuth authorization
+      description: OAuth authorization endpoint
+      parameters:
+        - name: response_type
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: redirect_uri
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: scope
+          in: query
+          schema:
+            type: string
+        - name: state
+          in: query
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirect to authorization
+
+  /api/v1/oauth/token:
+    post:
+      tags: [OAuth]
+      summary: OAuth token
+      description: OAuth token endpoint
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                code:
+                  type: string
+                redirect_uri:
+                  type: string
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+      responses:
+        '200':
+          description: OAuth token response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer
+                  refresh_token:
+                    type: string
+                  scope:
+                    type: string
+
+  # LDAP Integration
+  /api/v1/ldap/groups:
+    get:
+      tags: [LDAP]
+      summary: List LDAP groups
+      description: Retrieve all LDAP groups
+      responses:
+        '200':
+          description: List of LDAP groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LDAPGroup'
+
+  /api/v1/ldap/users:
+    get:
+      tags: [LDAP]
+      summary: List LDAP users
+      description: Retrieve all LDAP users
+      responses:
+        '200':
+          description: List of LDAP users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LDAPUser'
+
+  /api/v1/ldap/sources:
+    get:
+      tags: [LDAP]
+      summary: List LDAP sources
+      description: Retrieve all LDAP sources
+      responses:
+        '200':
+          description: List of LDAP sources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LDAPSource'
+    post:
+      tags: [LDAP]
+      summary: Create LDAP source
+      description: Create a new LDAP source
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LDAPSourceCreate'
+      responses:
+        '201':
+          description: Created LDAP source
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LDAPSource'
+
+  /api/v1/ldap/sources/{id}:
+    get:
+      tags: [LDAP]
+      summary: Get LDAP source
+      description: Retrieve a specific LDAP source
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: LDAP source details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LDAPSource'
+    put:
+      tags: [LDAP]
+      summary: Update LDAP source
+      description: Update an LDAP source
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LDAPSourceUpdate'
+      responses:
+        '200':
+          description: Updated LDAP source
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LDAPSource'
+    delete:
+      tags: [LDAP]
+      summary: Delete LDAP source
+      description: Delete an LDAP source
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: LDAP source deleted
+
+  # Monitoring & Health
 
   # Settings & Configuration
   /api/v1/settings:
@@ -1626,30 +5553,2251 @@ components:
             - type: boolean
             - type: object
 
-    # Common Schemas
-    Attachment:
+    # AI Agent Schemas
+    AIAgent:
       type: object
       properties:
         id:
           type: integer
-        filename:
+        name:
           type: string
-        size:
-          type: integer
-        content_type:
+        type:
           type: string
+        active:
+          type: boolean
+        configuration:
+          type: object
+        created_at:
+          type: string
+          format: date-time
 
-    Error:
+    AIAgentCreate:
       type: object
+      required:
+        - name
+        - type
       properties:
-        error:
+        name:
           type: string
-        error_description:
+        type:
           type: string
-        details:
+        configuration:
           type: object
 
+    AIAgentUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        active:
+          type: boolean
+        configuration:
+          type: object
+
+    AIAgentSearchCriteria:
+      type: object
+      properties:
+        query:
+          type: string
+        type:
+          type: string
+        limit:
+          type: integer
+
+    AIAgentType:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    # Application Schemas
+    Application:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        homepage:
+          type: string
+        redirect_uri:
+          type: string
+        uid:
+          type: string
+        secret:
+          type: string
+        scopes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    ApplicationCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        homepage:
+          type: string
+        redirect_uri:
+          type: string
+        scopes:
+          type: string
+
+    ApplicationUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        homepage:
+          type: string
+        redirect_uri:
+          type: string
+        scopes:
+          type: string
+
+    # Activity Stream Schema
+    ActivityStreamEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+        o_id:
+          type: integer
+        activity_stream_type_id:
+          type: integer
+        activity_stream_object_id:
+          type: integer
+        created_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    # Session Schemas
+    Session:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    # User Access Token Schemas
+    UserAccessToken:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        action:
+          type: array
+          items:
+            type: string
+        user_id:
+          type: integer
+        token:
+          type: string
+        last_used_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+
+    UserAccessTokenCreate:
+      type: object
+      required:
+        - name
+        - action
+      properties:
+        name:
+          type: string
+        action:
+          type: array
+          items:
+            type: string
+        expires_at:
+          type: string
+          format: date-time
+
+    UserAccessTokenUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        action:
+          type: array
+          items:
+            type: string
+        expires_at:
+          type: string
+          format: date-time
+
+    # User Device Schemas
+    UserDevice:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        name:
+          type: string
+        fingerprint:
+          type: string
+        user_agent:
+          type: string
+        ip:
+          type: string
+        location:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    UserDeviceCreate:
+      type: object
+      required:
+        - name
+        - fingerprint
+      properties:
+        name:
+          type: string
+        fingerprint:
+          type: string
+        user_agent:
+          type: string
+
+    UserDeviceUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+
+    # Calendar Schemas
+    Calendar:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        timezone:
+          type: string
+        business_hours:
+          type: object
+        default:
+          type: boolean
+        ical_url:
+          type: string
+        public_holidays:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+
+    CalendarCreate:
+      type: object
+      required:
+        - name
+        - timezone
+      properties:
+        name:
+          type: string
+        timezone:
+          type: string
+        business_hours:
+          type: object
+        public_holidays:
+          type: object
+
+    CalendarUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        timezone:
+          type: string
+        business_hours:
+          type: object
+        public_holidays:
+          type: object
+
+    CalendarTimeslot:
+      type: object
+      properties:
+        id:
+          type: integer
+        calendar_id:
+          type: integer
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        available:
+          type: boolean
+
+    # Channel Schemas
+    Channel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    EmailChannelCreate:
+      type: object
+      required:
+        - area
+        - group_id
+        - options
+      properties:
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+
+    EmailChannelUpdate:
+      type: object
+      properties:
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    FacebookChannel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    FacebookChannelCreate:
+      type: object
+      required:
+        - area
+        - group_id
+        - options
+      properties:
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+
+    FacebookChannelUpdate:
+      type: object
+      properties:
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    GoogleChannel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    Microsoft365Channel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    TelegramChannel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    TelegramChannelCreate:
+      type: object
+      required:
+        - area
+        - group_id
+        - options
+      properties:
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+
+    TwitterChannel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    TwitterChannelCreate:
+      type: object
+      required:
+        - area
+        - group_id
+        - options
+      properties:
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+
+    WebChannel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    WhatsAppChannel:
+      type: object
+      properties:
+        id:
+          type: integer
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+        active:
+          type: boolean
+
+    WhatsAppChannelCreate:
+      type: object
+      required:
+        - area
+        - group_id
+        - options
+      properties:
+        area:
+          type: string
+        group_id:
+          type: integer
+        options:
+          type: object
+
+    # Chat Schemas
+    Chat:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        max_queue:
+          type: integer
+        block_ip:
+          type: array
+          items:
+            type: string
+        block_country:
+          type: array
+          items:
+            type: string
+        welcome:
+          type: string
+        active:
+          type: boolean
+        public:
+          type: boolean
+        preferences:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+
+    ChatCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        max_queue:
+          type: integer
+        welcome:
+          type: string
+        preferences:
+          type: object
+
+    ChatUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        max_queue:
+          type: integer
+        welcome:
+          type: string
+        active:
+          type: boolean
+        public:
+          type: boolean
+        preferences:
+          type: object
+
+    ChatSession:
+      type: object
+      properties:
+        id:
+          type: integer
+        chat_id:
+          type: integer
+        name:
+          type: string
+        state:
+          type: string
+        user_id:
+          type: integer
+        messages:
+          type: array
+          items:
+            type: object
+        preferences:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+
+    ChatSessionCreate:
+      type: object
+      required:
+        - chat_id
+      properties:
+        chat_id:
+          type: integer
+        name:
+          type: string
+        preferences:
+          type: object
+
+    ChatSessionUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        state:
+          type: string
+        preferences:
+          type: object
+
+    # Core Workflow Schemas
+    CoreWorkflow:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        object:
+          type: string
+        condition_saved:
+          type: object
+        condition_selected:
+          type: object
+        perform:
+          type: object
+        changeable:
+          type: boolean
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CoreWorkflowCreate:
+      type: object
+      required:
+        - name
+        - object
+        - perform
+      properties:
+        name:
+          type: string
+        object:
+          type: string
+        condition_saved:
+          type: object
+        condition_selected:
+          type: object
+        perform:
+          type: object
+
+    CoreWorkflowUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        condition_saved:
+          type: object
+        condition_selected:
+          type: object
+        perform:
+          type: object
+        changeable:
+          type: boolean
+
+    # Checklist Schemas
+    Checklist:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+        sorted_item_ids:
+          type: array
+          items:
+            type: integer
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    ChecklistCreate:
+      type: object
+      required:
+        - name
+        - items
+      properties:
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+
+    ChecklistUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+        active:
+          type: boolean
+
+    ChecklistTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+        sorted_item_ids:
+          type: array
+          items:
+            type: integer
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    ChecklistTemplateCreate:
+      type: object
+      required:
+        - name
+        - items
+      properties:
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+
+    ChecklistTemplateUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+        active:
+          type: boolean
+
+    # Data Privacy Schemas
+    DataPrivacyTask:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        deletable_id:
+          type: integer
+        deletable_type:
+          type: string
+        preferences:
+          type: object
+        state:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    DataPrivacyTaskCreate:
+      type: object
+      required:
+        - type
+        - deletable_id
+        - deletable_type
+      properties:
+        type:
+          type: string
+        deletable_id:
+          type: integer
+        deletable_type:
+          type: string
+        preferences:
+          type: object
+
+    DataPrivacyTaskUpdate:
+      type: object
+      properties:
+        state:
+          type: string
+        preferences:
+          type: object
+
+    # Data Stream Schema
+    DataStream:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        adapter:
+          type: string
+        options:
+          type: object
+        last_log:
+          type: object
+
+    # Job Schemas
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        timeplan:
+          type: object
+        condition:
+          type: object
+        perform:
+          type: object
+        disable_notification:
+          type: boolean
+        last_run_at:
+          type: string
+          format: date-time
+        next_run_at:
+          type: string
+          format: date-time
+        running:
+          type: boolean
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    JobCreate:
+      type: object
+      required:
+        - name
+        - timeplan
+        - perform
+      properties:
+        name:
+          type: string
+        timeplan:
+          type: object
+        condition:
+          type: object
+        perform:
+          type: object
+        disable_notification:
+          type: boolean
+
+    JobUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        timeplan:
+          type: object
+        condition:
+          type: object
+        perform:
+          type: object
+        disable_notification:
+          type: boolean
+        active:
+          type: boolean
+
+    # Link Schemas
+    Link:
+      type: object
+      properties:
+        id:
+          type: integer
+        link_type:
+          type: string
+        link_object_source_id:
+          type: integer
+        link_object_source_value:
+          type: integer
+        link_object_target_id:
+          type: integer
+        link_object_target_value:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    LinkCreate:
+      type: object
+      required:
+        - link_type
+        - link_object_source_id
+        - link_object_source_value
+        - link_object_target_id
+        - link_object_target_value
+      properties:
+        link_type:
+          type: string
+        link_object_source_id:
+          type: integer
+        link_object_source_value:
+          type: integer
+        link_object_target_id:
+          type: integer
+        link_object_target_value:
+          type: integer
+
+    LinkUpdate:
+      type: object
+      properties:
+        link_type:
+          type: string
+
+    # Locale Schema
+    Locale:
+      type: object
+      properties:
+        id:
+          type: integer
+        locale:
+          type: string
+        alias:
+          type: string
+        name:
+          type: string
+        dir:
+          type: string
+        active:
+          type: boolean
+
+    # Network Schemas
+    Network:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        network:
+          type: string
+        note:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    NetworkCreate:
+      type: object
+      required:
+        - name
+        - network
+      properties:
+        name:
+          type: string
+        network:
+          type: string
+        note:
+          type: string
+
+    NetworkUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        network:
+          type: string
+        note:
+          type: string
+        active:
+          type: boolean
+
+    # Object Manager Schemas
+    ObjectManagerAttribute:
+      type: object
+      properties:
+        id:
+          type: integer
+        object:
+          type: string
+        name:
+          type: string
+        display:
+          type: string
+        data_type:
+          type: string
+        data_option:
+          type: object
+        editable:
+          type: boolean
+        active:
+          type: boolean
+        screens:
+          type: object
+        to_create:
+          type: boolean
+        to_migrate:
+          type: boolean
+        to_delete:
+          type: boolean
+        to_config:
+          type: boolean
+        position:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    ObjectManagerAttributeCreate:
+      type: object
+      required:
+        - object
+        - name
+        - display
+        - data_type
+        - data_option
+      properties:
+        object:
+          type: string
+        name:
+          type: string
+        display:
+          type: string
+        data_type:
+          type: string
+        data_option:
+          type: object
+        editable:
+          type: boolean
+        screens:
+          type: object
+        position:
+          type: integer
+
+    ObjectManagerAttributeUpdate:
+      type: object
+      properties:
+        display:
+          type: string
+        data_option:
+          type: object
+        editable:
+          type: boolean
+        active:
+          type: boolean
+        screens:
+          type: object
+        position:
+          type: integer
+
+    # Online Notification Schemas
+    OnlineNotification:
+      type: object
+      properties:
+        id:
+          type: integer
+        object_lookup_id:
+          type: integer
+        type_lookup_id:
+          type: integer
+        o_id:
+          type: integer
+        seen:
+          type: boolean
+        user_id:
+          type: integer
+        created_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    OnlineNotificationCreate:
+      type: object
+      required:
+        - object_lookup_id
+        - type_lookup_id
+        - o_id
+        - user_id
+      properties:
+        object_lookup_id:
+          type: integer
+        type_lookup_id:
+          type: integer
+        o_id:
+          type: integer
+        user_id:
+          type: integer
+
+    OnlineNotificationUpdate:
+      type: object
+      properties:
+        seen:
+          type: boolean
+
+    # Package Schema
+    Package:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        version:
+          type: string
+        vendor:
+          type: string
+        state:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    # PostMaster Filter Schemas
+    PostmasterFilter:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        channel:
+          type: string
+        match:
+          type: object
+        perform:
+          type: object
+        active:
+          type: boolean
+        note:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    PostmasterFilterCreate:
+      type: object
+      required:
+        - name
+        - channel
+        - match
+        - perform
+      properties:
+        name:
+          type: string
+        channel:
+          type: string
+        match:
+          type: object
+        perform:
+          type: object
+        note:
+          type: string
+
+    PostmasterFilterUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        match:
+          type: object
+        perform:
+          type: object
+        active:
+          type: boolean
+        note:
+          type: string
+
+    # Public Link Schemas
+    PublicLink:
+      type: object
+      properties:
+        id:
+          type: integer
+        link:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        screen:
+          type: string
+        prio:
+          type: integer
+        object:
+          type: string
+        o_id:
+          type: integer
+        created_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    PublicLinkCreate:
+      type: object
+      required:
+        - link
+        - title
+        - screen
+        - object
+        - o_id
+      properties:
+        link:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        screen:
+          type: string
+        prio:
+          type: integer
+        object:
+          type: string
+        o_id:
+          type: integer
+
+    PublicLinkUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        prio:
+          type: integer
+
+    # Recent View Schemas
+    RecentView:
+      type: object
+      properties:
+        id:
+          type: integer
+        recent_view_object_id:
+          type: integer
+        o_id:
+          type: integer
+        created_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    RecentViewCreate:
+      type: object
+      required:
+        - recent_view_object_id
+        - o_id
+      properties:
+        recent_view_object_id:
+          type: integer
+        o_id:
+          type: integer
+
+    # Report Schema
+    Report:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        condition:
+          type: object
+        params:
+          type: object
+        result:
+          type: object
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    # Role Schemas
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        permissions:
+          type: object
+        default_at_signup:
+          type: boolean
+        note:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    RoleCreate:
+      type: object
+      required:
+        - name
+        - permissions
+      properties:
+        name:
+          type: string
+        permissions:
+          type: object
+        default_at_signup:
+          type: boolean
+        note:
+          type: string
+
+    RoleUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        permissions:
+          type: object
+        default_at_signup:
+          type: boolean
+        note:
+          type: string
+        active:
+          type: boolean
+
+    # Scheduler Schemas
+    Scheduler:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        method:
+          type: string
+        period:
+          type: integer
+        running:
+          type: boolean
+        last_run:
+          type: string
+          format: date-time
+        next_run:
+          type: string
+          format: date-time
+        active:
+          type: boolean
+        note:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    SchedulerCreate:
+      type: object
+      required:
+        - name
+        - method
+        - period
+      properties:
+        name:
+          type: string
+        method:
+          type: string
+        period:
+          type: integer
+        note:
+          type: string
+
+    SchedulerUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        method:
+          type: string
+        period:
+          type: integer
+        active:
+          type: boolean
+        note:
+          type: string
+
+    # Signature Schemas
+    Signature:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        body:
+          type: string
+        active:
+          type: boolean
+        note:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    SignatureCreate:
+      type: object
+      required:
+        - name
+        - body
+      properties:
+        name:
+          type: string
+        body:
+          type: string
+        note:
+          type: string
+
+    SignatureUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        body:
+          type: string
+        active:
+          type: boolean
+        note:
+          type: string
+
+    # SLA Schemas
+    SLA:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        condition:
+          type: object
+        first_response_time:
+          type: integer
+        update_time:
+          type: integer
+        solution_time:
+          type: integer
+        calendar_id:
+          type: integer
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    SLACreate:
+      type: object
+      required:
+        - name
+        - condition
+      properties:
+        name:
+          type: string
+        condition:
+          type: object
+        first_response_time:
+          type: integer
+        update_time:
+          type: integer
+        solution_time:
+          type: integer
+        calendar_id:
+          type: integer
+
+    SLAUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        condition:
+          type: object
+        first_response_time:
+          type: integer
+        update_time:
+          type: integer
+        solution_time:
+          type: integer
+        calendar_id:
+          type: integer
+        active:
+          type: boolean
+
+    # Standards Schemas
+    TicketArticleType:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        communication:
+          type: boolean
+        active:
+          type: boolean
+
+    TicketPriority:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        default_create:
+          type: boolean
+        ui_icon:
+          type: string
+        ui_color:
+          type: string
+        active:
+          type: boolean
+
+    TicketState:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        state_type_id:
+          type: integer
+        ignore_escalation:
+          type: boolean
+        default_create:
+          type: boolean
+        default_follow_up:
+          type: boolean
+        active:
+          type: boolean
+
+    TicketStateType:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    # System Statistics Schema
+    SystemStats:
+      type: object
+      properties:
+        tickets:
+          type: object
+        users:
+          type: object
+        organizations:
+          type: object
+        groups:
+          type: object
+
+    # Tag Schemas
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        count:
+          type: integer
+
+    TagCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
+    TagUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+
+    # Taskbar Schemas
+    Taskbar:
+      type: object
+      properties:
+        id:
+          type: integer
+        client_id:
+          type: string
+        key:
+          type: string
+        callback:
+          type: string
+        state:
+          type: object
+        params:
+          type: object
+        prio:
+          type: integer
+        notify:
+          type: boolean
+        user_id:
+          type: integer
+        last_contact:
+          type: string
+          format: date-time
+        preferences:
+          type: object
+
+    TaskbarCreate:
+      type: object
+      required:
+        - client_id
+        - key
+        - callback
+      properties:
+        client_id:
+          type: string
+        key:
+          type: string
+        callback:
+          type: string
+        state:
+          type: object
+        params:
+          type: object
+        prio:
+          type: integer
+        notify:
+          type: boolean
+        preferences:
+          type: object
+
+    TaskbarUpdate:
+      type: object
+      properties:
+        state:
+          type: object
+        params:
+          type: object
+        prio:
+          type: integer
+        notify:
+          type: boolean
+        preferences:
+          type: object
+
+    # Template Schemas
+    Template:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        user_id:
+          type: integer
+        options:
+          type: object
+        updated_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    TemplateCreate:
+      type: object
+      required:
+        - name
+        - options
+      properties:
+        name:
+          type: string
+        options:
+          type: object
+
+    TemplateUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        options:
+          type: object
+
+    # Text Module Schemas
+    TextModule:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        keywords:
+          type: string
+        content:
+          type: string
+        note:
+          type: string
+        user_id:
+          type: integer
+        group_ids:
+          type: array
+          items:
+            type: integer
+        foreign_id:
+          type: integer
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    TextModuleCreate:
+      type: object
+      required:
+        - name
+        - keywords
+        - content
+      properties:
+        name:
+          type: string
+        keywords:
+          type: string
+        content:
+          type: string
+        note:
+          type: string
+        group_ids:
+          type: array
+          items:
+            type: integer
+
+    TextModuleUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        keywords:
+          type: string
+        content:
+          type: string
+        note:
+          type: string
+        group_ids:
+          type: array
+          items:
+            type: integer
+        active:
+          type: boolean
+
+    # Time Accounting Schemas
+    TimeAccounting:
+      type: object
+      properties:
+        id:
+          type: integer
+        ticket_id:
+          type: integer
+        ticket_article_id:
+          type: integer
+        time_unit:
+          type: number
+        type_id:
+          type: integer
+        created_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    TimeAccountingCreate:
+      type: object
+      required:
+        - ticket_id
+        - time_unit
+      properties:
+        ticket_id:
+          type: integer
+        ticket_article_id:
+          type: integer
+        time_unit:
+          type: number
+        type_id:
+          type: integer
+
+    TimeAccountingUpdate:
+      type: object
+      properties:
+        time_unit:
+          type: number
+        type_id:
+          type: integer
+
+    # Token Schemas
+    Token:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        action:
+          type: array
+          items:
+            type: string
+        persistent:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    TokenCreate:
+      type: object
+      required:
+        - name
+        - action
+      properties:
+        name:
+          type: string
+        action:
+          type: array
+          items:
+            type: string
+        persistent:
+          type: boolean
+
+    TokenUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        action:
+          type: array
+          items:
+            type: string
+
+    # Translation Schemas
+    Translation:
+      type: object
+      properties:
+        id:
+          type: integer
+        locale:
+          type: string
+        source:
+          type: string
+        target:
+          type: string
+        target_initial:
+          type: string
+        is_synchronized_from_codebase:
+          type: boolean
+        synchronized_from_codebase_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+
+    TranslationCreate:
+      type: object
+      required:
+        - locale
+        - source
+        - target
+      properties:
+        locale:
+          type: string
+        source:
+          type: string
+        target:
+          type: string
+
+    TranslationUpdate:
+      type: object
+      properties:
+        target:
+          type: string
+
+    # Working Hours Schemas
+    WorkingHours:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        monday:
+          type: array
+          items:
+            type: string
+        tuesday:
+          type: array
+          items:
+            type: string
+        wednesday:
+          type: array
+          items:
+            type: string
+        thursday:
+          type: array
+          items:
+            type: string
+        friday:
+          type: array
+          items:
+            type: string
+        saturday:
+          type: array
+          items:
+            type: string
+        sunday:
+          type: array
+          items:
+            type: string
+        active:
+          type: boolean
+        default:
+          type: boolean
+        note:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    WorkingHoursCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        monday:
+          type: array
+          items:
+            type: string
+        tuesday:
+          type: array
+          items:
+            type: string
+        wednesday:
+          type: array
+          items:
+            type: string
+        thursday:
+          type: array
+          items:
+            type: string
+        friday:
+          type: array
+          items:
+            type: string
+        saturday:
+          type: array
+          items:
+            type: string
+        sunday:
+          type: array
+          items:
+            type: string
+        note:
+          type: string
+
+    WorkingHoursUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        monday:
+          type: array
+          items:
+            type: string
+        tuesday:
+          type: array
+          items:
+            type: string
+        wednesday:
+          type: array
+          items:
+            type: string
+        thursday:
+          type: array
+          items:
+            type: string
+        friday:
+          type: array
+          items:
+            type: string
+        saturday:
+          type: array
+          items:
+            type: string
+        sunday:
+          type: array
+          items:
+            type: string
+        active:
+          type: boolean
+        note:
+          type: string
+
+    # External Data Source Schemas
+    ExternalDataSource:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        adapter:
+          type: string
+        options:
+          type: object
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    ExternalDataSourceCreate:
+      type: object
+      required:
+        - name
+        - adapter
+        - options
+      properties:
+        name:
+          type: string
+        adapter:
+          type: string
+        options:
+          type: object
+
+    ExternalDataSourceUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        options:
+          type: object
+        active:
+          type: boolean
+
+    # Integration Schemas
+    GitHubIntegration:
+      type: object
+      properties:
+        id:
+          type: integer
+        endpoint:
+          type: string
+        api_token:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    GitHubIntegrationCreate:
+      type: object
+      required:
+        - endpoint
+        - api_token
+      properties:
+        endpoint:
+          type: string
+        api_token:
+          type: string
+
+    GitLabIntegration:
+      type: object
+      properties:
+        id:
+          type: integer
+        endpoint:
+          type: string
+        api_token:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    GitLabIntegrationCreate:
+      type: object
+      required:
+        - endpoint
+        - api_token
+      properties:
+        endpoint:
+          type: string
+        api_token:
+          type: string
+
+    # OAuth Schemas
+    OAuthApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        uid:
+          type: string
+        secret:
+          type: string
+        redirect_uri:
+          type: string
+        scopes:
+          type: string
+        confidential:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    OAuthApplicationCreate:
+      type: object
+      required:
+        - name
+        - redirect_uri
+      properties:
+        name:
+          type: string
+        redirect_uri:
+          type: string
+        scopes:
+          type: string
+        confidential:
+          type: boolean
+
+    OAuthApplicationUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        redirect_uri:
+          type: string
+        scopes:
+          type: string
+        confidential:
+          type: boolean
+
+    # LDAP Schemas
+    LDAPGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+        dn:
+          type: string
+        name:
+          type: string
+        member:
+          type: array
+          items:
+            type: string
+
+    LDAPUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        dn:
+          type: string
+        samaccountname:
+          type: string
+        mail:
+          type: string
+        displayname:
+          type: string
+
+    LDAPSource:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        preferences:
+          type: object
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    LDAPSourceCreate:
+      type: object
+      required:
+        - name
+        - preferences
+      properties:
+        name:
+          type: string
+        preferences:
+          type: object
+
+    LDAPSourceUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        preferences:
+          type: object
+        active:
+          type: boolean
+
 tags:
+  - name: AI Agents
+    description: AI agent management operations
+  - name: Applications
+    description: Application management operations
+  - name: Activity Stream
+    description: Activity stream operations
   - name: Tickets
     description: Ticket management operations
   - name: Ticket Articles
@@ -1662,10 +7810,84 @@ tags:
     description: Group management operations
   - name: Authentication
     description: Authentication and session management
-  - name: Knowledge Base
-    description: Knowledge base management
+  - name: Calendars
+    description: Calendar management operations
   - name: Channels
     description: Communication channel management
+  - name: Chats
+    description: Chat management operations
+  - name: Core Workflows
+    description: Core workflow management
+  - name: Checklists
+    description: Checklist management
+  - name: Data Privacy
+    description: Data privacy task management
+  - name: Data Streams
+    description: Data stream operations
+  - name: CTI
+    description: Computer telephony integration
+  - name: Jobs
+    description: Background job management
+  - name: Links
+    description: Object link management
+  - name: Locales
+    description: Locale management
+  - name: Networks
+    description: Network management
+  - name: Object Manager
+    description: Object manager operations
+  - name: Notifications
+    description: Online notification management
+  - name: Packages
+    description: Package management
+  - name: Planner
+    description: Planner operations
+  - name: PostMaster
+    description: PostMaster filter management
+  - name: Public Links
+    description: Public link management
+  - name: Recent Views
+    description: Recent view management
+  - name: Reports
+    description: Report generation and management
+  - name: Roles
+    description: Role management operations
+  - name: Schedulers
+    description: Scheduler management
+  - name: Signatures
+    description: Signature management
+  - name: SLA
+    description: SLA management operations
+  - name: Standards
+    description: Standard object management
+  - name: System
+    description: System operations and information
+  - name: Tags
+    description: Tag management operations
+  - name: Tasks
+    description: Task management operations
+  - name: Templates
+    description: Template management
+  - name: Text Modules
+    description: Text module management
+  - name: Time Accounting
+    description: Time accounting operations
+  - name: Tokens
+    description: Token management
+  - name: Translations
+    description: Translation management
+  - name: Working Hours
+    description: Working hours management
+  - name: External Data Sources
+    description: External data source management
+  - name: Integrations
+    description: Third-party integrations
+  - name: OAuth
+    description: OAuth application management
+  - name: LDAP
+    description: LDAP integration management
+  - name: Knowledge Base
+    description: Knowledge base management
   - name: Automation
     description: Automation triggers and macros
   - name: Monitoring
