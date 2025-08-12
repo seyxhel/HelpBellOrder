@@ -58,7 +58,7 @@ COPY --from=node /usr/local/bin /usr/local/bin
 # Install node modules
 COPY package.json package-lock.json ./
 COPY .eslint-plugin-zammad/package.json .eslint-plugin-zammad/pnpm-lock.yaml .eslint-plugin-zammad/lib/ .eslint-plugin-zammad/
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # Copy application code
 COPY . .

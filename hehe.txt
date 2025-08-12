@@ -2,53 +2,53 @@ Application logs:
 (loading on site)
 
 Build logs:
-2025-08-12T16:39:28.100811866Z 
-2025-08-12T16:39:28.100818716Z #25 [build  4/13] COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
-2025-08-12T16:39:28.686129295Z #25 DONE 0.7s
-2025-08-12T16:39:28.836658255Z 
-2025-08-12T16:39:28.836683217Z #26 [build  5/13] COPY --from=node /usr/local/bin /usr/local/bin
-2025-08-12T16:39:28.966753133Z #26 DONE 0.3s
-2025-08-12T16:39:29.117380288Z 
-2025-08-12T16:39:29.11741241Z #27 [build  6/13] COPY package.json pnpm-lock.yaml ./
-2025-08-12T16:39:29.117419561Z #27 DONE 0.0s
-2025-08-12T16:39:29.117424081Z 
-2025-08-12T16:39:29.117429281Z #28 [build  7/13] COPY .eslint-plugin-zammad/package.json .eslint-plugin-zammad/pnpm-lock.yaml .eslint-plugin-zammad/lib/ .eslint-plugin-zammad/
-2025-08-12T16:39:29.117433171Z #28 DONE 0.0s
-2025-08-12T16:39:29.117436511Z 
-2025-08-12T16:39:29.117440112Z #29 [build  8/13] RUN pnpm install --frozen-lockfile
-2025-08-12T16:39:29.268023125Z #29 0.126 ! Corepack is about to download https://registry.npmjs.org/pnpm/-/pnpm-10.13.1.tgz
-2025-08-12T16:39:30.16833245Z #29 1.120  ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date with <ROOT>/package.json
-2025-08-12T16:39:30.168357721Z #29 1.120 
-2025-08-12T16:39:30.168361582Z #29 1.120 Note that in CI environments this setting is true by default. If you still need to run install in such cases, use "pnpm install --no-frozen-lockfile"
-2025-08-12T16:39:30.168364612Z #29 1.120 
-2025-08-12T16:39:30.168368272Z #29 1.120   Failure reason:
-2025-08-12T16:39:30.168371862Z #29 1.120   specifiers in the lockfile don't match specifiers in package.json:
-2025-08-12T16:39:30.168375572Z #29 1.120 * 1 dependencies were added: autoprefixer@^10.4.21
-2025-08-12T16:39:30.168378392Z #29 1.120 * 1 dependencies were removed: @tailwindcss/vite@^4.1.11
-2025-08-12T16:39:30.168381893Z #29 1.120 * 2 dependencies are mismatched:
-2025-08-12T16:39:30.168384723Z #29 1.120   - stylelint (lockfile: ^16.21.1, manifest: ^14.16.1)
-2025-08-12T16:39:30.168387883Z #29 1.120   - tailwindcss (lockfile: ^4.1.11, manifest: ^3.3.3)
-2025-08-12T16:39:30.168391993Z #29 1.120 
-2025-08-12T16:39:30.274424459Z #29 ERROR: process "/bin/bash -o errexit -o pipefail -c pnpm install --frozen-lockfile" did not complete successfully: exit code: 1
-2025-08-12T16:39:30.297482226Z ------
-2025-08-12T16:39:30.297495436Z  > [build  8/13] RUN pnpm install --frozen-lockfile:
-2025-08-12T16:39:30.297500217Z 1.120 Note that in CI environments this setting is true by default. If you still need to run install in such cases, use "pnpm install --no-frozen-lockfile"
-2025-08-12T16:39:30.297505547Z 1.120 
-2025-08-12T16:39:30.297524788Z 1.120   Failure reason:
-2025-08-12T16:39:30.297529358Z 1.120   specifiers in the lockfile don't match specifiers in package.json:
-2025-08-12T16:39:30.297532858Z 1.120 * 1 dependencies were added: autoprefixer@^10.4.21
-2025-08-12T16:39:30.297536299Z 1.120 * 1 dependencies were removed: @tailwindcss/vite@^4.1.11
-2025-08-12T16:39:30.297540039Z 1.120 * 2 dependencies are mismatched:
-2025-08-12T16:39:30.29756266Z 1.120   - stylelint (lockfile: ^16.21.1, manifest: ^14.16.1)
-2025-08-12T16:39:30.29756965Z 1.120   - tailwindcss (lockfile: ^4.1.11, manifest: ^3.3.3)
-2025-08-12T16:39:30.29757287Z 1.120 
-2025-08-12T16:39:30.297575911Z ------
-2025-08-12T16:39:30.298675501Z Dockerfile:61
-2025-08-12T16:39:30.298690742Z --------------------
-2025-08-12T16:39:30.298694702Z   59 |     COPY package.json pnpm-lock.yaml ./
-2025-08-12T16:39:30.298699132Z   60 |     COPY .eslint-plugin-zammad/package.json .eslint-plugin-zammad/pnpm-lock.yaml .eslint-plugin-zammad/lib/ .eslint-plugin-zammad/
-2025-08-12T16:39:30.298702043Z   61 | >>> RUN pnpm install --frozen-lockfile
-2025-08-12T16:39:30.298705443Z   62 |     
-2025-08-12T16:39:30.298708983Z   63 |     # Copy application code
-2025-08-12T16:39:30.298712263Z --------------------
-2025-08-12T16:39:30.298715523Z error: failed to solve: process "/bin/bash -o errexit -o pipefail -c pnpm install --frozen-lockfile" did not complete successfully: exit code: 1
+2025-08-12T16:51:56.869652417Z #29 1.870 npm error   dev stylelint-config-standard@"^38.0.0" from the root project
+2025-08-12T16:51:56.869654137Z #29 1.870 npm error   stylelint-config-standard@"^38.0.0" from stylelint-config-standard-scss@15.0.1
+2025-08-12T16:51:56.869655787Z #29 1.870 npm error   node_modules/stylelint-config-standard-scss
+2025-08-12T16:51:56.869657497Z #29 1.870 npm error     dev stylelint-config-standard-scss@"^15.0.1" from the root project
+2025-08-12T16:51:56.869659157Z #29 1.870 npm error
+2025-08-12T16:51:56.869660807Z #29 1.870 npm error Conflicting peer dependency: stylelint@16.23.1
+2025-08-12T16:51:56.869662727Z #29 1.870 npm error node_modules/stylelint
+2025-08-12T16:51:56.869664447Z #29 1.870 npm error   peer stylelint@"^16.18.0" from stylelint-config-standard@38.0.0
+2025-08-12T16:51:56.869666117Z #29 1.870 npm error   node_modules/stylelint-config-standard
+2025-08-12T16:51:56.869674108Z #29 1.870 npm error     dev stylelint-config-standard@"^38.0.0" from the root project
+2025-08-12T16:51:56.869676158Z #29 1.870 npm error     stylelint-config-standard@"^38.0.0" from stylelint-config-standard-scss@15.0.1
+2025-08-12T16:51:56.869677828Z #29 1.870 npm error     node_modules/stylelint-config-standard-scss
+2025-08-12T16:51:56.869679658Z #29 1.870 npm error       dev stylelint-config-standard-scss@"^15.0.1" from the root project
+2025-08-12T16:51:56.869681368Z #29 1.870 npm error
+2025-08-12T16:51:56.869683018Z #29 1.870 npm error Fix the upstream dependency conflict, or retry
+2025-08-12T16:51:56.869684728Z #29 1.870 npm error this command with --force or --legacy-peer-deps
+2025-08-12T16:51:56.869686438Z #29 1.870 npm error to accept an incorrect (and potentially broken) dependency resolution.
+2025-08-12T16:51:56.869691518Z #29 1.870 npm error
+2025-08-12T16:51:56.869693278Z #29 1.870 npm error
+2025-08-12T16:51:56.869694988Z #29 1.870 npm error For a full report see:
+2025-08-12T16:51:56.869696718Z #29 1.870 npm error /root/.npm/_logs/2025-08-12T16_51_55_027Z-eresolve-report.txt
+2025-08-12T16:51:56.869698358Z #29 1.871 npm notice
+2025-08-12T16:51:56.869700138Z #29 1.871 npm notice New major version of npm available! 10.9.3 -> 11.5.2
+2025-08-12T16:51:56.869701838Z #29 1.871 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.5.2
+2025-08-12T16:51:56.869703489Z #29 1.871 npm notice To update run: npm install -g npm@11.5.2
+2025-08-12T16:51:56.869705158Z #29 1.871 npm notice
+2025-08-12T16:51:56.869707478Z #29 1.872 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-08-12T16_51_55_027Z-debug-0.log
+2025-08-12T16:51:57.901151217Z #29 ERROR: process "/bin/bash -o errexit -o pipefail -c npm ci" did not complete successfully: exit code: 1
+2025-08-12T16:51:57.901172617Z ------
+2025-08-12T16:51:57.901177558Z  > [build  8/13] RUN npm ci:
+2025-08-12T16:51:57.901181658Z 1.870 npm error
+2025-08-12T16:51:57.901185718Z 1.870 npm error
+2025-08-12T16:51:57.901190128Z 1.870 npm error For a full report see:
+2025-08-12T16:51:57.901194308Z 1.870 npm error /root/.npm/_logs/2025-08-12T16_51_55_027Z-eresolve-report.txt
+2025-08-12T16:51:57.901198368Z 1.871 npm notice
+2025-08-12T16:51:57.901202258Z 1.871 npm notice New major version of npm available! 10.9.3 -> 11.5.2
+2025-08-12T16:51:57.901205989Z 1.871 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.5.2
+2025-08-12T16:51:57.901209869Z 1.871 npm notice To update run: npm install -g npm@11.5.2
+2025-08-12T16:51:57.901213689Z 1.871 npm notice
+2025-08-12T16:51:57.901217769Z 1.872 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-08-12T16_51_55_027Z-debug-0.log
+2025-08-12T16:51:57.901221609Z ------
+2025-08-12T16:51:57.901225469Z Dockerfile:61
+2025-08-12T16:51:57.901229439Z --------------------
+2025-08-12T16:51:57.901233369Z   59 |     COPY package.json package-lock.json ./
+2025-08-12T16:51:57.901237649Z   60 |     COPY .eslint-plugin-zammad/package.json .eslint-plugin-zammad/pnpm-lock.yaml .eslint-plugin-zammad/lib/ .eslint-plugin-zammad/
+2025-08-12T16:51:57.90124139Z   61 | >>> RUN npm ci
+2025-08-12T16:51:57.90124513Z   62 |     
+2025-08-12T16:51:57.90124902Z   63 |     # Copy application code
+2025-08-12T16:51:57.9012528Z --------------------
+2025-08-12T16:51:57.90125681Z error: failed to solve: process "/bin/bash -o errexit -o pipefail -c npm ci" did not complete successfully: exit code: 1
