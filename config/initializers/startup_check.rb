@@ -12,10 +12,13 @@ Rails.application.config.after_initialize do
       if db_connected
         Rails.logger.info "Database adapter: #{ActiveRecord::Base.connection.adapter_name}"
         Rails.logger.info "Database name: #{ActiveRecord::Base.connection.current_database}"
+      else
+        raise "Database connection returned false"
       end
     rescue => db_error
       Rails.logger.error "Database connection error: #{db_error.message}"
       Rails.logger.error "Database error class: #{db_error.class}"
+      Rails.logger.error "Database error backtrace: #{db_error.backtrace.join("\n")}" 
     end
     
     # Test Redis connection
