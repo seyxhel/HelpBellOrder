@@ -35,7 +35,16 @@ class PasswordReset extends App.ControllerFullPage
 
   render: (params = {}) ->
     configure_attributes = [
-      { name: 'username', display: __('Enter your username or email address'), tag: 'input', type: 'text', limit: 100, null: false, class: 'input span4' }
+      {
+        name: 'username',
+        display: __('Please enter your email address. We will send you instructions to reset your password.'),
+        tag: 'input',
+        type: 'text',
+        limit: 100,
+        null: false,
+        class: 'input span4',
+        placeholder: __('Enter your e-mail address:')
+      }
     ]
 
     params['public_links'] = App.PublicLink.search(
