@@ -26,7 +26,7 @@
               <div class="formGroup-label">
                 <label for="username"><%- @Ti('Email Address') %></label>
               </div>
-              <input id="username" name="username" type="text" class="form-control" value="<%= @item.formPayload?.username %>"/>
+              <input id="username" name="username" type="text" class="form-control" value="<%= @item.formPayload?.username %>" placeholder="Enter your E-mail Address:"/>
             </div>
 
             <div class="form-group">
@@ -34,7 +34,7 @@
                 <label for="password"><%- @Ti('Password') %></label>
               </div>
               <div class="password-wrapper" style="position:relative;">
-                <input id="password" name="password" type="password" class="form-control" autocomplete="off"/>
+                <input id="password" name="password" type="password" class="form-control" autocomplete="off" placeholder="Enter your Password:"/>
                 <span id="togglePassword" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">
                   <span id="showText" style="display:inline; color:#9F9F9F; font-size:12px;">Show Password</span>
                   <span id="hideText" style="display:none; color:#9F9F9F; font-size:12px;">Hide Password</span>
@@ -52,7 +52,7 @@
             </div>
 
             <div class="form-controls">
-              <button class="btn btn--primary" type="submit"><%- @T('Sign in') %></button>
+              <button class="btn btn--primary" type="submit"><%- @T('Sign In') %></button>
 
               <% if @C('user_lost_password'): %>
                 <a href="#password_reset" class="btn btn--text btn--secondary align-center"><%- @T('Forgot password?') %></a>
@@ -64,7 +64,7 @@
         <hr>
         <p>
           <% if show_user_create_account: %>
-            <a href="#signup"><%- @T('Create New Customer Account') %></a>
+            <a href="#signup" style="text-decoration:none;"><%- @T('Create New Customer Account') %></a>
           <% end %>
           <% for link, link_index in @public_links: %>
             <% if link_index > 0 || show_user_create_account: %> | <% end %>
@@ -121,7 +121,7 @@
 
     </div>
   </div>
-  <div class="poweredBy">
+  <div class="poweredBy ">
     <a href="https://zammad.org" target="_blank"><%- @Icon('logo') %></a>
     <%- @T('Powered by') %>
     <a href="https://zammad.org" target="_blank"><%- @T(' PrimeDesk') %></a>

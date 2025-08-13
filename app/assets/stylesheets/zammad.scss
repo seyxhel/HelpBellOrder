@@ -1807,7 +1807,7 @@ td .icon-cog {
   }
 
   .icon-checked {
-    color: var(--interactive-primary);
+    color: #0057B8;
   }
 
   .icon-unchecked {
@@ -2073,6 +2073,7 @@ table {
 
 .label-text {
   @include bidi-style(margin-left, 3px, margin-right, 0);
+    color: #333333;
 
   @extend %clickable;
 }
@@ -3475,6 +3476,11 @@ kbd {
 .login {
   padding: 10px;
   background: var(--fullscreen-background);
+}
+
+.form-control::placeholder {
+  color: #9F9F9F;
+  opacity: 1;
 }
 
 .content.getstarted {
