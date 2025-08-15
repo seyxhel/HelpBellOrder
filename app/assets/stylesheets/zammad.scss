@@ -696,13 +696,13 @@ pre code {
   padding: 10px 24px 9px;
   color: var(--text-normal);
   background: var(--button-background);
-  border: 1px solid var(--border);
   outline: none !important;
   border-radius: 25px;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
   text-decoration: none;
+  border: none;
 
   @extend %clickable;
 
@@ -868,7 +868,7 @@ pre code {
 
   &--primary {
     color: var(--button-primary-text);
-    background: var(--button-primary-background);
+    background: #0057B8;
 
     &:active {
       background: var(--button-primary-background-active);
@@ -905,6 +905,7 @@ pre code {
 
     &.btn--text {
       color: var(--supergood-color);
+      
     }
   }
 
@@ -999,8 +1000,8 @@ pre code {
     }
 
     &.btn--subtle {
-      text-decoration: underline;
-      color: var(--text-button-secondary);
+      text-decoration: none;
+      color: dark rgb(39, 38, 38);
 
       &:active {
         opacity: 0.75;
@@ -2001,7 +2002,7 @@ h3 {
     display: inline;
     font-size: 12px;
     text-transform: none;
-    color: var(--text-muted);
+    color: pink;
     letter-spacing: initial;
   }
 }
