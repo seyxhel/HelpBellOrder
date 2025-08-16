@@ -35,7 +35,7 @@
               </div>
               <div class="password-wrapper" style="position:relative;">
                 <input id="password" name="password" type="password" class="form-control" autocomplete="off" placeholder="Enter your Password:"/>
-                <span id="togglePassword" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                <span id="togglePassword" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; z-index:10;">
                   <span id="showText" style="display:inline; color:#9F9F9F; font-size:12px;">Show Password</span>
                   <span id="hideText" style="display:none; color:#9F9F9F; font-size:12px;">Hide Password</span>
                 </span>
@@ -131,14 +131,17 @@
 
 <%# For password open and close %>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  var passwordInput = document.getElementById('password');
-  var togglePassword = document.getElementById('togglePassword');
-  var showText = document.getElementById('showText');
-  var hideText = document.getElementById('hideText');
+document.addEventListener('DOMContentLoaded', function () {
+  // Select the password input and toggle button
+  var passwordInput = document.querySelector('#password');
+  var togglePassword = document.querySelector('#togglePassword');
+  var showText = document.querySelector('#showText');
+  var hideText = document.querySelector('#hideText');
 
-  if (togglePassword) {
-    togglePassword.addEventListener('click', function() {
+  // Check if the elements exist before adding event listeners
+  if (passwordInput && togglePassword && showText && hideText) {
+    togglePassword.addEventListener('click', function () {
+      // Toggle the password input type
       if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
         showText.style.display = 'none';
@@ -149,6 +152,8 @@ document.addEventListener('DOMContentLoaded', function() {
         hideText.style.display = 'none';
       }
     });
+  } else {
+    console.error('Password toggle elements are missing in the DOM.');
   }
 });
 </script>
